@@ -63,11 +63,24 @@
             color: #ccc;
             cursor: pointer;
             white-space: nowrap;
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
         }
+
+        .tab:hover {
+            transform: translateY(-6px) scale(1.05);
+            color: #ff7b7b;
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.35);
+            background: rgba(255,77,77,0.08);
+        }
+
         .tab.active {
             color: #ff7b7b;
             border-bottom: 2px solid #ff7b7b;
+            background: rgba(255,77,77,0.1);
         }
+
 
         /* ======================= MENU GRID ======================= */
         .container {
@@ -81,29 +94,37 @@
         @media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
 
-        /* ======================= CARD ======================= */
+        /* ======================= CARD (UPGRADED) ======================= */
         .card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 18px;
+            position: relative;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
             overflow: hidden;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.35);
+            transition: transform .25s ease, box-shadow .25s ease;
+            padding: 16px; /* khoảng cách bên trong card */
         }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 12px 28px rgba(255, 60, 60, 0.35);
+        }
+
 
         .card img {
             width: 100%;
-            height: 180px;
+            height: 190px;
             object-fit: cover;
+            transition: transform .35s ease;
         }
 
-        .card-body { padding: 16px; }
-
-        /* ======================= PRICE + BUTTON ======================= */
-        .price {
-            color: #ffb36b;
-            font-size: 17px;
-            margin-top: 6px;
+        /* Zoom ảnh nhẹ khi hover */
+        .card:hover img {
+            transform: scale(1.07);
         }
+
 
         .qty-row {
             margin-top: 14px;
@@ -180,6 +201,35 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
+
+
+        .qty-input {
+            width: 55px;
+            padding: 6px 8px;
+            text-align: center;
+            background: rgba(80,80,80,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+
+            /* Loại bỏ mũi tên tăng/giảm */
+            -moz-appearance: textfield;
+        }
+
+        .qty-input::-webkit-inner-spin-button,
+        .qty-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        .qty-input::-webkit-inner-spin-button,
+        .qty-input::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+
     </style>
 </head>
 <body>
@@ -213,6 +263,9 @@
     <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
     <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
     <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
+
+
+
 </div>
 
 <!-- MENU -->
@@ -236,35 +289,40 @@
         vi:{
             tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
             buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
-            messages:{orderSent:"Order đã gửi tới bếp!"},
+            messages:{orderSent:"Order đã gửi tới bếp!",
+                      emptyCart:"Giỏ hàng trống!"},
             cart:{title:"Giỏ hàng", total:"Tổng", qty:"SL"},
             table:"Bàn"
         },
         en:{
             tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
             buttons:{add:"Add", order:"Place Order", cart:"Cart"},
-            messages:{orderSent:"Order sent to kitchen!"},
+            messages:{orderSent:"Order sent to kitchen!",
+                      emptyCart:"Your cart is empty!"},
             cart:{title:"Cart", total:"Total", qty:"Qty"},
             table:"Table"
         },
         zh:{
             tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
             buttons:{add:"添加", order:"下单", cart:"购物车"},
-            messages:{orderSent:"订单已发送到厨房！"},
+            messages:{orderSent:"订单已发送到厨房！",
+                      emptyCart:"購物車是空的！"},
             cart:{title:"购物车", total:"总计", qty:"数量"},
             table:"桌"
         },
         ja:{
             tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
             buttons:{add:"追加", order:"注文する", cart:"カート"},
-            messages:{orderSent:"注文が送信されました！"},
+            messages:{orderSent:"注文が送信されました！",
+                      emptyCart:"カートは空です!"},
             cart:{title:"カート", total:"合計", qty:"数量"},
             table:"テーブル"
         },
         ko:{
             tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
             buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
-            messages:{orderSent:"주문이 전송되었습니다!"},
+            messages:{orderSent:"주문이 전송되었습니다!",
+                      emptyCart:"장바구니가 비어있습니다!"},
             cart:{title:"장바구니", total:"총", qty:"수량"},
             table:"테이블"
         }
@@ -316,7 +374,13 @@
 
                 <div class="qty-row">
                     <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
-                    <div style="margin:0 10px;">${cart[item.id].qty}</div>
+                    <input type="number"
+                     id="qtyInput_${item.id}"
+                     class="qty-input"
+                     value="${cart[item.id].tempQty ?? cart[item.id].qty}"
+                     min="0"
+                     oninput="updateTempQty(${item.id}, this.value)">
+
                     <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
                     <div class="add-cart-btn" onclick="addToCart(${item.id})">
                         ${translations[currentLang].buttons.add}
@@ -326,7 +390,6 @@
         </div>`;
         });
     }
-
     /* ======================= TAB ======================= */
     function changeTab(tab, event){
         currentTab = tab;
@@ -390,9 +453,28 @@
     }
 
     /* ======================= ORDER ======================= */
-    function placeOrder(){
+    function placeOrder() {
+        // Kiểm tra xem có món nào trong giỏ không
+        let hasItems = false;
+
+        for (let id in cart) {
+            if (cart[id].qty > 0) {
+                hasItems = true;
+                break;
+            }
+        }
+
+        // Nếu giỏ hàng không có món → báo theo đúng ngôn ngữ hiện tại
+        if (!hasItems) {
+            alert(translations[currentLang].messages.emptyCart);
+            return;
+        }
+
+        // Nếu có món → gửi order
         alert(translations[currentLang].messages.orderSent);
     }
+
+
 
     /* ======================= LANGUAGE SWITCH ======================= */
     document.getElementById("langSelect").addEventListener("change", function(){
