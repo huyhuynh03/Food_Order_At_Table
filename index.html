@@ -2,257 +2,197 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Yaki - Gọi món tại bàn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gọi món tại bàn - Yaki</title>
 
 <style>
-/* =========================================================
-   GLOBAL STYLE – DARK MODERN MOBILE-FIRST UI (PLAN B)
-========================================================= */
-:root {
-    --primary: #ff5c33;
-    --primary-light: #ff8f4d;
-    --bg: #111;
-    --bg-light: #1a1a1a;
-    --bg-card: #1c1c1c;
-    --text: #fff;
-    --muted: #aaa;
-    --radius: 14px;
-    --shadow: 0 6px 16px rgba(0,0,0,.45);
-}
-
-html, body {
+/* ======================= GLOBAL ======================= */
+body {
     margin: 0;
-    background: var(--bg);
-    font-family: "Inter", sans-serif;
-    color: var(--text);
-    user-select: none;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at 20% 30%, #1b1b1b, #0c0c0c 70%);
+    color: #fff;
+    overflow-x: hidden;
 }
 
-/* =========================================================
-   HEADER – STYLE APP (GOGI / KFC STYLE)
-========================================================= */
+/* ======================= HEADER ======================= */
 header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(17,17,17,0.85);
-    backdrop-filter: blur(20px);
-    padding: 12px 16px;
+    padding: 18px 22px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    align-items: center;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1.5px solid rgba(255, 77, 77, 0.4);
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.logo span {
-    margin-left: 8px;
-    background: linear-gradient(45deg, var(--primary), var(--primary-light));
+    font-size: 26px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff4d4d, #ff914d);
     -webkit-background-clip: text;
     color: transparent;
 }
 
-header .controls {
-    display: flex;
-    gap: 8px;
-}
+.header-controls { display: flex; gap: 10px; }
 
 select, button {
-    background: #222;
-    color: #fff;
-    border: 1px solid #333;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: 10px;
-    font-size: 14px;
+    background: rgba(40,40,40,0.6);
+    color: #fff;
+    border: 1px solid rgba(90,90,90,0.5);
 }
 
-/* =========================================================
-   TABS – SCROLL MOBILE
-========================================================= */
+/* Mobile Header */
+@media (max-width: 600px) {
+    header { flex-direction: column; gap: 10px; }
+    .header-controls { flex-wrap: wrap; justify-content: center; }
+}
+
+/* ======================= TABS ======================= */
 .tabs {
     display: flex;
     overflow-x: auto;
-    gap: 16px;
-    padding: 14px 16px;
-    background: #141414;
+    gap: 22px;
+    padding: 12px 20px;
 }
-
 .tabs::-webkit-scrollbar { display: none; }
 
 .tab {
-    padding-bottom: 6px;
-    font-size: 16px;
-    color: var(--muted);
+    padding: 12px 22px;
+    color: #ccc;
     cursor: pointer;
     white-space: nowrap;
-    border-bottom: 2px solid transparent;
 }
-
 .tab.active {
-    color: var(--primary-light);
-    border-bottom: 2px solid var(--primary-light);
+    color: #ff7b7b;
+    border-bottom: 2px solid #ff7b7b;
 }
 
-/* =========================================================
-   PRODUCT GRID – RESPONSIVE
-========================================================= */
+/* ======================= MENU GRID ======================= */
 .container {
-    padding: 20px 18px 80px;
+    padding: 25px;
     display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
 }
 
-/* tablet */
-@media (min-width: 600px) {
-    .container { grid-template-columns: repeat(2,1fr); }
-}
+@media (max-width: 1100px) { .container { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
 
-/* desktop */
-@media (min-width: 1000px) {
-    .container { grid-template-columns: repeat(4,1fr); }
-}
-
-/* CARD STYLE */
+/* ======================= CARD ======================= */
 .card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
+    background: rgba(255,255,255,0.08);
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .card img {
     width: 100%;
-    height: 160px;
+    height: 180px;
     object-fit: cover;
 }
 
-.card-body {
-    padding: 14px;
-}
+.card-body { padding: 16px; }
 
-.card-name {
+/* ======================= PRICE + BUTTON ======================= */
+.price {
+    color: #ffb36b;
     font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 4px;
+    margin-top: 6px;
 }
 
-.card-price {
-    color: var(--primary-light);
-    margin-bottom: 10px;
-}
-
-/* QTY ROW */
 .qty-row {
+    margin-top: 14px;
     display: flex;
     align-items: center;
-    margin-top: 8px;
-    gap: 10px;
 }
 
 .qty-btn {
-    width: 34px;
-    height: 34px;
-    background: #2a2a2a;
+    width: 34px; height: 34px;
+    background: rgba(80,80,80,0.5);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius);
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
 }
 
-.qty-number {
-    min-width: 24px;
-    text-align: center;
-}
-
-.add-btn {
+.add-cart-btn {
     margin-left: auto;
-    padding: 7px 16px;
-    background: linear-gradient(45deg, var(--primary), var(--primary-light));
-    border-radius: var(--radius);
-    font-weight: 600;
-    font-size: 14px;
+    background: linear-gradient(45deg, #ff4d4d, #ffa04d);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: bold;
     cursor: pointer;
-    color: #fff;
 }
 
-/* =========================================================
-   CART PANEL – MOBILE FULLSCREEN, DESKTOP FIXED
-========================================================= */
+/* ======================= CART PANEL ======================= */
 #cartPanel {
     position: fixed;
     top: 0;
-    right: -100%;
-    width: 100%;
+    right: -380px;
+    width: 360px;
+    max-width: 100%;
     height: 100vh;
-    background: #181818;
+    background: rgba(25,25,25,0.7);
+    backdrop-filter: blur(30px);
+    padding: 22px;
+    border-left: 2px solid rgba(255,120,120,0.5);
+    transition: 0.35s;
+    overflow-y: auto;
     z-index: 999;
-    padding: 18px;
-    transition: .35s;
-    box-shadow: -4px 0 18px rgba(0,0,0,.45);
 }
 
-/* Desktop only */
-@media (min-width: 1000px) {
-    #cartPanel {
-        width: 360px;
-        right: -360px;
-    }
-}
+#cartPanel.show { right: 0; }
 
-#cartPanel.show {
-    right: 0;
+@media (max-width: 600px) {
+    #cartPanel { width: 100%; right: -100%; }
 }
 
 .close-cart {
-    font-size: 26px;
-    color: var(--primary-light);
+    font-size: 28px;
+    color: #ff8080;
     cursor: pointer;
+    text-align: right;
 }
 
 .cart-item {
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
 #orderBtn {
-    margin-top: 20px;
-    background: linear-gradient(45deg, var(--primary), var(--primary-light));
-    padding: 14px;
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    background: linear-gradient(45deg, #ff4d4d, #ff9f4d);
     border-radius: 12px;
+    font-weight: bold;
     text-align: center;
-    font-size: 17px;
-    font-weight: 700;
     cursor: pointer;
-    color: #fff;
 }
 
+/* ======================= SHAKE ======================= */
 @keyframes shake {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
     100% { transform: scale(1); }
 }
 </style>
-</head>
 
+</head>
 <body>
 
-<!-- ========================================================
-     HEADER
-========================================================= -->
 <header>
-    <div class="logo">🔥 <span>Yaki</span></div>
+    <div class="logo">🔥 Yaki</div>
 
-    <div class="controls">
+    <div class="header-controls">
         <select id="langSelect">
             <option>Tiếng Việt</option>
             <option>English</option>
@@ -262,85 +202,99 @@ select, button {
         </select>
 
         <select id="tableSelect">
-            <option>Bàn 1</option><option>Bàn 2</option>
-            <option>Bàn 3</option><option>Bàn 4</option>
+            <option>Bàn 1</option><option>Bàn 2</option><option>Bàn 3</option><option>Bàn 4</option>
         </select>
 
-        <button onclick="toggleCart()">🛒 <span id="cartBtnText">Giỏ</span> (<span id="cartCount">0</span>)</button>
+        <button onclick="toggleCart()">🛒 
+            <span id="cartBtnText">Giỏ</span> 
+            (<span id="cartCount">0</span>)
+        </button>
     </div>
 </header>
 
-<!-- ========================================================
-     CATEGORY TABS
-========================================================= -->
+<!-- TABS -->
 <div class="tabs">
-    <div class="tab active" onclick="changeTab('nuong', this)">Món Nướng</div>
-    <div class="tab" onclick="changeTab('lau', this)">Lẩu</div>
-    <div class="tab" onclick="changeTab('mon_phu', this)">Món Phụ</div>
-    <div class="tab" onclick="changeTab('nuoc', this)">Đồ Uống</div>
+    <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
+    <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
+    <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
+    <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
 </div>
 
+<!-- MENU -->
 <div id="menuList" class="container"></div>
 
-<!-- ========================================================
-     CART PANEL
-========================================================= -->
+<!-- CART -->
 <div id="cartPanel">
     <div class="close-cart" onclick="toggleCart()">✖</div>
     <h2 id="cartTitle">Giỏ hàng</h2>
     <div id="cartItems"></div>
-
     <h3 style="margin-top:20px">Tổng: <span id="totalPrice">0</span> đ</h3>
-
     <div id="orderBtn" onclick="placeOrder()">Gửi Order</div>
 </div>
 
 <script>
-/* ============================================================
-   TẤT CẢ LOGIC CŨ – GIỮ NGUYÊN
-=========================================================== */
-
-/* ==== translations ==== */
+/* ======================= NGÔN NGỮ ======================= */
 const translations = {
-    vi:{tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},messages:{orderSent:"Order đã gửi tới bếp!"}},
-    en:{tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},buttons:{add:"Add", order:"Place Order", cart:"Cart"},messages:{orderSent:"Order sent to the kitchen!"}},
-    zh:{tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},buttons:{add:"添加", order:"下单", cart:"购物车"},messages:{orderSent:"订单已发送到厨房！"}},
-    ja:{tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},buttons:{add:"追加", order:"注文する", cart:"カート"},messages:{orderSent:"注文が送信されました！"}},
-    ko:{tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},buttons:{add:"추가", order:"주문하기", cart:"장바구니"},messages:{orderSent:"주문이 전송되었습니다!"}}
+    vi:{tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
+        buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
+        messages:{orderSent:"Order đã gửi tới bếp!"}},
+    en:{tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
+        buttons:{add:"Add", order:"Place Order", cart:"Cart"},
+        messages:{orderSent:"Order sent to kitchen!"}},
+    zh:{tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
+        buttons:{add:"添加", order:"下单", cart:"购物车"},
+        messages:{orderSent:"订单已发送到厨房！"}},
+    ja:{tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
+        buttons:{add:"追加", order:"注文する", cart:"カート"},
+        messages:{orderSent:"注文が送信されました！"}},
+    ko:{tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
+        buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
+        messages:{orderSent:"주문이 전송되었습니다!"}}
 };
 
-/* ==== products (giữ nguyên) ==== */
-const products = { ...YOUR_PRODUCT_DATA_FROM_ORIGINAL_CODE... };
-// (Bạn copy toàn bộ object products từ code cũ vào đây — không đổi gì)
+/* ======================= DỮ LIỆU MÓN ĂN (GIỮ NGUYÊN) ======================= */
+const products = {
+    nuong: [
+        {id:1, price:89000, img:"img/nuong1.jpg", name:{vi:"Ba chỉ bò", en:"Beef Belly", zh:"牛五花", ja:"牛バラ", ko:"소 삼겹"} },
+        {id:2, price:99000, img:"img/nuong2.jpg", name:{vi:"Ba chỉ heo", en:"Pork Belly", zh:"五花肉", ja:"豚バラ", ko:"돼지 삼겹"} },
+        {id:3, price:129000, img:"img/nuong3.jpg", name:{vi:"Sườn bò", en:"Beef Ribs", zh:"牛排骨", ja:"牛カルビ", ko:"소갈비"} }
+    ],
+    lau: [
+        {id:10, price:159000, img:"img/lau1.jpg", name:{vi:"Lẩu kim chi", en:"Kimchi Hotpot", zh:"泡菜锅", ja:"キムチ鍋", ko:"김치찌개"} }
+    ],
+    mon_phu: [
+        {id:20, price:49000, img:"img/phu1.jpg", name:{vi:"Khoai chiên", en:"French Fries", zh:"薯条", ja:"ポテト", ko:"감자튀김"} }
+    ],
+    nuoc: [
+        {id:30, price:19000, img:"img/nuoc1.jpg", name:{vi:"Coca", en:"Coke", zh:"可乐", ja:"コーラ", ko:"콜라"} }
+    ]
+};
 
-/* ==== state ==== */
+/* ======================= STATE ======================= */
 let cart = {};
 let currentTab = "nuong";
 let currentLang = "vi";
 
-/* ============================================================
-   RENDER MENU – NEW LAYOUT
-=========================================================== */
-function renderMenu(){
-    const box = document.getElementById("menuList");
-    box.innerHTML = "";
+/* ======================= RENDER MENU ======================= */
+function renderMenu() {
+    const list = document.getElementById("menuList");
+    list.innerHTML = "";
 
     products[currentTab].forEach(item=>{
         if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
 
-        box.innerHTML += `
+        list.innerHTML += `
         <div class="card">
             <img src="${item.img}">
             <div class="card-body">
-                <div class="card-name">${item.name[currentLang]}</div>
-                <div class="card-price">${item.price.toLocaleString()} đ</div>
+                <div style="font-size:18px;font-weight:bold;">${item.name[currentLang]}</div>
+                <div class="price">${item.price.toLocaleString()} đ</div>
 
                 <div class="qty-row">
-                    <div class="qty-btn" onclick="changeQty(${item.id},-1)">-</div>
-                    <div class="qty-number">${cart[item.id].qty}</div>
-                    <div class="qty-btn" onclick="changeQty(${item.id},1)">+</div>
-
-                    <div class="add-btn" onclick="addToCart(${item.id})">
+                    <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
+                    <div style="margin:0 10px;">${cart[item.id].qty}</div>
+                    <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
+                    <div class="add-cart-btn" onclick="addToCart(${item.id})">
                         ${translations[currentLang].buttons.add}
                     </div>
                 </div>
@@ -349,69 +303,79 @@ function renderMenu(){
     });
 }
 
-/* ==== tab switching ==== */
-function changeTab(tab, el){
+/* ======================= TAB ======================= */
+function changeTab(tab, event){
     currentTab = tab;
     document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    el.classList.add("active");
+    event.target.classList.add("active");
     renderMenu();
 }
 
-/* ==== qty ==== */
-function changeQty(id, val){
+/* ======================= QTY ======================= */
+function changeQty(id,val){
     cart[id].qty = Math.max(0, cart[id].qty + val);
     renderMenu();
     updateCart();
 }
 
-/* ==== add to cart ==== */
+/* ======================= ADD TO CART ======================= */
 function addToCart(id){
     if(cart[id].qty > 0) updateCart();
-    document.getElementById("cartCount").style.animation = "shake .4s";
-    setTimeout(()=> document.getElementById("cartCount").style.animation = "", 400);
+
+    const el = document.getElementById("cartCount");
+    el.style.animation = "shake 0.4s";
+    setTimeout(()=> el.style.animation = "", 400);
 }
 
-/* ==== cart UI update ==== */
+/* ======================= UPDATE CART ======================= */
 function updateCart(){
-    let count=0, total=0;
+    let total = 0, count = 0;
 
     for(let id in cart){
-        if(cart[id].qty>0){
-            count += cart[id].qty;
+        if(cart[id].qty > 0){
             total += cart[id].qty * cart[id].price;
+            count += cart[id].qty;
         }
     }
-    document.getElementById("cartCount").innerText = count;
+
     document.getElementById("totalPrice").innerText = total.toLocaleString();
+    document.getElementById("cartCount").innerText = count;
     renderCartItems();
 }
 
+/* ======================= CART ITEMS ======================= */
 function renderCartItems(){
     const box = document.getElementById("cartItems");
     box.innerHTML = "";
 
     for(let id in cart){
-        if(cart[id].qty>0){
+        if(cart[id].qty > 0){
             box.innerHTML += `
             <div class="cart-item">
                 <b>${cart[id].name[currentLang]}</b><br>
-                ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
+                SL: ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
             </div>`;
         }
     }
 }
 
+/* ======================= CART PANEL ======================= */
 function toggleCart(){
     document.getElementById("cartPanel").classList.toggle("show");
 }
 
-/* ==== place order ==== */
+/* ======================= ORDER ======================= */
 function placeOrder(){
     alert(translations[currentLang].messages.orderSent);
 }
 
-/* ==== language update ==== */
-function updateLanguage(){
+/* ======================= LANGUAGE ======================= */
+document.getElementById("langSelect").addEventListener("change", function(){
+    currentLang = {
+        "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","韩国어":"ko","한국어":"ko"
+    }[this.value];
+
+    // Update tab text
     document.querySelectorAll(".tab").forEach(tab=>{
         const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
         tab.innerText = translations[currentLang].tabs[key];
@@ -421,17 +385,9 @@ function updateLanguage(){
     document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
 
     renderMenu();
-}
-
-document.getElementById("langSelect").addEventListener("change", function(){
-    currentLang = {
-        "Tiếng Việt":"vi", "English":"en",
-        "中文":"zh", "日本語":"ja", "한국어":"ko"
-    }[this.value];
-    updateLanguage();
 });
 
-/* ==== init ==== */
+/* INIT */
 renderMenu();
 </script>
 
