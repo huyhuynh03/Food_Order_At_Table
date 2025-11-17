@@ -483,6 +483,21 @@
     /* ------------------ INIT ---------------------- */
     renderMenu();
 
+    /* ======================= DESKTOP DOUBLE CLICK CLOSE ======================= */
+document.addEventListener("dblclick", function(e) {
+    const cart = document.getElementById("cartPanel");
+
+    if (cart.classList.contains("show")) {
+        const clickedInsideCart = cart.contains(e.target);
+
+        // Chỉ khi double-click ở ngoài khu cart
+        if (!clickedInsideCart) {
+            toggleCart();
+        }
+    }
+});
+
+
 </script>
 
 </body>
