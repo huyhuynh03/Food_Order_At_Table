@@ -1,186 +1,186 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Yaki Menu</title>
+    <meta charset="UTF-8">
+    <title>Yaki Menu</title>
 
-<style>
-/* ======================= GLOBAL ======================= */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at 20% 30%, #1b1b1b, #0c0c0c 70%);
-    color: #fff;
-    overflow-x: hidden;
-}
+    <style>
+        /* ======================= GLOBAL ======================= */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at 20% 30%, #1b1b1b, #0c0c0c 70%);
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-/* ======================= HEADER ======================= */
-header {
-    padding: 18px 22px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(20, 20, 20, 0.7);
-    backdrop-filter: blur(20px);
-    border-bottom: 1.5px solid rgba(255, 77, 77, 0.4);
-}
+        /* ======================= HEADER ======================= */
+        header {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1.5px solid rgba(255, 77, 77, 0.4);
+        }
 
-.logo {
-    font-size: 26px;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ff4d4d, #ff914d);
-    -webkit-background-clip: text;
-    color: transparent;
-}
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff4d4d, #ff914d);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
 
-.header-controls { display: flex; gap: 10px; }
+        .header-controls { display: flex; gap: 10px; }
 
-select, button {
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: rgba(40,40,40,0.6);
-    color: #fff;
-    border: 1px solid rgba(90,90,90,0.5);
-}
+        select, button {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(40,40,40,0.6);
+            color: #fff;
+            border: 1px solid rgba(90,90,90,0.5);
+        }
 
-/* Mobile Header */
-@media (max-width: 600px) {
-    header { flex-direction: column; gap: 10px; }
-    .header-controls { flex-wrap: wrap; justify-content: center; }
-}
+        /* Mobile Header */
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 10px; }
+            .header-controls { flex-wrap: wrap; justify-content: center; }
+        }
 
-/* ======================= TABS ======================= */
-.tabs {
-    display: flex;
-    overflow-x: auto;
-    gap: 22px;
-    padding: 12px 20px;
-}
-.tabs::-webkit-scrollbar { display: none; }
+        /* ======================= TABS ======================= */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 22px;
+            padding: 12px 20px;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
 
-.tab {
-    padding: 12px 22px;
-    color: #ccc;
-    cursor: pointer;
-    white-space: nowrap;
-}
-.tab.active {
-    color: #ff7b7b;
-    border-bottom: 2px solid #ff7b7b;
-}
+        .tab {
+            padding: 12px 22px;
+            color: #ccc;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .tab.active {
+            color: #ff7b7b;
+            border-bottom: 2px solid #ff7b7b;
+        }
 
-/* ======================= MENU GRID ======================= */
-.container {
-    padding: 25px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 26px;
-}
+        /* ======================= MENU GRID ======================= */
+        .container {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 26px;
+        }
 
-@media (max-width: 1100px) { .container { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
+        @media (max-width: 1100px) { .container { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
 
-/* ======================= CARD ======================= */
-.card {
-    background: rgba(255,255,255,0.08);
-    border-radius: 18px;
-    overflow: hidden;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-}
+        /* ======================= CARD ======================= */
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
 
-.card-body { padding: 16px; }
+        .card-body { padding: 16px; }
 
-/* ======================= PRICE + BUTTON ======================= */
-.price {
-    color: #ffb36b;
-    font-size: 17px;
-    margin-top: 6px;
-}
+        /* ======================= PRICE + BUTTON ======================= */
+        .price {
+            color: #ffb36b;
+            font-size: 17px;
+            margin-top: 6px;
+        }
 
-.qty-row {
-    margin-top: 14px;
-    display: flex;
-    align-items: center;
-}
+        .qty-row {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+        }
 
-.qty-btn {
-    width: 34px; height: 34px;
-    background: rgba(80,80,80,0.5);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-}
+        .qty-btn {
+            width: 34px; height: 34px;
+            background: rgba(80,80,80,0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-.add-cart-btn {
-    margin-left: auto;
-    background: linear-gradient(45deg, #ff4d4d, #ffa04d);
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        .add-cart-btn {
+            margin-left: auto;
+            background: linear-gradient(45deg, #ff4d4d, #ffa04d);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-/* ======================= CART PANEL ======================= */
-#cartPanel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 360px;
-    max-width: 100%;
-    height: 100vh;
-    background: rgba(25,25,25,0.7);
-    backdrop-filter: blur(30px);
-    padding: 22px;
-    border-left: 2px solid rgba(255,120,120,0.5);
-    overflow-y: auto;
-    z-index: 999;
-    transform: translateX(100%);
-    transition: transform 0.35s ease;
-}
+        /* ======================= CART PANEL ======================= */
+        #cartPanel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 360px;
+            max-width: 100%;
+            height: 100vh;
+            background: rgba(25,25,25,0.7);
+            backdrop-filter: blur(30px);
+            padding: 22px;
+            border-left: 2px solid rgba(255,120,120,0.5);
+            overflow-y: auto;
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+        }
 
-#cartPanel.show { transform: translateX(0); }
+        #cartPanel.show { transform: translateX(0); }
 
-.close-cart {
-    font-size: 28px;
-    color: #ff8080;
-    cursor: pointer;
-    text-align: right;
-}
+        .close-cart {
+            font-size: 28px;
+            color: #ff8080;
+            cursor: pointer;
+            text-align: right;
+        }
 
-.cart-item {
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-}
+        .cart-item {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
 
-#orderBtn {
-    width: 100%;
-    margin-top: 18px;
-    padding: 13px;
-    background: linear-gradient(45deg, #ff4d4d, #ff9f4d);
-    border-radius: 12px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-}
+        #orderBtn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            background: linear-gradient(45deg, #ff4d4d, #ff9f4d);
+            border-radius: 12px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
 
-/* ======================= SHAKE ======================= */
-@keyframes shake {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-</style>
+        /* ======================= SHAKE ======================= */
+        @keyframes shake {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
 
@@ -200,8 +200,8 @@ select, button {
             <option>Bàn 1</option><option>Bàn 2</option><option>Bàn 3</option><option>Bàn 4</option>
         </select>
 
-        <button onclick="toggleCart()">🛒 
-            <span id="cartBtnText">Giỏ</span> 
+        <button onclick="toggleCart()">🛒
+            <span id="cartBtnText">Giỏ</span>
             (<span id="cartCount">0</span>)
         </button>
     </div>
@@ -231,83 +231,83 @@ select, button {
 </div>
 
 <script>
-/* ======================= NGÔN NGỮ ======================= */
-const translations = {
-    vi:{
-        tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
-        buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
-        messages:{orderSent:"Order đã gửi tới bếp!"},
-        cart:{title:"Giỏ hàng", total:"Tổng"},
-        table:"Bàn"
-    },
-    en:{
-        tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
-        buttons:{add:"Add", order:"Place Order", cart:"Cart"},
-        messages:{orderSent:"Order sent to kitchen!"},
-        cart:{title:"Cart", total:"Total"},
-        table:"Table"
-    },
-    zh:{
-        tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
-        buttons:{add:"添加", order:"下单", cart:"购物车"},
-        messages:{orderSent:"订单已发送到厨房！"},
-        cart:{title:"购物车", total:"总计"},
-        table:"桌"
-    },
-    ja:{
-        tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
-        buttons:{add:"追加", order:"注文する", cart:"カート"},
-        messages:{orderSent:"注文が送信されました！"},
-        cart:{title:"カート", total:"合計"},
-        table:"テーブル"
-    },
-    ko:{
-        tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
-        buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
-        messages:{orderSent:"주문이 전송되었습니다!"},
-        cart:{title:"장바구니", total:"총"},
-        table:"테이블"
-    }
-};
+    /* ======================= NGÔN NGỮ ======================= */
+    const translations = {
+        vi:{
+            tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
+            buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
+            messages:{orderSent:"Order đã gửi tới bếp!"},
+            cart:{title:"Giỏ hàng", total:"Tổng", qty:"SL"},
+            table:"Bàn"
+        },
+        en:{
+            tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
+            buttons:{add:"Add", order:"Place Order", cart:"Cart"},
+            messages:{orderSent:"Order sent to kitchen!"},
+            cart:{title:"Cart", total:"Total", qty:"Qty"},
+            table:"Table"
+        },
+        zh:{
+            tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
+            buttons:{add:"添加", order:"下单", cart:"购物车"},
+            messages:{orderSent:"订单已发送到厨房！"},
+            cart:{title:"购物车", total:"总计", qty:"数量"},
+            table:"桌"
+        },
+        ja:{
+            tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
+            buttons:{add:"追加", order:"注文する", cart:"カート"},
+            messages:{orderSent:"注文が送信されました！"},
+            cart:{title:"カート", total:"合計", qty:"数量"},
+            table:"テーブル"
+        },
+        ko:{
+            tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
+            buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
+            messages:{orderSent:"주문이 전송되었습니다!"},
+            cart:{title:"장바구니", total:"총", qty:"수량"},
+            table:"테이블"
+        }
+    };
 
-/* ======================= PRODUCT DATA ======================= */
-const products = {
-    nuong:[
-        {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://www.sieuthithitbo.net/uploads/files/2024/07/13/cach-che-bien-ba-chi-bo-my-01.jpg"},
-        {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://cdn.tgdd.vn/Files/2022/04/07/1424584/cach-lam-de-suon-bo-nuong-bang-noi-chien-khong-dau-thit-mem-va-tham-vi-202204080751285808.jpg"},
-        {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://www.lorca.vn/wp-content/uploads/2021/05/cach-lam-suon-nuong-mat-ong-bang-noi-chien-khong-dau.jpg"},
-        {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://cdn.tgdd.vn/Files/2021/09/11/1381794/cach-lam-ga-nuong-ot-ngu-vi-thom-ngon-cho-bua-an-gia-dinh-202201170915502121.jpg"}
-    ],
-    lau:[
-        {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://www.sgtiepthi.vn/wp-content/uploads/2020/06/Lau-kim-chi-nhat-ban_650.png"},
-        {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://bizweb.dktcdn.net/100/480/070/files/shutterstock-554817283-huge.jpg?v=1680148861885"}
-    ],
-    mon_phu:[
-        {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッ키",ko:"치즈 떡볶이"},price:69000,img:"https://cdn.tgdd.vn/Files/2020/03/17/1242644/cach-lam-tokbokki-pho-mai-chuan-han-quoc-moi-ban-be-cung-xoi-202202281435281554.jpg"},
-        {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://daotaobeptruong.vn/wp-content/uploads/2017/11/com-tron-han-quoc.jpg"},
-        {id:9,name:{vi:"Khoai chiên",en:"French Fries",zh:"炸薯条",ja:"フライドポテト",ko:"감자튀김"},price:39000,img:"https://i1-giadinh.vnecdn.net/2023/11/28/Thanh-pham-2-2-3590-1701145331.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=H555FN0SpT5WOuFdkHa9dw"}
-    ],
-    nuoc:[
-        {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://product.hstatic.net/200000534989/product/dsc08341-enhanced-nr_1_e6d5d0a13c8f42c2bd7cea59e03ce199_master.jpg"},
-        {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://www.bartender.edu.vn/wp-content/uploads/2015/09/tra-dao-tuoi.jpg"},
-        {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://truyenhinhnghean.vn/file/4028eaa46735a26101673a4df345003c/062023/bia-hoi-11173878_20230624161246.png"}
-    ]
-};
+    /* ======================= PRODUCT DATA ======================= */
+    const products = {
+        nuong:[
+            {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://www.sieuthithitbo.net/uploads/files/2024/07/13/cach-che-bien-ba-chi-bo-my-01.jpg"},
+            {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://cdn.tgdd.vn/Files/2022/04/07/1424584/cach-lam-de-suon-bo-nuong-bang-noi-chien-khong-dau-thit-mem-va-tham-vi-202204080751285808.jpg"},
+            {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://www.lorca.vn/wp-content/uploads/2021/05/cach-lam-suon-nuong-mat-ong-bang-noi-chien-khong-dau.jpg"},
+            {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://cdn.tgdd.vn/Files/2021/09/11/1381794/cach-lam-ga-nuong-ot-ngu-vi-thom-ngon-cho-bua-an-gia-dinh-202201170915502121.jpg"}
+        ],
+        lau:[
+            {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://www.sgtiepthi.vn/wp-content/uploads/2020/06/Lau-kim-chi-nhat-ban_650.png"},
+            {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://bizweb.dktcdn.net/100/480/070/files/shutterstock-554817283-huge.jpg?v=1680148861885"}
+        ],
+        mon_phu:[
+            {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッキ",ko:"치즈 떡볶이"},price:69000,img:"https://cdn.tgdd.vn/Files/2020/03/17/1242644/cach-lam-tokbokki-pho-mai-chuan-han-quoc-moi-ban-be-cung-xoi-202202281435281554.jpg"},
+            {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://daotaobeptruong.vn/wp-content/uploads/2017/11/com-tron-han-quoc.jpg"},
+            {id:9,name:{vi:"Khoai chiên",en:"French Fries",zh:"炸薯条",ja:"フライドポテト",ko:"감자튀김"},price:39000,img:"https://i1-giadinh.vnecdn.net/2023/11/28/Thanh-pham-2-2-3590-1701145331.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=H555FN0SpT5WOuFdkHa9dw"}
+        ],
+        nuoc:[
+            {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://product.hstatic.net/200000534989/product/dsc08341-enhanced-nr_1_e6d5d0a13c8f42c2bd7cea59e03ce199_master.jpg"},
+            {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://www.bartender.edu.vn/wp-content/uploads/2015/09/tra-dao-tuoi.jpg"},
+            {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://truyenhinhnghean.vn/file/4028eaa46735a26101673a4df345003c/062023/bia-hoi-11173878_20230624161246.png"}
+        ]
+    };
 
-/* ======================= STATE ======================= */
-let cart = {};
-let currentTab = "nuong";
-let currentLang = "vi";
+    /* ======================= STATE ======================= */
+    let cart = {};
+    let currentTab = "nuong";
+    let currentLang = "vi";
 
-/* ======================= RENDER MENU ======================= */
-function renderMenu() {
-    const list = document.getElementById("menuList");
-    list.innerHTML = "";
+    /* ======================= RENDER MENU ======================= */
+    function renderMenu() {
+        const list = document.getElementById("menuList");
+        list.innerHTML = "";
 
-    products[currentTab].forEach(item=>{
-        if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
+        products[currentTab].forEach(item=>{
+            if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
 
-        list.innerHTML += `
+            list.innerHTML += `
         <div class="card">
             <img src="${item.img}">
             <div class="card-body">
@@ -324,109 +324,112 @@ function renderMenu() {
                 </div>
             </div>
         </div>`;
-    });
-}
-
-/* ======================= TAB ======================= */
-function changeTab(tab, event){
-    currentTab = tab;
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    event.target.classList.add("active");
-    renderMenu();
-}
-
-/* ======================= QTY ======================= */
-function changeQty(id,val){
-    cart[id].qty = Math.max(0, cart[id].qty + val);
-    renderMenu();
-    updateCart();
-}
-
-/* ======================= ADD TO CART ======================= */
-function addToCart(id){
-    if(cart[id].qty > 0) updateCart();
-
-    const el = document.getElementById("cartCount");
-    el.style.animation = "shake 0.4s";
-    setTimeout(()=> el.style.animation = "", 400);
-}
-
-/* ======================= UPDATE CART ======================= */
-function updateCart(){
-    let total = 0, count = 0;
-
-    for(let id in cart){
-        if(cart[id].qty > 0){
-            total += cart[id].qty * cart[id].price;
-            count += cart[id].qty;
-        }
+        });
     }
 
-    document.getElementById("totalPrice").innerText = total.toLocaleString();
-    document.getElementById("cartCount").innerText = count;
-    renderCartItems();
-}
+    /* ======================= TAB ======================= */
+    function changeTab(tab, event){
+        currentTab = tab;
+        document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+        event.target.classList.add("active");
+        renderMenu();
+    }
 
-/* ======================= CART ITEMS ======================= */
-function renderCartItems(){
-    const box = document.getElementById("cartItems");
-    box.innerHTML = "";
+    /* ======================= QTY ======================= */
+    function changeQty(id,val){
+        cart[id].qty = Math.max(0, cart[id].qty + val);
+        renderMenu();
+        updateCart();
+    }
 
-    for(let id in cart){
-        if(cart[id].qty > 0){
-            box.innerHTML += `
+    /* ======================= ADD TO CART ======================= */
+    function addToCart(id){
+        if(cart[id].qty > 0) updateCart();
+
+        const el = document.getElementById("cartCount");
+        el.style.animation = "shake 0.4s";
+        setTimeout(()=> el.style.animation = "", 400);
+    }
+
+    /* ======================= UPDATE CART ======================= */
+    function updateCart(){
+        let total = 0, count = 0;
+
+        for(let id in cart){
+            if(cart[id].qty > 0){
+                total += cart[id].qty * cart[id].price;
+                count += cart[id].qty;
+            }
+        }
+
+        document.getElementById("totalPrice").innerText = total.toLocaleString();
+        document.getElementById("cartCount").innerText = count;
+        renderCartItems();
+    }
+
+    /* ======================= CART ITEMS ======================= */
+    function renderCartItems(){
+        const box = document.getElementById("cartItems");
+        box.innerHTML = "";
+
+        for(let id in cart){
+            if(cart[id].qty > 0){
+                box.innerHTML += `
             <div class="cart-item">
                 <b>${cart[id].name[currentLang]}</b><br>
-                SL: ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
+                ${translations[currentLang].cart.qty}:
+                ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
             </div>`;
+            }
         }
     }
-}
 
-/* ======================= CART PANEL ======================= */
-function toggleCart(){
-    document.getElementById("cartPanel").classList.toggle("show");
-}
+    /* ======================= CART PANEL ======================= */
+    function toggleCart(){
+        document.getElementById("cartPanel").classList.toggle("show");
+    }
 
-/* ======================= ORDER ======================= */
-function placeOrder(){
-    alert(translations[currentLang].messages.orderSent);
-}
+    /* ======================= ORDER ======================= */
+    function placeOrder(){
+        alert(translations[currentLang].messages.orderSent);
+    }
 
-/* ======================= LANGUAGE SWITCH ======================= */
-document.getElementById("langSelect").addEventListener("change", function(){
-    currentLang = {
-        "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
-    }[this.value];
+    /* ======================= LANGUAGE SWITCH ======================= */
+    document.getElementById("langSelect").addEventListener("change", function(){
+        currentLang = {
+            "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
+        }[this.value];
 
-    // Update tab text
-    document.querySelectorAll(".tab").forEach(tab=>{
-        const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
-        tab.innerText = translations[currentLang].tabs[key];
+        // Update tab text
+        document.querySelectorAll(".tab").forEach(tab=>{
+            const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
+            tab.innerText = translations[currentLang].tabs[key];
+        });
+
+        // Buttons
+        document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
+        document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
+
+        // Cart text
+        document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+        document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
+
+        // Table names
+        const tableSelect = document.getElementById("tableSelect");
+        const saved = tableSelect.selectedIndex;
+        tableSelect.innerHTML = "";
+        for(let i=1;i<=4;i++){
+            tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
+        }
+        tableSelect.selectedIndex = saved;
+
+        // ⬅️ FIX: Re-render menu + cart theo ngôn ngữ mới
+        renderMenu();
+        updateCart();
     });
 
-    // Buttons
-    document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
-    document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
-
-    // Cart text
-    document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
-    document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
-
-    // Table names
-    const tableSelect = document.getElementById("tableSelect");
-    const saved = tableSelect.selectedIndex;
-    tableSelect.innerHTML = "";
-    for(let i=1;i<=4;i++){
-        tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
-    }
-    tableSelect.selectedIndex = saved;
-
+    /* INIT */
     renderMenu();
-});
-
-/* INIT */
-renderMenu();
 </script>
 
 </body>
