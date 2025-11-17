@@ -399,16 +399,50 @@
     }
 
     /* ======================= QTY ======================= */
-    function changeQty(id,val){
-        cart[id].qty = Math.max(0, cart[id].qty + val);
-        renderMenu();
-        updateCart();
+    function changeQty(id, val) {
+        if (!cart[id].tempQty) cart[id].tempQty = 0;
+
+        cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
+
+        document.getElementById(`qtyInput_${id}`).value = cart[id].tempQty;
+
+        if (cart[id].tempQty === 0) {
+            cart[id].qty = 0;
+            updateCart();
+        }
     }
+
+    // Lưu số lượng người dùng đang nhập (chưa thêm vào giỏ)
+    function updateTempQty(id, value) {
+        let num = Number(value);
+
+        // Nếu người dùng nhập ký tự không hợp lệ → đặt về 0
+        if (isNaN(num)) num = 0;
+
+        // Không cho số âm
+        num = Math.max(0, num);
+
+        // Lưu vào số lượng tạm (TEMP)
+        cart[id].tempQty = num;
+
+
+        if (num === 0) {
+            cart[id].qty = 0;
+            updateCart();
+        }
+    }
+
 
     /* ======================= ADD TO CART ======================= */
     function addToCart(id){
-        if(cart[id].qty > 0) updateCart();
+        const temp = Number(cart[id].tempQty || 0);
 
+        if (temp > 0) {
+            cart[id].qty = temp;  // CẬP NHẬT GIỎ
+            updateCart();
+        }
+
+        // Animation rung
         const el = document.getElementById("cartCount");
         el.style.animation = "shake 0.4s";
         setTimeout(()=> el.style.animation = "", 400);
