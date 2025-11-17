@@ -5,6 +5,7 @@
     <title>Yaki Menu</title>
 
     <style>
+        /* ======================= GLOBAL ======================= */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -13,6 +14,7 @@
             overflow-x: hidden;
         }
 
+        /* ======================= HEADER ======================= */
         header {
             padding: 18px 22px;
             display: flex;
@@ -41,11 +43,13 @@
             border: 1px solid rgba(90,90,90,0.5);
         }
 
+        /* Mobile Header */
         @media (max-width: 600px) {
             header { flex-direction: column; gap: 10px; }
             .header-controls { flex-wrap: wrap; justify-content: center; }
         }
 
+        /* ======================= TABS ======================= */
         .tabs {
             display: flex;
             overflow-x: auto;
@@ -65,6 +69,7 @@
             border-bottom: 2px solid #ff7b7b;
         }
 
+        /* ======================= MENU GRID ======================= */
         .container {
             padding: 25px;
             display: grid;
@@ -76,32 +81,14 @@
         @media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
 
+        /* ======================= CARD ======================= */
         .card {
-            position: relative;
             background: rgba(255,255,255,0.08);
             border-radius: 18px;
             overflow: hidden;
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .added-highlight {
-            outline: 3px solid #3cff6a;
-            box-shadow: 0 0 15px #3cff6a80;
-        }
-
-        .tick-mark {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #3cff6a;
-            color: black;
-            padding: 6px 8px;
-            border-radius: 50%;
-            font-weight: bold;
-            display: none;
-        }
-        .tick-mark.show { display: block; }
 
         .card img {
             width: 100%;
@@ -111,6 +98,7 @@
 
         .card-body { padding: 16px; }
 
+        /* ======================= PRICE + BUTTON ======================= */
         .price {
             color: #ffb36b;
             font-size: 17px;
@@ -134,17 +122,6 @@
             cursor: pointer;
         }
 
-        input.qty-input {
-            width: 45px;
-            padding: 6px;
-            margin: 0 8px;
-            text-align: center;
-            border-radius: 8px;
-            border: 1px solid #777;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
         .add-cart-btn {
             margin-left: auto;
             background: linear-gradient(45deg, #ff4d4d, #ffa04d);
@@ -154,6 +131,7 @@
             cursor: pointer;
         }
 
+        /* ======================= CART PANEL ======================= */
         #cartPanel {
             position: fixed;
             top: 0;
@@ -180,35 +158,9 @@
             text-align: right;
         }
 
-        .clear-cart {
-            position:absolute;
-            top:18px;
-            right:60px;
-            font-size:22px;
-            cursor:pointer;
-            color:#ff0000; /* ĐỎ ĐẬM KHÁC HẲN */
-        }
-
         .cart-item {
             padding: 14px 0;
             border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-
-        input.cart-qty-input {
-            width: 50px;
-            padding: 6px;
-            margin-right: 10px;
-            text-align: center;
-            border-radius: 8px;
-            border: 1px solid #aaa;
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-        }
-
-        .trash-btn {
-            color:#ff4444;
-            cursor:pointer;
-            margin-left:10px;
         }
 
         #orderBtn {
@@ -222,6 +174,7 @@
             cursor: pointer;
         }
 
+        /* ======================= SHAKE ======================= */
         @keyframes shake {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
@@ -254,6 +207,7 @@
     </div>
 </header>
 
+<!-- TABS -->
 <div class="tabs">
     <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
     <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
@@ -261,26 +215,23 @@
     <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
 </div>
 
+<!-- MENU -->
 <div id="menuList" class="container"></div>
 
+<!-- CART -->
 <div id="cartPanel">
     <div class="close-cart" onclick="toggleCart()">✖</div>
-    <div class="clear-cart" onclick="clearCart()">🗑</div>
     <h2 id="cartTitle">Giỏ hàng</h2>
-
     <div id="cartItems"></div>
-
     <h3 style="margin-top:20px">
         <span id="totalLabel">Tổng</span>:
         <span id="totalPrice">0</span> đ
     </h3>
-
     <div id="orderBtn" onclick="placeOrder()">Gửi Order</div>
 </div>
 
 <script>
-
-  /* ======================= NGÔN NGỮ ======================= */
+    /* ======================= NGÔN NGỮ ======================= */
     const translations = {
         vi:{
             tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
@@ -343,42 +294,30 @@
         ]
     };
 
-
+    /* ======================= STATE ======================= */
     let cart = {};
-    let menuQty = {};
     let currentTab = "nuong";
     let currentLang = "vi";
 
-    /* ------------------ RENDER MENU ---------------------- */
-    function renderMenu(){
+    /* ======================= RENDER MENU ======================= */
+    function renderMenu() {
         const list = document.getElementById("menuList");
         list.innerHTML = "";
 
         products[currentTab].forEach(item=>{
-            if(menuQty[item.id] == null) menuQty[item.id] = 0;
-
-            const added = cart[item.id] && cart[item.id].qty > 0 ? "added-highlight" : "";
-            const tickShow = cart[item.id] && cart[item.id].qty > 0 ? "show" : "";
+            if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
 
             list.innerHTML += `
-        <div class="card ${added}">
-            <div class="tick-mark ${tickShow}">✔</div>
+        <div class="card">
             <img src="${item.img}">
             <div class="card-body">
                 <div style="font-size:18px;font-weight:bold;">${item.name[currentLang]}</div>
                 <div class="price">${item.price.toLocaleString()} đ</div>
 
                 <div class="qty-row">
-                    <div class="qty-btn" onclick="changeMenuQty(${item.id}, -1)">−</div>
-
-                    <input class="qty-input"
-                        type="number"
-                        min="0"
-                        value="${menuQty[item.id]}"
-                        oninput="setMenuQty(${item.id}, this.value)">
-
-                    <div class="qty-btn" onclick="changeMenuQty(${item.id}, 1)">+</div>
-
+                    <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
+                    <div style="margin:0 10px;">${cart[item.id].qty}</div>
+                    <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
                     <div class="add-cart-btn" onclick="addToCart(${item.id})">
                         ${translations[currentLang].buttons.add}
                     </div>
@@ -388,53 +327,31 @@
         });
     }
 
-    /* ---------- MENU QTY ---------- */
-    function changeMenuQty(id,val){
-        menuQty[id] = Math.max(0, (menuQty[id]||0) + val);
-
-        if(cart[id] && menuQty[id] === 0){
-            delete cart[id];
-        }
-
-        updateCart();
+    /* ======================= TAB ======================= */
+    function changeTab(tab, event){
+        currentTab = tab;
+        document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+        event.target.classList.add("active");
         renderMenu();
     }
 
-    function setMenuQty(id, val){
-        if(val === "" || val === null) return;
-
-        let number = parseInt(val);
-        if(isNaN(number)) return;
-
-        if(number <= 0){
-            menuQty[id] = 0;
-            delete cart[id];
-        } else {
-            menuQty[id] = number;
-        }
-
-        updateCart();
+    /* ======================= QTY ======================= */
+    function changeQty(id,val){
+        cart[id].qty = Math.max(0, cart[id].qty + val);
         renderMenu();
+        updateCart();
     }
 
-    /* ------------------ ADD TO CART ---------------------- */
+    /* ======================= ADD TO CART ======================= */
     function addToCart(id){
-        if(menuQty[id] > 0){
-            cart[id] = {
-                ...products[currentTab].find(x=>x.id===id),
-                qty: menuQty[id]
-            };
-        }
-
-        updateCart();
-        renderMenu();
+        if(cart[id].qty > 0) updateCart();
 
         const el = document.getElementById("cartCount");
         el.style.animation = "shake 0.4s";
         setTimeout(()=> el.style.animation = "", 400);
     }
 
-    /* ------------------ UPDATE CART ---------------------- */
+    /* ======================= UPDATE CART ======================= */
     function updateCart(){
         let total = 0, count = 0;
 
@@ -447,99 +364,72 @@
 
         document.getElementById("totalPrice").innerText = total.toLocaleString();
         document.getElementById("cartCount").innerText = count;
-
         renderCartItems();
     }
 
-    /* ------------------ RENDER CART ---------------------- */
+    /* ======================= CART ITEMS ======================= */
     function renderCartItems(){
         const box = document.getElementById("cartItems");
         box.innerHTML = "";
 
         for(let id in cart){
             if(cart[id].qty > 0){
-
                 box.innerHTML += `
             <div class="cart-item">
                 <b>${cart[id].name[currentLang]}</b><br>
-
-                <input class="cart-qty-input"
-                    type="number"
-                    min="0"
-                    value="${cart[id].qty}"
-                    oninput="setCartQty(${id}, this.value)">
-
-                x ${cart[id].price.toLocaleString()} đ
-
-                <span class="trash-btn" onclick="removeItem(${id})">🗑</span>
+                ${translations[currentLang].cart.qty}:
+                ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
             </div>`;
             }
         }
     }
 
-    /* ------------------ INPUT CART QTY (FIXED) ---------------------- */
-    function setCartQty(id, val){
-        if(val === "" || val === null) return;
-
-        let number = parseInt(val);
-        if(isNaN(number)) return;
-
-        if(number <= 0){
-            delete cart[id];
-            menuQty[id] = 0;
-        } else {
-            cart[id].qty = number;
-            menuQty[id] = number;
-        }
-
-        updateCart();
-        renderMenu();
-    }
-
-    /* ------------------ REMOVE ONE ITEM ---------------------- */
-    function removeItem(id){
-        delete cart[id];
-        menuQty[id] = 0;
-        updateCart();
-        renderMenu();
-    }
-
-    /* ------------------ CLEAR CART ALL ---------------------- */
-    function clearCart(){
-        cart = {};
-        menuQty = {};
-        updateCart();
-        renderMenu();
-    }
-
-    /* ------------------ CART TOGGLE ---------------------- */
+    /* ======================= CART PANEL ======================= */
     function toggleCart(){
         document.getElementById("cartPanel").classList.toggle("show");
     }
 
-    /* ------------------ ORDER ---------------------- */
+    /* ======================= ORDER ======================= */
     function placeOrder(){
         alert(translations[currentLang].messages.orderSent);
     }
 
-    /* ------------------ INIT ---------------------- */
-    renderMenu();
+    /* ======================= LANGUAGE SWITCH ======================= */
+    document.getElementById("langSelect").addEventListener("change", function(){
+        currentLang = {
+            "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
+        }[this.value];
 
-    /* ======================= DESKTOP DOUBLE CLICK CLOSE ======================= */
-document.addEventListener("dblclick", function(e) {
-    const cart = document.getElementById("cartPanel");
+        // Update tab text
+        document.querySelectorAll(".tab").forEach(tab=>{
+            const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
+            tab.innerText = translations[currentLang].tabs[key];
+        });
 
-    if (cart.classList.contains("show")) {
-        const clickedInsideCart = cart.contains(e.target);
+        // Buttons
+        document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
+        document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
 
-        // Chỉ khi double-click ở ngoài khu cart
-        if (!clickedInsideCart) {
-            toggleCart();
+        // Cart text
+        document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+        document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
+
+        // Table names
+        const tableSelect = document.getElementById("tableSelect");
+        const saved = tableSelect.selectedIndex;
+        tableSelect.innerHTML = "";
+        for(let i=1;i<=4;i++){
+            tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
         }
-    }
-});
+        tableSelect.selectedIndex = saved;
 
+        // ⬅️ FIX: Re-render menu + cart theo ngôn ngữ mới
+        renderMenu();
+        updateCart();
+    });
 
+    /* INIT */
+    renderMenu();
 </script>
 
 </body>
