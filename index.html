@@ -5,6 +5,43 @@
     <title>Yaki Menu</title>
 
     <style>
+
+        /*===================Thùng ráC=================================*/
+
+        .cart-clear-btn {
+            font-size: 22px;
+            color: #ff0000;
+            cursor: pointer;
+            margin-right: 14px;
+        }
+
+        .cart-item-delete {
+            font-size: 18px;
+            color: #bbbbbb;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .cart-item-delete:hover {
+            color: #ff5b5b;
+        }
+
+
+
+
+        /*=========================Ô số lượng trong giỏ hàng===================*/
+        .cartQtyInput {
+            width: 50px;
+            padding: 6px;
+            margin-left: 6px;
+            margin-right: 6px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #888;
+            border-radius: 6px;
+            color: #fff;
+            text-align: center;
+        }
+
+
         /* ======================= GLOBAL ======================= */
         body {
             margin: 0;
@@ -301,7 +338,11 @@
 
 <!-- CART -->
 <div id="cartPanel">
-    <div class="close-cart" onclick="toggleCart()">✖</div>
+    <div style="display:flex; justify-content: space-between; align-items:center;">
+        <div class="cart-clear-btn" onclick="clearCart()">🗑️</div>
+        <div class="close-cart" onclick="toggleCart()">✖</div>
+    </div>
+
     <h2 id="cartTitle">Giỏ hàng</h2>
     <div id="cartItems"></div>
     <h3 style="margin-top:20px">
@@ -312,6 +353,69 @@
 </div>
 
 <script>
+
+    /*=======================xóa từng món=========================*/
+
+    function deleteItem(id) {
+        cart[id].qty = 0;
+        cart[id].tempQty = 0;
+
+        updateCart();
+        renderMenu();
+    }
+
+
+    /*=================xóa toàn bộ giỏ hàng=======================*/
+
+    function clearCart() {
+        if (!confirm("Xóa toàn bộ giỏ hàng?")) return;
+
+        for (let id in cart) {
+            cart[id].qty = 0;
+            cart[id].tempQty = 0;
+        }
+
+        updateCart();
+        renderMenu();
+    }
+
+
+
+
+    /*==================Chức năng cho ô số lượng giỏ hàng========*/
+
+    function changeCartQty(input) {
+        const id = input.dataset.id;
+        const oldQty = cart[id].qty;
+        let newQty = input.value;
+
+        // Rỗng → không cập nhật gì (để user nhập tiếp)
+        if (newQty === "") return;
+
+        newQty = Number(newQty);
+        if (newQty < 0) newQty = 0;
+
+        input.value = newQty;
+
+        // Nếu = 0 → xóa khỏi giỏ
+        if (newQty === 0) {
+            cart[id].qty = 0;
+            cart[id].tempQty = 0; // đồng bộ với menu
+            updateCart();
+            renderMenu();         // cập nhật menu
+            return;
+        }
+
+        // Nếu khác số lượng cũ → cập nhật
+        if (newQty !== oldQty) {
+            cart[id].qty = newQty;
+            cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
+            updateCart();
+            renderMenu();
+        }
+    }
+
+
     /* ======================= NGÔN NGỮ ======================= */
     const translations = {
         vi:{
@@ -441,6 +545,7 @@
             updateCart();
         }
         renderMenu();
+        renderCartItems(); // 🔥 đồng bộ 2 chiều
 
     }
 
@@ -464,6 +569,7 @@
         }
 
         renderMenu();
+        renderCartItems();  // 🔥 đồng bộ ngược lại
 
     }
 
@@ -509,11 +615,23 @@
         for(let id in cart){
             if(cart[id].qty > 0){
                 box.innerHTML += `
-            <div class="cart-item">
-                <b>${cart[id].name[currentLang]}</b><br>
-                ${translations[currentLang].cart.qty}:
-                ${cart[id].qty} × ${cart[id].price.toLocaleString()} đ
-            </div>`;
+<div class="cart-item">
+    <b>${cart[id].name[currentLang]}</b><br>
+
+    ${translations[currentLang].cart.qty}:
+    <input class="cartQtyInput"
+        type="number"
+        value="${cart[id].qty}"
+        min="0"
+        data-id="${id}"
+        oninput="changeCartQty(this)">
+
+    × ${cart[id].price.toLocaleString()} đ
+
+    <span class="cart-item-delete" onclick="deleteItem(${id})">🗑️</span>
+</div>`;
+
+
             }
         }
     }
