@@ -414,23 +414,27 @@
 
     // Lưu số lượng người dùng đang nhập (chưa thêm vào giỏ)
     function updateTempQty(id, value) {
+        // Nếu ô nhập đang rỗng → KHÔNG xử lý, không xoá, không update giỏ
+        if (value === "") {
+            cart[id].tempQty = "";
+            return;
+        }
+
         let num = Number(value);
 
-        // Nếu người dùng nhập ký tự không hợp lệ → đặt về 0
+        // Nếu nhập ký tự không phải số
         if (isNaN(num)) num = 0;
 
-        // Không cho số âm
         num = Math.max(0, num);
-
-        // Lưu vào số lượng tạm (TEMP)
         cart[id].tempQty = num;
 
-
+        // Nếu người dùng nhập 0 → xoá khỏi giỏ
         if (num === 0) {
             cart[id].qty = 0;
             updateCart();
         }
     }
+
 
 
     /* ======================= ADD TO CART ======================= */
