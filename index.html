@@ -152,6 +152,34 @@
             cursor: pointer;
         }
 
+
+        /* Card được chọn (đã có trong giỏ) */
+        .card.selected {
+            border: 2px solid #4ade80; /* xanh lá */
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+            position: relative;
+        }
+
+        /* Icon tick */
+        .card .tick-mark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4ade80;
+            color: #000;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        }
+
+
+
         /* ======================= CART PANEL ======================= */
         #cartPanel {
             position: fixed;
@@ -290,7 +318,7 @@
             tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
             buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
             messages:{orderSent:"Order đã gửi tới bếp!",
-                      emptyCart:"Giỏ hàng trống!"},
+                emptyCart:"Giỏ hàng trống!"},
             cart:{title:"Giỏ hàng", total:"Tổng", qty:"SL"},
             table:"Bàn"
         },
@@ -298,7 +326,7 @@
             tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
             buttons:{add:"Add", order:"Place Order", cart:"Cart"},
             messages:{orderSent:"Order sent to kitchen!",
-                      emptyCart:"Your cart is empty!"},
+                emptyCart:"Your cart is empty!"},
             cart:{title:"Cart", total:"Total", qty:"Qty"},
             table:"Table"
         },
@@ -306,7 +334,7 @@
             tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
             buttons:{add:"添加", order:"下单", cart:"购物车"},
             messages:{orderSent:"订单已发送到厨房！",
-                      emptyCart:"購物車是空的！"},
+                emptyCart:"購物車是空的！"},
             cart:{title:"购物车", total:"总计", qty:"数量"},
             table:"桌"
         },
@@ -314,7 +342,7 @@
             tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
             buttons:{add:"追加", order:"注文する", cart:"カート"},
             messages:{orderSent:"注文が送信されました！",
-                      emptyCart:"カートは空です!"},
+                emptyCart:"カートは空です!"},
             cart:{title:"カート", total:"合計", qty:"数量"},
             table:"テーブル"
         },
@@ -322,7 +350,7 @@
             tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
             buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
             messages:{orderSent:"주문이 전송되었습니다!",
-                      emptyCart:"장바구니가 비어있습니다!"},
+                emptyCart:"장바구니가 비어있습니다!"},
             cart:{title:"장바구니", total:"총", qty:"수량"},
             table:"테이블"
         }
@@ -366,7 +394,9 @@
             if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
 
             list.innerHTML += `
-        <div class="card">
+            <div class="card ${cart[item.id].qty > 0 ? "selected" : ""}">
+             ${cart[item.id].qty > 0 ? '<div class="tick-mark">✓</div>' : ""}
+
             <img src="${item.img}">
             <div class="card-body">
                 <div style="font-size:18px;font-weight:bold;">${item.name[currentLang]}</div>
@@ -410,6 +440,8 @@
             cart[id].qty = 0;
             updateCart();
         }
+        renderMenu();
+
     }
 
     // Lưu số lượng người dùng đang nhập (chưa thêm vào giỏ)
@@ -430,6 +462,9 @@
             cart[id].qty = 0;
             updateCart();
         }
+
+        renderMenu();
+
     }
 
 
@@ -440,6 +475,8 @@
         if (temp > 0) {
             cart[id].qty = temp;  // CẬP NHẬT GIỎ
             updateCart();
+            renderMenu();
+
         }
 
         // Animation rung
