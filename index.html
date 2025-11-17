@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Yaki Menu</title>
+
 <style>
 /* ======================= GLOBAL ======================= */
 body {
@@ -125,7 +131,7 @@ select, button {
     cursor: pointer;
 }
 
-/* ======================= CART PANEL FIX COMPLETELY ======================= */
+/* ======================= CART PANEL ======================= */
 #cartPanel {
     position: fixed;
     top: 0;
@@ -139,16 +145,11 @@ select, button {
     border-left: 2px solid rgba(255,120,120,0.5);
     overflow-y: auto;
     z-index: 999;
-
-    /* Fix ẩn 100% tuyệt đối */
     transform: translateX(100%);
     transition: transform 0.35s ease;
 }
 
-/* Khi mở panel */
-#cartPanel.show {
-    transform: translateX(0);
-}
+#cartPanel.show { transform: translateX(0); }
 
 .close-cart {
     font-size: 28px;
@@ -180,8 +181,6 @@ select, button {
     100% { transform: scale(1); }
 }
 </style>
-
-
 </head>
 <body>
 
@@ -224,53 +223,76 @@ select, button {
     <div class="close-cart" onclick="toggleCart()">✖</div>
     <h2 id="cartTitle">Giỏ hàng</h2>
     <div id="cartItems"></div>
-    <h3 style="margin-top:20px">Tổng: <span id="totalPrice">0</span> đ</h3>
+    <h3 style="margin-top:20px">
+        <span id="totalLabel">Tổng</span>:
+        <span id="totalPrice">0</span> đ
+    </h3>
     <div id="orderBtn" onclick="placeOrder()">Gửi Order</div>
 </div>
 
 <script>
 /* ======================= NGÔN NGỮ ======================= */
 const translations = {
-    vi:{tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
+    vi:{
+        tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
         buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
-        messages:{orderSent:"Order đã gửi tới bếp!"}},
-    en:{tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
+        messages:{orderSent:"Order đã gửi tới bếp!"},
+        cart:{title:"Giỏ hàng", total:"Tổng"},
+        table:"Bàn"
+    },
+    en:{
+        tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
         buttons:{add:"Add", order:"Place Order", cart:"Cart"},
-        messages:{orderSent:"Order sent to kitchen!"}},
-    zh:{tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
+        messages:{orderSent:"Order sent to kitchen!"},
+        cart:{title:"Cart", total:"Total"},
+        table:"Table"
+    },
+    zh:{
+        tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
         buttons:{add:"添加", order:"下单", cart:"购物车"},
-        messages:{orderSent:"订单已发送到厨房！"}},
-    ja:{tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
+        messages:{orderSent:"订单已发送到厨房！"},
+        cart:{title:"购物车", total:"总计"},
+        table:"桌"
+    },
+    ja:{
+        tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
         buttons:{add:"追加", order:"注文する", cart:"カート"},
-        messages:{orderSent:"注文が送信されました！"}},
-    ko:{tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
+        messages:{orderSent:"注文が送信されました！"},
+        cart:{title:"カート", total:"合計"},
+        table:"テーブル"
+    },
+    ko:{
+        tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
         buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
-        messages:{orderSent:"주문이 전송되었습니다!"}}
+        messages:{orderSent:"주문이 전송되었습니다!"},
+        cart:{title:"장바구니", total:"총"},
+        table:"테이블"
+    }
 };
 
-/* ======================= DỮ LIỆU MÓN ĂN (GIỮ NGUYÊN) ======================= */
+/* ======================= PRODUCT DATA ======================= */
 const products = {
-        nuong:[
-            {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://www.sieuthithitbo.net/uploads/files/2024/07/13/cach-che-bien-ba-chi-bo-my-01.jpg"},
-            {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://cdn.tgdd.vn/Files/2022/04/07/1424584/cach-lam-de-suon-bo-nuong-bang-noi-chien-khong-dau-thit-mem-va-tham-vi-202204080751285808.jpg"},
-            {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://www.lorca.vn/wp-content/uploads/2021/05/cach-lam-suon-nuong-mat-ong-bang-noi-chien-khong-dau.jpg"},
-            {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://cdn.tgdd.vn/Files/2021/09/11/1381794/cach-lam-ga-nuong-ot-ngu-vi-thom-ngon-cho-bua-an-gia-dinh-202201170915502121.jpg"}
-        ],
-        lau:[
-            {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://www.sgtiepthi.vn/wp-content/uploads/2020/06/Lau-kim-chi-nhat-ban_650.png"},
-            {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://bizweb.dktcdn.net/100/480/070/files/shutterstock-554817283-huge.jpg?v=1680148861885"}
-        ],
-        mon_phu:[
-            {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッキ",ko:"치즈 떡볶이"},price:69000,img:"https://cdn.tgdd.vn/Files/2020/03/17/1242644/cach-lam-tokbokki-pho-mai-chuan-han-quoc-moi-ban-be-cung-xoi-202202281435281554.jpg"},
-            {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://daotaobeptruong.vn/wp-content/uploads/2017/11/com-tron-han-quoc.jpg"},
-            {id:9,name:{vi:"Khoai chiên",en:"French Fries",zh:"炸薯条",ja:"フライドポテト",ko:"감자튀김"},price:39000,img:"https://i1-giadinh.vnecdn.net/2023/11/28/Thanh-pham-2-2-3590-1701145331.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=H555FN0SpT5WOuFdkHa9dw"}
-        ],
-        nuoc:[
-            {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://product.hstatic.net/200000534989/product/dsc08341-enhanced-nr_1_e6d5d0a13c8f42c2bd7cea59e03ce199_master.jpg"},
-            {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://www.bartender.edu.vn/wp-content/uploads/2015/09/tra-dao-tuoi.jpg"},
-            {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://truyenhinhnghean.vn/file/4028eaa46735a26101673a4df345003c/062023/bia-hoi-11173878_20230624161246.png"}
-        ]
-    };
+    nuong:[
+        {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://www.sieuthithitbo.net/uploads/files/2024/07/13/cach-che-bien-ba-chi-bo-my-01.jpg"},
+        {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://cdn.tgdd.vn/Files/2022/04/07/1424584/cach-lam-de-suon-bo-nuong-bang-noi-chien-khong-dau-thit-mem-va-tham-vi-202204080751285808.jpg"},
+        {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://www.lorca.vn/wp-content/uploads/2021/05/cach-lam-suon-nuong-mat-ong-bang-noi-chien-khong-dau.jpg"},
+        {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://cdn.tgdd.vn/Files/2021/09/11/1381794/cach-lam-ga-nuong-ot-ngu-vi-thom-ngon-cho-bua-an-gia-dinh-202201170915502121.jpg"}
+    ],
+    lau:[
+        {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://www.sgtiepthi.vn/wp-content/uploads/2020/06/Lau-kim-chi-nhat-ban_650.png"},
+        {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://bizweb.dktcdn.net/100/480/070/files/shutterstock-554817283-huge.jpg?v=1680148861885"}
+    ],
+    mon_phu:[
+        {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッ키",ko:"치즈 떡볶이"},price:69000,img:"https://cdn.tgdd.vn/Files/2020/03/17/1242644/cach-lam-tokbokki-pho-mai-chuan-han-quoc-moi-ban-be-cung-xoi-202202281435281554.jpg"},
+        {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://daotaobeptruong.vn/wp-content/uploads/2017/11/com-tron-han-quoc.jpg"},
+        {id:9,name:{vi:"Khoai chiên",en:"French Fries",zh:"炸薯条",ja:"フライドポテト",ko:"감자튀김"},price:39000,img:"https://i1-giadinh.vnecdn.net/2023/11/28/Thanh-pham-2-2-3590-1701145331.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=H555FN0SpT5WOuFdkHa9dw"}
+    ],
+    nuoc:[
+        {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://product.hstatic.net/200000534989/product/dsc08341-enhanced-nr_1_e6d5d0a13c8f42c2bd7cea59e03ce199_master.jpg"},
+        {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://www.bartender.edu.vn/wp-content/uploads/2015/09/tra-dao-tuoi.jpg"},
+        {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://truyenhinhnghean.vn/file/4028eaa46735a26101673a4df345003c/062023/bia-hoi-11173878_20230624161246.png"}
+    ]
+};
 
 /* ======================= STATE ======================= */
 let cart = {};
@@ -371,10 +393,10 @@ function placeOrder(){
     alert(translations[currentLang].messages.orderSent);
 }
 
-/* ======================= LANGUAGE ======================= */
+/* ======================= LANGUAGE SWITCH ======================= */
 document.getElementById("langSelect").addEventListener("change", function(){
     currentLang = {
-        "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","韩国어":"ko","한국어":"ko"
+        "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
     }[this.value];
 
     // Update tab text
@@ -383,8 +405,22 @@ document.getElementById("langSelect").addEventListener("change", function(){
         tab.innerText = translations[currentLang].tabs[key];
     });
 
+    // Buttons
     document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
     document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
+
+    // Cart text
+    document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+    document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
+
+    // Table names
+    const tableSelect = document.getElementById("tableSelect");
+    const saved = tableSelect.selectedIndex;
+    tableSelect.innerHTML = "";
+    for(let i=1;i<=4;i++){
+        tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
+    }
+    tableSelect.selectedIndex = saved;
 
     renderMenu();
 });
