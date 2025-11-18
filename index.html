@@ -312,7 +312,7 @@
         </select>
 
         <select id="tableSelect">
-            <option>Bàn 1</option><option>Bàn 2</option><option>Bàn 3</option><option>Bàn 4</option>
+            <option>Bàn 1</option><option>Bàn 2</option><option>Bàn 3</option><option>Bàn 4</option><option>Bàn 5</option><option>Bàn 6</option><option>Bàn 7</option><option>Bàn 8</option><option>Bàn 9</option><option>Bàn 10</option>
         </select>
 
         <button onclick="toggleCart()">🛒
@@ -538,40 +538,59 @@
 
         cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
 
-        document.getElementById(`qtyInput_${id}`).value = cart[id].tempQty;
+        const num = cart[id].tempQty;
+        document.getElementById(`qtyInput_${id}`).value = num;
 
-        if (cart[id].tempQty === 0) {
-            cart[id].qty = 0;
+        // 🔥 Nếu món đã trong giỏ → cập nhật giỏ ngay
+        if (cart[id].qty > 0) {
+
+            if (num === 0) {
+                cart[id].qty = 0;
+                updateCart();
+                renderMenu();
+                return;
+            }
+
+            cart[id].qty = num;
             updateCart();
+            renderCartItems();
         }
-        renderMenu();
-        renderCartItems(); // 🔥 đồng bộ 2 chiều
 
+        renderMenu();
     }
 
-    // Lưu số lượng người dùng đang nhập (chưa thêm vào giỏ)
+
     function updateTempQty(id, value) {
+
+        // User đang xóa để nhập lại → ignore
+        if (value === "") return;
+
         let num = Number(value);
 
-        // Nếu người dùng nhập ký tự không hợp lệ → đặt về 0
-        if (isNaN(num)) num = 0;
+        if (isNaN(num)) return;
 
-        // Không cho số âm
         num = Math.max(0, num);
 
-        // Lưu vào số lượng tạm (TEMP)
         cart[id].tempQty = num;
 
+        // 🔥 Nếu sản phẩm đã nằm trong giỏ → cập nhật luôn SL thật
+        if (cart[id].qty > 0) {
 
-        if (num === 0) {
-            cart[id].qty = 0;
-            updateCart();
+            if (num === 0) {
+                cart[id].qty = 0;
+                updateCart();
+                renderMenu();
+                return;
+            }
+
+            cart[id].qty = num;
+            updateCart();    // cập nhật giỏ
+            renderCartItems();
         }
 
         renderMenu();
-        renderCartItems();  // 🔥 đồng bộ ngược lại
-
     }
+
 
 
     /* ======================= ADD TO CART ======================= */
@@ -689,7 +708,7 @@
         const tableSelect = document.getElementById("tableSelect");
         const saved = tableSelect.selectedIndex;
         tableSelect.innerHTML = "";
-        for(let i=1;i<=4;i++){
+        for(let i=1;i<=10;i++){
             tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
         }
         tableSelect.selectedIndex = saved;
