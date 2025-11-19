@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Yaki Menu</title>
+
+    <style>
+
+        /*===================Thùng ráC=================================*/
+
+        .cart-clear-btn {
+            font-size: 22px;
+            color: #ff0000;
+            cursor: pointer;
+            margin-right: 14px;
+        }
+
+        .cart-item-delete {
+            font-size: 18px;
+            color: #bbbbbb;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .cart-item-delete:hover {
+            color: #ff5b5b;
+        }
+
+
+
+
+        /*=========================Ô số lượng trong giỏ hàng===================*/
+        .cartQtyInput {
+            width: 50px;
+            padding: 6px;
+            margin-left: 6px;
+            margin-right: 6px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #888;
+            border-radius: 6px;
+            color: #fff;
+            text-align: center;
+        }
+
+
+        /* ======================= GLOBAL ======================= */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at 20% 30%, #1b1b1b, #0c0c0c 70%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ======================= HEADER ======================= */
+        header {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1.5px solid rgba(255, 77, 77, 0.4);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff4d4d, #ff914d);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .header-controls { display: flex; gap: 10px; }
+
+        select, button {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(40,40,40,0.6);
+            color: #fff;
+            border: 1px solid rgba(90,90,90,0.5);
+        }
+
+        /* Mobile Header */
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 10px; }
+            .header-controls { flex-wrap: wrap; justify-content: center; }
+        }
+
+        /* ======================= TABS ======================= */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 22px;
+            padding: 12px 20px;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+
+        .tab {
+            padding: 12px 22px;
+            color: #ccc;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab:hover {
+            transform: translateY(-6px) scale(1.05);
+            color: #ff7b7b;
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.35);
+            background: rgba(255,77,77,0.08);
+        }
+
+        .tab.active {
+            color: #ff7b7b;
+            border-bottom: 2px solid #ff7b7b;
+            background: rgba(255,77,77,0.1);
+        }
+
+
+        /* ======================= MENU GRID ======================= */
+        .container {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 26px;
+        }
+
+        @media (max-width: 1100px) { .container { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 800px) { .container { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 550px) { .container { grid-template-columns: repeat(1, 1fr); } }
+
+        /* ======================= CARD (UPGRADED) ======================= */
+        .card {
+            position: relative;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.35);
+            transition: transform .25s ease, box-shadow .25s ease;
+            padding: 16px; /* khoảng cách bên trong card */
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.015);
+            box-shadow: 0 12px 28px rgba(255, 60, 60, 0.35);
+        }
+
+
+        .card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            transition: transform .35s ease;
+        }
+
+        /* Zoom ảnh nhẹ khi hover */
+        .card:hover img {
+            transform: scale(1.07);
+        }
+
+
+        .qty-row {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .qty-btn {
+            width: 34px; height: 34px;
+            background: rgba(80,80,80,0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .add-cart-btn {
+            margin-left: auto;
+            background: linear-gradient(45deg, #ff4d4d, #ffa04d);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        /* Card được chọn (đã có trong giỏ) */
+        .card.selected {
+            border: 2px solid #4ade80; /* xanh lá */
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+            position: relative;
+        }
+
+        /* Icon tick */
+        .card .tick-mark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4ade80;
+            color: #000;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        }
+
+
+
+        /* ======================= CART PANEL ======================= */
+        #cartPanel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 360px;
+            max-width: 100%;
+            height: 100vh;
+            background: rgba(25,25,25,0.7);
+            backdrop-filter: blur(30px);
+            padding: 22px;
+            border-left: 2px solid rgba(255,120,120,0.5);
+            overflow-y: auto;
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+        }
+
+        #cartPanel.show { transform: translateX(0); }
+
+        .close-cart {
+            font-size: 28px;
+            color: #ff8080;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .cart-item {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        #orderBtn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            background: linear-gradient(45deg, #ff4d4d, #ff9f4d);
+            border-radius: 12px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* ======================= SHAKE ======================= */
+        @keyframes shake {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+
+        .qty-input {
+            width: 55px;
+            padding: 6px 8px;
+            text-align: center;
+            background: rgba(80,80,80,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+
+            /* Loại bỏ mũi tên tăng/giảm */
+            -moz-appearance: textfield;
+        }
+
+        .qty-input::-webkit-inner-spin-button,
+        .qty-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        .qty-input::-webkit-inner-spin-button,
+        .qty-input::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">🔥 Yaki</div>
+
+    <div class="header-controls">
+        <select id="langSelect">
+            <option>Tiếng Việt</option>
+            <option>English</option>
+            <option>中文</option>
+            <option>日本語</option>
+            <option>한국어</option>
+        </select>
+
+        <select id="tableSelect">
+            <option>Bàn 1</option><option>Bàn 2</option><option>Bàn 3</option><option>Bàn 4</option><option>Bàn 5</option><option>Bàn 6</option><option>Bàn 7</option><option>Bàn 8</option><option>Bàn 9</option><option>Bàn 10</option>
+        </select>
+
+        <button onclick="toggleCart()">🛒
+            <span id="cartBtnText">Giỏ</span>
+            (<span id="cartCount">0</span>)
+        </button>
+    </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+
+    <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
+    <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
+    <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
+    <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
+
+
+
+</div>
+
+<!-- MENU -->
+<div id="menuList" class="container"></div>
+
+<!-- CART -->
+<div id="cartPanel">
+    <div style="display:flex; justify-content: space-between; align-items:center;">
+        <div class="cart-clear-btn" onclick="clearCart()">🗑️</div>
+        <div class="close-cart" onclick="toggleCart()">✖</div>
+    </div>
+
+    <h2 id="cartTitle">Giỏ hàng</h2>
+    <div id="cartItems"></div>
+    <h3 style="margin-top:20px">
+        <span id="totalLabel">Tổng</span>:
+        <span id="totalPrice">0</span> đ
+    </h3>
+    <div id="orderBtn" onclick="placeOrder()">Gọi món</div>
+</div>
+
+<script>
+
+    /*=======================xóa từng món=========================*/
+
+    function deleteItem(id) {
+        cart[id].qty = 0;
+        cart[id].tempQty = 0;
+
+        updateCart();
+        renderMenu();
+    }
+
+
+    /*=================xóa toàn bộ giỏ hàng=======================*/
+
+    function clearCart() {
+        if (!confirm("Xóa toàn bộ giỏ hàng?")) return;
+
+        for (let id in cart) {
+            cart[id].qty = 0;
+            cart[id].tempQty = 0;
+        }
+
+        updateCart();
+        renderMenu();
+    }
+
+
+
+
+    /*==================Chức năng cho ô số lượng giỏ hàng========*/
+
+    function changeCartQty(input) {
+        const id = input.dataset.id;
+        const oldQty = cart[id].qty;
+        let newQty = input.value;
+
+        // Rỗng → không cập nhật gì (để user nhập tiếp)
+        if (newQty === "") return;
+
+        newQty = Number(newQty);
+        if (newQty < 0) newQty = 0;
+
+        input.value = newQty;
+
+        // Nếu = 0 → xóa khỏi giỏ
+        if (newQty === 0) {
+            cart[id].qty = 0;
+            cart[id].tempQty = 0; // đồng bộ với menu
+            updateCart();
+            renderMenu();         // cập nhật menu
+            return;
+        }
+
+        // Nếu khác số lượng cũ → cập nhật
+        if (newQty !== oldQty) {
+            cart[id].qty = newQty;
+            cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
+            updateCart();
+            renderMenu();
+        }
+    }
+
+
+    /* ======================= NGÔN NGỮ ======================= */
+    const translations = {
+        vi:{
+            tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
+            buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
+            messages:{orderSent:"Order đã gửi tới bếp!",
+                emptyCart:"Giỏ hàng trống!"},
+            cart:{title:"Giỏ hàng", total:"Tổng", qty:"SL"},
+            table:"Bàn"
+        },
+        en:{
+            tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
+            buttons:{add:"Add", order:"Place Order", cart:"Cart"},
+            messages:{orderSent:"Order sent to kitchen!",
+                emptyCart:"Your cart is empty!"},
+            cart:{title:"Cart", total:"Total", qty:"Qty"},
+            table:"Table"
+        },
+        zh:{
+            tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
+            buttons:{add:"添加", order:"下单", cart:"购物车"},
+            messages:{orderSent:"订单已发送到厨房！",
+                emptyCart:"購物車是空的！"},
+            cart:{title:"购物车", total:"总计", qty:"数量"},
+            table:"桌"
+        },
+        ja:{
+            tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
+            buttons:{add:"追加", order:"注文する", cart:"カート"},
+            messages:{orderSent:"注文が送信されました！",
+                emptyCart:"カートは空です!"},
+            cart:{title:"カート", total:"合計", qty:"数量"},
+            table:"テーブル"
+        },
+        ko:{
+            tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
+            buttons:{add:"추가", order:"주문하기", cart:"장바구니"},
+            messages:{orderSent:"주문이 전송되었습니다!",
+                emptyCart:"장바구니가 비어있습니다!"},
+            cart:{title:"장바구니", total:"총", qty:"수량"},
+            table:"테이블"
+        }
+    };
+
+    /* ======================= PRODUCT DATA ======================= */
+    const products = {
+        nuong:[
+            {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true"},
+            {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true"},
+            {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true"},
+            {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true"}
+        ],
+        lau:[
+            {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true"},
+            {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true"}
+        ],
+        mon_phu:[
+            {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッキ",ko:"치즈 떡볶이"},price:69000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true"},
+            {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true"},
+            {id:9,name:{vi:"Khoai tây chiên",en:"French Fries",zh:"薯条",ja:"ポテトフライ",ko:"감자튀김"},price:39000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true"}
+        ],
+        nuoc:[
+            {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true"},
+            {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true"},
+            {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true"}
+        ]
+    };
+
+    /* ======================= STATE ======================= */
+    let cart = {};
+    let currentTab = "nuong";
+    let currentLang = "vi";
+
+    /* ======================= RENDER MENU ======================= */
+    function renderMenu() {
+        const list = document.getElementById("menuList");
+        list.innerHTML = "";
+
+        products[currentTab].forEach(item=>{
+            if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
+
+            list.innerHTML += `
+            <div class="card ${cart[item.id].qty > 0 ? "selected" : ""}">
+             ${cart[item.id].qty > 0 ? '<div class="tick-mark">✓</div>' : ""}
+
+            <img src="${item.img}">
+            <div class="card-body">
+                <div style="font-size:18px;font-weight:bold;">${item.name[currentLang]}</div>
+                <div class="price">${item.price.toLocaleString()} đ</div>
+
+                <div class="qty-row">
+                    <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
+                    <input type="number"
+                     id="qtyInput_${item.id}"
+                     class="qty-input"
+                     value="${cart[item.id].tempQty ?? cart[item.id].qty}"
+                     min="0"
+                     oninput="updateTempQty(${item.id}, this.value)">
+
+                    <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
+                    <div class="add-cart-btn" onclick="addToCart(${item.id})">
+                        ${translations[currentLang].buttons.add}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+        });
+    }
+    /* ======================= TAB ======================= */
+    function changeTab(tab, event){
+        currentTab = tab;
+        document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+        event.target.classList.add("active");
+        renderMenu();
+    }
+
+    /* ======================= QTY ======================= */
+    function changeQty(id, val) {
+        if (!cart[id].tempQty) cart[id].tempQty = 0;
+
+        cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
+
+        const num = cart[id].tempQty;
+        document.getElementById(`qtyInput_${id}`).value = num;
+
+        // 🔥 Nếu món đã trong giỏ → cập nhật giỏ ngay
+        if (cart[id].qty > 0) {
+
+            if (num === 0) {
+                cart[id].qty = 0;
+                updateCart();
+                renderMenu();
+                return;
+            }
+
+            cart[id].qty = num;
+            updateCart();
+            renderCartItems();
+        }
+
+        renderMenu();
+    }
+
+
+    function updateTempQty(id, value) {
+
+        // User đang xóa để nhập lại → ignore
+        if (value === "") return;
+
+        let num = Number(value);
+
+        if (isNaN(num)) return;
+
+        num = Math.max(0, num);
+
+        cart[id].tempQty = num;
+
+        // 🔥 Nếu sản phẩm đã nằm trong giỏ → cập nhật luôn SL thật
+        if (cart[id].qty > 0) {
+
+            if (num === 0) {
+                cart[id].qty = 0;
+                updateCart();
+                renderMenu();
+                return;
+            }
+
+            cart[id].qty = num;
+            updateCart();    // cập nhật giỏ
+            renderCartItems();
+        }
+
+        renderMenu();
+    }
+
+
+
+    /* ======================= ADD TO CART ======================= */
+    function addToCart(id){
+        const temp = Number(cart[id].tempQty || 0);
+
+        if (temp > 0) {
+            cart[id].qty = temp;  // CẬP NHẬT GIỎ
+            updateCart();
+            renderMenu();
+
+        }
+
+        // Animation rung
+        const el = document.getElementById("cartCount");
+        el.style.animation = "shake 0.4s";
+        setTimeout(()=> el.style.animation = "", 400);
+    }
+
+    /* ======================= UPDATE CART ======================= */
+    function updateCart(){
+        let total = 0, count = 0;
+
+        for(let id in cart){
+            if(cart[id].qty > 0){
+                total += cart[id].qty * cart[id].price;
+                count += cart[id].qty;
+            }
+        }
+
+        document.getElementById("totalPrice").innerText = total.toLocaleString();
+        document.getElementById("cartCount").innerText = count;
+        renderCartItems();
+    }
+
+    /* ======================= CART ITEMS ======================= */
+    function renderCartItems(){
+        const box = document.getElementById("cartItems");
+        box.innerHTML = "";
+
+        for(let id in cart){
+            if(cart[id].qty > 0){
+                box.innerHTML += `
+<div class="cart-item">
+    <b>${cart[id].name[currentLang]}</b><br>
+
+    ${translations[currentLang].cart.qty}:
+    <input class="cartQtyInput"
+        type="number"
+        value="${cart[id].qty}"
+        min="0"
+        data-id="${id}"
+        oninput="changeCartQty(this)">
+
+    × ${cart[id].price.toLocaleString()} đ
+
+    <span class="cart-item-delete" onclick="deleteItem(${id})">🗑️</span>
+</div>`;
+
+
+            }
+        }
+    }
+
+    /* ======================= CART PANEL ======================= */
+    function toggleCart(){
+        document.getElementById("cartPanel").classList.toggle("show");
+    }
+
+    /* ======================= ORDER ======================= */
+    function placeOrder() {
+        // Kiểm tra xem có món nào trong giỏ không
+        let hasItems = false;
+
+        for (let id in cart) {
+            if (cart[id].qty > 0) {
+                hasItems = true;
+                break;
+            }
+        }
+
+        // Nếu giỏ hàng không có món → báo theo đúng ngôn ngữ hiện tại
+        if (!hasItems) {
+            alert(translations[currentLang].messages.emptyCart);
+            return;
+        }
+
+        // Nếu có món → gửi order
+        alert(translations[currentLang].messages.orderSent);
+    }
+
+
+
+    /* ======================= LANGUAGE SWITCH ======================= */
+    document.getElementById("langSelect").addEventListener("change", function(){
+        currentLang = {
+            "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
+        }[this.value];
+
+        // Update tab text
+        document.querySelectorAll(".tab").forEach(tab=>{
+            const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
+            tab.innerText = translations[currentLang].tabs[key];
+        });
+
+        // Buttons
+        document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
+        document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
+
+        // Cart text
+        document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+        document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
+
+        // Table names
+        const tableSelect = document.getElementById("tableSelect");
+        const saved = tableSelect.selectedIndex;
+        tableSelect.innerHTML = "";
+        for(let i=1;i<=10;i++){
+            tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
+        }
+        tableSelect.selectedIndex = saved;
+
+        // ⬅️ FIX: Re-render menu + cart theo ngôn ngữ mới
+        renderMenu();
+        updateCart();
+    });
+
+    /* INIT */
+    renderMenu();
+</script>
+
+</body>
+</html>
