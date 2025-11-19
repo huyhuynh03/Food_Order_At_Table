@@ -324,6 +324,7 @@
 
 <!-- TABS -->
 <div class="tabs">
+
     <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
     <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
     <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
@@ -349,7 +350,7 @@
         <span id="totalLabel">Tổng</span>:
         <span id="totalPrice">0</span> đ
     </h3>
-    <div id="orderBtn" onclick="placeOrder()">Gửi Order</div>
+    <div id="orderBtn" onclick="placeOrder()">Gọi món</div>
 </div>
 
 <script>
@@ -463,24 +464,24 @@
     /* ======================= PRODUCT DATA ======================= */
     const products = {
         nuong:[
-            {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://www.sieuthithitbo.net/uploads/files/2024/07/13/cach-che-bien-ba-chi-bo-my-01.jpg"},
-            {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://cdn.tgdd.vn/Files/2022/04/07/1424584/cach-lam-de-suon-bo-nuong-bang-noi-chien-khong-dau-thit-mem-va-tham-vi-202204080751285808.jpg"},
-            {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://www.lorca.vn/wp-content/uploads/2021/05/cach-lam-suon-nuong-mat-ong-bang-noi-chien-khong-dau.jpg"},
-            {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://cdn.tgdd.vn/Files/2021/09/11/1381794/cach-lam-ga-nuong-ot-ngu-vi-thom-ngon-cho-bua-an-gia-dinh-202201170915502121.jpg"}
+            {id:1,name:{vi:"Ba chỉ bò Mỹ",en:"US Beef Belly",zh:"美國牛腹肉",ja:"米国牛バラ",ko:"미국 소고기 배"},price:139000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true"},
+            {id:2,name:{vi:"Dẻ sườn bò",en:"Beef Ribs",zh:"牛肋排",ja:"牛リブ",ko:"소갈비"},price:169000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true"},
+            {id:3,name:{vi:"Sườn heo sốt mật ong",en:"Honey Pork Ribs",zh:"蜜汁豬肋排",ja:"ハニーポークリブ",ko:"허니 돼지갈비"},price:129000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true"},
+            {id:4,name:{vi:"Gà nướng",en:"Grilled Chicken",zh:"烤雞",ja:"グリルチキン",ko:"구운 닭고기"},price:89000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true"}
         ],
         lau:[
-            {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://www.sgtiepthi.vn/wp-content/uploads/2020/06/Lau-kim-chi-nhat-ban_650.png"},
-            {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://bizweb.dktcdn.net/100/480/070/files/shutterstock-554817283-huge.jpg?v=1680148861885"}
+            {id:5,name:{vi:"Lẩu kim chi",en:"Kimchi Hotpot",zh:"泡菜火锅",ja:"キムチ鍋",ko:"김치전골"},price:199000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true"},
+            {id:6,name:{vi:"Lẩu bulgogi",en:"Bulgogi Hotpot",zh:"烤肉火锅",ja:"プルコギ鍋",ko:"불고기전골"},price:249000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true"}
         ],
         mon_phu:[
-            {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッキ",ko:"치즈 떡볶이"},price:69000,img:"https://cdn.tgdd.vn/Files/2020/03/17/1242644/cach-lam-tokbokki-pho-mai-chuan-han-quoc-moi-ban-be-cung-xoi-202202281435281554.jpg"},
-            {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://daotaobeptruong.vn/wp-content/uploads/2017/11/com-tron-han-quoc.jpg"},
-            {id:9,name:{vi:"Khoai chiên",en:"French Fries",zh:"炸薯条",ja:"フライドポテト",ko:"감자튀김"},price:39000,img:"https://i1-giadinh.vnecdn.net/2023/11/28/Thanh-pham-2-2-3590-1701145331.jpg?w=1020&h=0&q=100&dpr=1&fit=crop&s=H555FN0SpT5WOuFdkHa9dw"}
+            {id:7,name:{vi:"Tokbokki phô mai",en:"Cheese Tokbokki",zh:"芝士炒年糕",ja:"チーズトッポッキ",ko:"치즈 떡볶이"},price:69000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true"},
+            {id:8,name:{vi:"Cơm trộn Hàn Quốc",en:"Bibimbap",zh:"拌饭",ja:"ビビンバ",ko:"비빔밥"},price:59000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true"},
+            {id:9,name:{vi:"Khoai tây chiên",en:"French Fries",zh:"薯条",ja:"ポテトフライ",ko:"감자튀김"},price:39000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true"}
         ],
         nuoc:[
-            {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://product.hstatic.net/200000534989/product/dsc08341-enhanced-nr_1_e6d5d0a13c8f42c2bd7cea59e03ce199_master.jpg"},
-            {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://www.bartender.edu.vn/wp-content/uploads/2015/09/tra-dao-tuoi.jpg"},
-            {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://truyenhinhnghean.vn/file/4028eaa46735a26101673a4df345003c/062023/bia-hoi-11173878_20230624161246.png"}
+            {id:10,name:{vi:"Coca Cola",en:"Coca Cola",zh:"可口可乐",ja:"コカコーラ",ko:"코카콜라"},price:15000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true"},
+            {id:11,name:{vi:"Trà đào",en:"Peach Tea",zh:"桃茶",ja:"ピーチティー",ko:"복숭아차"},price:29000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true"},
+            {id:12,name:{vi:"Bia",en:"Beer",zh:"啤酒",ja:"ビール",ko:"맥주"},price:39000,img:"https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true"}
         ]
     };
 
