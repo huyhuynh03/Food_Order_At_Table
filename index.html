@@ -6,6 +6,117 @@
 
     <style>
 
+        #customAlertOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(3px);
+        }
+
+        #customAlertBox {
+            background: #1f1f1f;
+            padding: 28px 30px;
+            border-radius: 14px;
+            width: 330px;
+            text-align: center;
+            color: #fff;
+            border: 1.5px solid rgba(255,100,100,0.35);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+            animation: alertPop 0.35s ease forwards;
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        @keyframes alertPop {
+            0% { opacity: 0; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ===== CUSTOM CONFIRM ===== */
+        #customConfirmOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(3px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2001;
+        }
+
+        #customConfirmBox {
+            background: #1f1f1f;
+            padding: 28px 30px;
+            border-radius: 14px;
+            width: 350px;
+            text-align: center;
+            color: #fff;
+            border: 1.5px solid rgba(255,100,100,0.35);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+            animation: alertPop 0.35s ease forwards;
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        .confirm-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        #confirmCancelBtn {
+            background: rgba(255,255,255,0.1);
+        }
+
+        #confirmCancelBtn:hover {
+            transform: scale(1.05);
+        }
+
+        #confirmOkBtn {
+            background: linear-gradient(45deg, #ff4d4d, #ffa64d);
+            color: #fff;
+        }
+
+        #confirmOkBtn:hover {
+            transform: scale(1.07);
+        }
+
+
+
+        #alertOkBtn {
+            margin-top: 20px;
+            padding: 10px 22px;
+            background: linear-gradient(45deg, #ff4d4d, #ffa64d);
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-block;
+            color: #fff;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        #alertOkBtn:hover {
+            transform: scale(1.06);
+        }
+
+
+
         /*===================Thùng ráC=================================*/
 
         .cart-clear-btn {
@@ -297,6 +408,8 @@
 
     </style>
 </head>
+
+
 <body>
 
 <header>
@@ -355,6 +468,51 @@
 
 <script>
 
+    /*=======================custom alert=========================*/
+    function showAlert(msg) {
+        const overlay = document.getElementById("customAlertOverlay");
+        const box = document.getElementById("customAlertBox");
+
+        document.getElementById("alertMessage").innerText = msg;
+
+        overlay.style.display = "flex";
+
+        // Reset animation để chạy lại mượt
+        box.style.animation = "none";
+        void box.offsetWidth; // trick restart animation
+        box.style.animation = "alertPop 0.35s ease forwards";
+    }
+
+    function closeAlert() {
+        const overlay = document.getElementById("customAlertOverlay");
+        overlay.style.display = "none";
+    }
+
+    let confirmCallback = null;
+
+    function showConfirm(msg, callback) {
+        confirmCallback = callback;
+        document.getElementById("confirmMessage").innerText = msg;
+
+        const overlay = document.getElementById("customConfirmOverlay");
+        const box = document.getElementById("customConfirmBox");
+
+        overlay.style.display = "flex";
+
+        // reset animation
+        box.style.animation = "none";
+        void box.offsetWidth;
+        box.style.animation = "alertPop 0.35s ease forwards";
+    }
+
+    function closeConfirm(result) {
+        document.getElementById("customConfirmOverlay").style.display = "none";
+
+        if (confirmCallback) confirmCallback(result);
+    }
+
+
+
     /*=======================xóa từng món=========================*/
 
     function deleteItem(id) {
@@ -369,7 +527,18 @@
     /*=================xóa toàn bộ giỏ hàng=======================*/
 
     function clearCart() {
-        if (!confirm("Xóa toàn bộ giỏ hàng?")) return;
+        showConfirm("Xóa toàn bộ giỏ hàng?", function(ok) {
+            if (!ok) return;
+
+            for (let id in cart) {
+                cart[id].qty = 0;
+                cart[id].tempQty = 0;
+            }
+
+            updateCart();
+            renderMenu();
+        });
+
 
         for (let id in cart) {
             cart[id].qty = 0;
@@ -675,12 +844,14 @@
 
         // Nếu giỏ hàng không có món → báo theo đúng ngôn ngữ hiện tại
         if (!hasItems) {
-            alert(translations[currentLang].messages.emptyCart);
+            showAlert(translations[currentLang].messages.emptyCart);
+
             return;
         }
 
         // Nếu có món → gửi order
-        alert(translations[currentLang].messages.orderSent);
+        showAlert(translations[currentLang].messages.orderSent);
+
     }
 
 
@@ -722,6 +893,27 @@
     /* INIT */
     renderMenu();
 </script>
+
+
+<div id="customAlertOverlay">
+    <div id="customAlertBox">
+        <div id="alertMessage">Thông báo</div>
+        <div id="alertOkBtn" onclick="closeAlert()">OK</div>
+    </div>
+</div>
+
+
+<div id="customConfirmOverlay">
+    <div id="customConfirmBox">
+        <div id="confirmMessage">Bạn có chắc?</div>
+
+        <div class="confirm-buttons">
+            <div id="confirmCancelBtn" class="confirm-btn" onclick="closeConfirm(false)">Hủy</div>
+            <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
