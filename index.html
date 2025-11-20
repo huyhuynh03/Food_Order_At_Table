@@ -488,29 +488,55 @@
         overlay.style.display = "none";
     }
 
+    /* ======================= CUSTOM CONFIRM ======================= */
     let confirmCallback = null;
 
     function showConfirm(msg, callback) {
         confirmCallback = callback;
+
+        // Hiển thị nội dung confirm
         document.getElementById("confirmMessage").innerText = msg;
+
+        // Cập nhật nút theo ngôn ngữ hiện tại
+        document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
+        document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
 
         const overlay = document.getElementById("customConfirmOverlay");
         const box = document.getElementById("customConfirmBox");
 
         overlay.style.display = "flex";
 
-        // reset animation
+        // Reset animation để chạy lại mượt
         box.style.animation = "none";
-        void box.offsetWidth;
+        void box.offsetWidth; // trick restart animation
         box.style.animation = "alertPop 0.35s ease forwards";
     }
 
     function closeConfirm(result) {
+        // Ẩn overlay
         document.getElementById("customConfirmOverlay").style.display = "none";
 
+        // Chỉ gọi callback nếu có
         if (confirmCallback) confirmCallback(result);
     }
 
+    /* ======================= CLEAR CART ======================= */
+    function clearCart() {
+        // Hiển thị confirm trước khi xóa toàn bộ giỏ hàng
+        showConfirm(translations[currentLang].confirm.clearAll, function(ok) {
+
+            if (!ok) return; // Nhấn Cancel → giữ nguyên trạng thái
+
+            // Nếu nhấn OK → xóa toàn bộ
+            for (let id in cart) {
+                cart[id].qty = 0;
+                cart[id].tempQty = 0;
+            }
+
+            updateCart();
+            renderMenu();
+        });
+    }
 
 
     /*=======================xóa từng món=========================*/
@@ -527,9 +553,11 @@
     /*=================xóa toàn bộ giỏ hàng=======================*/
 
     function clearCart() {
-        showConfirm("Xóa toàn bộ giỏ hàng?", function(ok) {
-            if (!ok) return;
+        showConfirm(translations[currentLang].confirm.clearAll, function(ok) {
 
+            if (!ok) return; // Nhấn Cancel → không làm gì
+
+            // Nhấn OK → xóa toàn bộ giỏ hàng
             for (let id in cart) {
                 cart[id].qty = 0;
                 cart[id].tempQty = 0;
@@ -538,16 +566,8 @@
             updateCart();
             renderMenu();
         });
-
-
-        for (let id in cart) {
-            cart[id].qty = 0;
-            cart[id].tempQty = 0;
-        }
-
-        updateCart();
-        renderMenu();
     }
+
 
 
 
@@ -590,11 +610,17 @@
     const translations = {
         vi:{
             tabs:{nuong:"Món Nướng",lau:"Lẩu",mon_phu:"Món Phụ",nuoc:"Đồ Uống"},
-            buttons:{add:"Thêm", order:"Gửi Order", cart:"Giỏ"},
-            messages:{orderSent:"Order đã gửi tới bếp!",
+            buttons:{add:"Thêm", order:"Gửi đơn", cart:"Giỏ"},
+            messages:{orderSent:"Đơn đã gửi tới bếp!",
                 emptyCart:"Giỏ hàng trống!"},
             cart:{title:"Giỏ hàng", total:"Tổng", qty:"SL"},
-            table:"Bàn"
+            table:"Bàn",
+            confirm:{
+                clearAll: "Xóa toàn bộ giỏ hàng?",
+                cancel: "Hủy",
+                ok: "Xóa"
+            }
+
         },
         en:{
             tabs:{nuong:"Grilled",lau:"Hotpot",mon_phu:"Side Dishes",nuoc:"Drinks"},
@@ -602,7 +628,13 @@
             messages:{orderSent:"Order sent to kitchen!",
                 emptyCart:"Your cart is empty!"},
             cart:{title:"Cart", total:"Total", qty:"Qty"},
-            table:"Table"
+            table:"Table",
+            confirm:{
+                clearAll: "Delete entire cart?",
+                cancel: "Cancel",
+                ok: "Delete",
+            }
+
         },
         zh:{
             tabs:{nuong:"烤肉",lau:"火锅",mon_phu:"小菜",nuoc:"饮料"},
@@ -610,7 +642,13 @@
             messages:{orderSent:"订单已发送到厨房！",
                 emptyCart:"購物車是空的！"},
             cart:{title:"购物车", total:"总计", qty:"数量"},
-            table:"桌"
+            table:"桌",
+            confirm:{
+                clearAll: "刪除整個購物車？",
+                cancel: "取消",
+                ok: "擦除"
+            }
+
         },
         ja:{
             tabs:{nuong:"焼肉",lau:"鍋",mon_phu:"サイド",nuoc:"ドリンク"},
@@ -618,7 +656,13 @@
             messages:{orderSent:"注文が送信されました！",
                 emptyCart:"カートは空です!"},
             cart:{title:"カート", total:"合計", qty:"数量"},
-            table:"テーブル"
+            table:"テーブル",
+            confirm:{
+                clearAll: "カート全体を削除しますか?",
+                cancel: "キャンセル",
+                ok: "消去"
+            }
+
         },
         ko:{
             tabs:{nuong:"구이",lau:"전골",mon_phu:"사이드",nuoc:"음료"},
@@ -626,7 +670,13 @@
             messages:{orderSent:"주문이 전송되었습니다!",
                 emptyCart:"장바구니가 비어있습니다!"},
             cart:{title:"장바구니", total:"총", qty:"수량"},
-            table:"테이블"
+            table:"테이블",
+            confirm:{
+                clearAll: "장바구니 전체를 삭제하시겠습니까?",
+                cancel: "취소",
+                ok: "삭제"
+            }
+
         }
     };
 
@@ -858,6 +908,11 @@
 
     /* ======================= LANGUAGE SWITCH ======================= */
     document.getElementById("langSelect").addEventListener("change", function(){
+
+        document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
+        document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
+
+
         currentLang = {
             "Tiếng Việt":"vi","English":"en","中文":"zh","日本語":"ja","한국어":"ko"
         }[this.value];
