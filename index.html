@@ -6,6 +6,30 @@
 
     <style>
 
+        .card.ordered-flag {
+            border: 2px solid red;
+            box-shadow: 0 0 12px rgba(255,0,0,0.5);
+        }
+
+
+        #orderedPanel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 360px;
+            height: 100vh;
+            background: rgba(25,25,25,0.7);
+            backdrop-filter: blur(30px);
+            padding: 22px;
+            border-left: 2px solid rgba(255,200,100,0.5);
+            overflow-y: auto;
+            z-index: 998;
+            transform: translateX(100%);
+            transition: 0.35s ease;
+        }
+        #orderedPanel.show { transform: translateX(0); }
+
+
         #customAlertOverlay {
             position: fixed;
             top: 0; left: 0;
@@ -432,6 +456,12 @@
             <span id="cartBtnText">Giỏ</span>
             (<span id="cartCount">0</span>)
         </button>
+
+        <button onclick="toggleOrdered()">🔔
+            <span id="orderedText">Đã gọi</span>
+            (<span id="orderedCount">0</span>)
+        </button>
+
     </div>
 </header>
 
@@ -466,7 +496,43 @@
     <div id="orderBtn" onclick="placeOrder()">Xác nhận đặt món</div>
 </div>
 
+<div id="orderedPanel">
+    <div class="close-cart" onclick="toggleOrdered()">✖</div>
+
+    <h2>Món đã gọi</h2>
+    <div id="orderedItems"></div>
+
+    <h3 style="margin-top:20px">
+        Tổng: <span id="orderedTotal">0</span> đ
+    </h3>
+</div>
+
+
 <script>
+
+    function renderOrderedItems() {
+        const box = document.getElementById("orderedItems");
+        box.innerHTML = "";
+
+        let total = 0;
+
+        for (let id in orderedItems) {
+            const item = orderedItems[id];
+            total += item.qty * item.price;
+
+            box.innerHTML += `
+            <div class="cart-item">
+                <b>${item.name[currentLang]}</b><br>
+                SL: ${item.qty} × ${item.price.toLocaleString()} đ
+            </div>
+        `;
+        }
+
+        document.getElementById("orderedTotal").innerText = total.toLocaleString();
+        document.getElementById("orderedCount").innerText =
+            Object.values(orderedItems).reduce((a, b) => a + b.qty, 0);
+    }
+
 
     /*=======================custom alert=========================*/
     function showAlert(msg) {
@@ -708,6 +774,8 @@
     let cart = {};
     let currentTab = "nuong";
     let currentLang = "vi";
+    let orderedItems = {}; // lưu các món đã đặt (icon chuông)
+
 
     /* ======================= RENDER MENU ======================= */
     function renderMenu() {
@@ -718,7 +786,11 @@
             if(!cart[item.id]) cart[item.id] = {...item, qty: 0};
 
             list.innerHTML += `
-            <div class="card ${cart[item.id].qty > 0 ? "selected" : ""}">
+            <div class="card
+            ${cart[item.id].qty > 0 ? "selected" : ""}
+            ${orderedItems[item.id] ? "ordered-flag" : ""}
+            ">
+
              ${cart[item.id].qty > 0 ? '<div class="tick-mark">✓</div>' : ""}
 
             <img src="${item.img}">
@@ -841,6 +913,17 @@
             }
         }
 
+        // total ordered
+        let orderedTotal = 0;
+        for (let id in orderedItems) {
+            orderedTotal += orderedItems[id].qty * orderedItems[id].price;
+        }
+
+        // total final
+        document.getElementById("totalPrice").innerText =
+            (total + orderedTotal).toLocaleString();
+
+
         document.getElementById("totalPrice").innerText = total.toLocaleString();
         document.getElementById("cartCount").innerText = count;
         renderCartItems();
@@ -876,13 +959,20 @@
     }
 
     /* ======================= CART PANEL ======================= */
+
+
+
     function toggleCart(){
         document.getElementById("cartPanel").classList.toggle("show");
     }
 
+    function toggleOrdered() {
+        document.getElementById("orderedPanel").classList.toggle("show");
+    }
+
+
     /* ======================= ORDER ======================= */
     function placeOrder() {
-        // Kiểm tra xem có món nào trong giỏ không
         let hasItems = false;
 
         for (let id in cart) {
@@ -892,16 +982,31 @@
             }
         }
 
-        // Nếu giỏ hàng không có món → báo theo đúng ngôn ngữ hiện tại
         if (!hasItems) {
             showAlert(translations[currentLang].messages.emptyCart);
-
             return;
         }
 
-        // Nếu có món → gửi order
-        showAlert(translations[currentLang].messages.orderSent);
+        // 🔥 Chuyển toàn bộ món trong cart → orderedItems
+        for (let id in cart) {
+            if (cart[id].qty > 0) {
 
+                if (!orderedItems[id]) {
+                    orderedItems[id] = { ...cart[id] };
+                } else {
+                    orderedItems[id].qty += cart[id].qty;
+                }
+
+                cart[id].qty = 0;
+                cart[id].tempQty = 0;
+            }
+        }
+
+        updateCart();
+        renderMenu();
+        renderOrderedItems();
+
+        showAlert(translations[currentLang].messages.orderSent);
     }
 
 
