@@ -870,6 +870,7 @@
             if (num === 0) {
                 cart[id].qty = 0;
                 updateCart();   // chỉ cập nhật giỏ, KHÔNG render lại menu
+                renderMenu();   // 🔥 thêm dòng này để gỡ tick ngay lập tức
                 return;
             }
 
