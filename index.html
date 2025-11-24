@@ -315,15 +315,7 @@
             cursor: pointer;
         }
 
-        .add-cart-btn {
-            margin-left: auto;
-            background: linear-gradient(45deg, #ff4d4d, #ffa04d);
-            padding: 8px 18px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
+        
 
         /* Card được chọn (đã có trong giỏ) */
         .card.selected {
@@ -586,34 +578,16 @@
         if (confirmCallback) confirmCallback(result);
     }
 
-    /* ======================= CLEAR CART ======================= */
-    function clearCart() {
-        // Hiển thị confirm trước khi xóa toàn bộ giỏ hàng
-        showConfirm(translations[currentLang].confirm.clearAll, function(ok) {
-
-            if (!ok) return; // Nhấn Cancel → giữ nguyên trạng thái
-
-            // Nếu nhấn OK → xóa toàn bộ
-            for (let id in cart) {
-                cart[id].qty = 0;
-                cart[id].tempQty = 0;
-            }
-
-            updateCart();
-            renderMenu();
-        });
-    }
 
 
     /*=======================xóa từng món=========================*/
 
     function deleteItem(id) {
         cart[id].qty = 0;
-        cart[id].tempQty = 0;
-
         updateCart();
         renderMenu();
     }
+
 
 
     /*=================xóa toàn bộ giỏ hàng=======================*/
@@ -626,13 +600,13 @@
             // Nhấn OK → xóa toàn bộ giỏ hàng
             for (let id in cart) {
                 cart[id].qty = 0;
-                cart[id].tempQty = 0;
             }
 
             updateCart();
             renderMenu();
         });
     }
+
 
 
 
@@ -645,27 +619,25 @@
         const oldQty = cart[id].qty;
         let newQty = input.value;
 
-        // Rỗng → không cập nhật gì (để user nhập tiếp)
+        // Cho phép xóa để nhập lại trước khi Enter
         if (newQty === "") return;
 
         newQty = Number(newQty);
-        if (newQty < 0) newQty = 0;
+        if (isNaN(newQty) || newQty < 0) newQty = 0;
 
         input.value = newQty;
 
-        // Nếu = 0 → xóa khỏi giỏ
+        // Nếu = 0 → xóa khỏi giỏ + bỏ viền xanh ngoài menu
         if (newQty === 0) {
             cart[id].qty = 0;
-            cart[id].tempQty = 0; // đồng bộ với menu
             updateCart();
-            renderMenu();         // cập nhật menu
+            renderMenu();
             return;
         }
 
         // Nếu khác số lượng cũ → cập nhật
         if (newQty !== oldQty) {
             cart[id].qty = newQty;
-            cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
             updateCart();
             renderMenu();
         }
@@ -799,19 +771,22 @@
                 <div class="price">${item.price.toLocaleString()} đ</div>
 
                 <div class="qty-row">
-                    <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
-                    <input type="number"
-                     id="qtyInput_${item.id}"
-                     class="qty-input"
-                     value="${cart[item.id].tempQty ?? cart[item.id].qty}"
-                     min="0"
-                     oninput="updateTempQty(${item.id}, this.value)">
+    <div class="qty-btn" onclick="changeQty(${item.id}, -1)">−</div>
 
-                    <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
-                    <div class="add-cart-btn" onclick="addToCart(${item.id})">
-                        ${translations[currentLang].buttons.add}
-                    </div>
-                </div>
+    <input
+        type="number"
+        id="qtyInput_${item.id}"
+        class="qty-input"
+        value="${cart[item.id].qty}"
+        min="0"
+        onkeydown="if (event.key === 'Enter') updateMenuQty(${item.id}, this)"
+    >
+
+    <div class="qty-btn" onclick="changeQty(${item.id}, 1)">+</div>
+</div>
+
+
+
             </div>
         </div>`;
         });
@@ -825,78 +800,49 @@
     }
 
     /* ======================= QTY ======================= */
-    function changeQty(id, val) {
-        if (!cart[id].tempQty) cart[id].tempQty = 0;
+    function changeQty(id, delta) {
+        if (!cart[id]) return;
 
-        cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
+        const current = Number(cart[id].qty || 0);
+        const newQty = Math.max(0, current + delta);
 
-        const num = cart[id].tempQty;
-        document.getElementById(`qtyInput_${id}`).value = num;
+        // Không thay đổi thì thôi
+        if (newQty === current) return;
 
-        // 🔥 Nếu món đã trong giỏ → cập nhật giỏ ngay
-        if (cart[id].qty > 0) {
+        cart[id].qty = newQty;
 
-            if (num === 0) {
-                cart[id].qty = 0;
-                updateCart();
-                renderMenu();
-                return;
-            }
+        updateCart();
+        // Render lại để update viền xanh, tick ✓, và value trong ô
+        renderMenu();
+    }
 
+    function updateMenuQty(id, inputEl) {
+        let val = inputEl.value;
+
+        if (val === "") {
+            // Nếu Enter khi ô trống → xem như 0
+            cart[id].qty = 0;
+        } else {
+            let num = Number(val);
+            if (isNaN(num) || num < 0) num = 0;
             cart[id].qty = num;
-            updateCart();
-            renderCartItems();
         }
 
+        // Đồng bộ lại value (loại bỏ trường hợp nhập chữ / số âm)
+        inputEl.value = cart[id].qty;
+
+        // Cập nhật giỏ + giao diện
+        updateCart();
         renderMenu();
     }
 
 
-    function updateTempQty(id, value) {
-        // Cho phép xoá hết để gõ lại mà không bị reset
-        if (value === "") {
-            cart[id].tempQty = 0;
-            return;
-        }
-
-        let num = Number(value);
-        if (isNaN(num)) return;
-
-        num = Math.max(0, num);
-        cart[id].tempQty = num;
-
-        // Nếu món này đã nằm trong giỏ thì cập nhật luôn SL thật + tổng tiền
-        if (cart[id].qty > 0) {
-            if (num === 0) {
-                cart[id].qty = 0;
-                updateCart();   // chỉ cập nhật giỏ, KHÔNG render lại menu
-                return;
-            }
-
-            cart[id].qty = num;
-            updateCart();       // cập nhật tổng + danh sách trong giỏ
-        }
-    }
 
 
 
 
     /* ======================= ADD TO CART ======================= */
-    function addToCart(id){
-        const temp = Number(cart[id].tempQty || 0);
 
-        if (temp > 0) {
-            cart[id].qty = temp;  // CẬP NHẬT GIỎ
-            updateCart();
-            renderMenu();
-
-        }
-
-        // Animation rung
-        const el = document.getElementById("cartCount");
-        el.style.animation = "shake 0.4s";
-        setTimeout(()=> el.style.animation = "", 400);
-    }
 
     /* ======================= UPDATE CART ======================= */
     function updateCart(){
@@ -995,7 +941,7 @@
                 }
 
                 cart[id].qty = 0;
-                cart[id].tempQty = 0;
+
             }
         }
 
