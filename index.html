@@ -853,35 +853,31 @@
 
 
     function updateTempQty(id, value) {
-
-        // User đang xóa để nhập lại → ignore
-        if (value === "") return;
+        // Cho phép xoá hết để gõ lại mà không bị reset
+        if (value === "") {
+            cart[id].tempQty = 0;
+            return;
+        }
 
         let num = Number(value);
-
         if (isNaN(num)) return;
 
         num = Math.max(0, num);
-
         cart[id].tempQty = num;
 
-        // 🔥 Nếu sản phẩm đã nằm trong giỏ → cập nhật luôn SL thật
+        // Nếu món này đã nằm trong giỏ thì cập nhật luôn SL thật + tổng tiền
         if (cart[id].qty > 0) {
-
             if (num === 0) {
                 cart[id].qty = 0;
-                updateCart();
-                renderMenu();
+                updateCart();   // chỉ cập nhật giỏ, KHÔNG render lại menu
                 return;
             }
 
             cart[id].qty = num;
-            updateCart();    // cập nhật giỏ
-            renderCartItems();
+            updateCart();       // cập nhật tổng + danh sách trong giỏ
         }
-
-        renderMenu();
     }
+
 
 
 
@@ -941,12 +937,13 @@
     <b>${cart[id].name[currentLang]}</b><br>
 
     ${translations[currentLang].cart.qty}:
-    <input class="cartQtyInput"
+      <input class="cartQtyInput"
         type="number"
         value="${cart[id].qty}"
         min="0"
         data-id="${id}"
-        oninput="changeCartQty(this)">
+        onkeydown="if (event.key === 'Enter') changeCartQty(this)">
+
 
     × ${cart[id].price.toLocaleString()} đ
 
