@@ -496,15 +496,12 @@
             -webkit-appearance: none;
             margin: 0;
         }
-
-
-        .qty-input::-webkit-inner-spin-button,
-        .qty-input::-webkit-outer-spin-button {
-            opacity: 1;
-        }
     </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 </head>
-
 
 <body>
 
@@ -520,17 +517,17 @@
                 <option>한국어</option>
             </select>
 
-            <select id="tableSelect">
-                <option>Bàn 1</option>
-                <option>Bàn 2</option>
-                <option>Bàn 3</option>
-                <option>Bàn 4</option>
-                <option>Bàn 5</option>
-                <option>Bàn 6</option>
-                <option>Bàn 7</option>
-                <option>Bàn 8</option>
-                <option>Bàn 9</option>
-                <option>Bàn 10</option>
+            <select id="tableSelect" onchange="handleTableChange()">
+                <option value="table_1">Bàn 1</option>
+                <option value="table_2">Bàn 2</option>
+                <option value="table_3">Bàn 3</option>
+                <option value="table_4">Bàn 4</option>
+                <option value="table_5">Bàn 5</option>
+                <option value="table_6">Bàn 6</option>
+                <option value="table_7">Bàn 7</option>
+                <option value="table_8">Bàn 8</option>
+                <option value="table_9">Bàn 9</option>
+                <option value="table_10">Bàn 10</option>
             </select>
 
             <button onclick="toggleCart()">🛒
@@ -556,8 +553,6 @@
         <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
         <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
         <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
-
-
 
     </div>
 
@@ -593,6 +588,71 @@
 
 
     <script>
+        /* ======================= FIREBASE SETUP ======================= */
+        // TODO: Thay thế bằng config thật của bạn từ Firebase Console
+        const firebaseConfig = {
+            apiKey: "API_KEY_CUA_BAN",
+            authDomain: "PROJECT_ID.firebaseapp.com",
+            projectId: "PROJECT_ID",
+            storageBucket: "PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let currentTableId = "table_1";
+        let isTableLocked = false;
+
+        // Lắng nghe thay đổi bàn
+        async function handleTableChange() {
+            const select = document.getElementById("tableSelect");
+            const newTableId = select.value;
+
+            // Kiểm tra trạng thái bàn mới
+            const docRef = db.collection("tables").doc(newTableId);
+
+            try {
+                const doc = await docRef.get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.status === "active") {
+                        alert("Bàn này đang có người ngồi! Vui lòng chọn bàn khác.");
+                        // Reset về bàn cũ
+                        select.value = currentTableId;
+                        return;
+                    }
+                }
+
+                // Nếu bàn trống, chuyển sang bàn mới
+                currentTableId = newTableId;
+
+                // Reset session mới
+                cart = {};
+                orderedItems = {};
+                updateCart();
+                renderOrderedItems();
+
+                // Khóa bàn mới (tạo session)
+                await lockTable(currentTableId);
+
+            } catch (error) {
+                console.error("Lỗi kiểm tra bàn:", error);
+                alert("Lỗi kết nối Firebase! Hãy kiểm tra Config.");
+            }
+        }
+
+        async function lockTable(tableId) {
+            // Cập nhật trạng thái active
+            await db.collection("tables").doc(tableId).set({
+                id: tableId,
+                name: document.querySelector(`#tableSelect option[value='${tableId}']`).text,
+                status: "active",
+                last_active: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+        }
 
         function renderOrderedItems() {
             const box = document.getElementById("orderedItems");
@@ -705,26 +765,7 @@
 
 
         /*=================xóa toàn bộ giỏ hàng=======================*/
-
-        function clearCart() {
-            showConfirm(translations[currentLang].confirm.clearAll, function (ok) {
-
-                if (!ok) return; // Nhấn Cancel → không làm gì
-
-                // Nhấn OK → xóa toàn bộ giỏ hàng
-                for (let id in cart) {
-                    cart[id].qty = 0;
-                    cart[id].tempQty = 0;
-                }
-
-                updateCart();
-                renderMenu();
-            });
-        }
-
-
-
-
+        // (Duplicate function removed)
 
         /*==================Chức năng cho ô số lượng giỏ hàng========*/
 
@@ -1074,40 +1115,58 @@
 
         /* ======================= ORDER ======================= */
         function placeOrder() {
-            let hasItems = false;
-
-            for (let id in cart) {
-                if (cart[id].qty > 0) {
-                    hasItems = true;
-                    break;
-                }
-            }
-
-            if (!hasItems) {
+            if (Object.keys(cart).length === 0) {
                 showAlert(translations[currentLang].messages.emptyCart);
                 return;
             }
 
-            // 🔥 Chuyển toàn bộ món trong cart → orderedItems
+            // Chuyển từ Cart sang Ordered
             for (let id in cart) {
                 if (cart[id].qty > 0) {
-
-                    if (!orderedItems[id]) {
-                        orderedItems[id] = { ...cart[id] };
-                    } else {
+                    if (orderedItems[id]) {
                         orderedItems[id].qty += cart[id].qty;
+                    } else {
+                        orderedItems[id] = { ...cart[id] };
                     }
-
-                    cart[id].qty = 0;
-                    cart[id].tempQty = 0;
                 }
             }
 
-            updateCart();
-            renderMenu();
-            renderOrderedItems();
+            // Gửi lên Firebase
+            saveOrderToFirebase();
 
+            // Xóa cart
+            cart = {};
+            updateCart();
+            renderOrderedItems();
+            toggleCart(); // đóng cart
+
+            // Hiển thị thông báo
             showAlert(translations[currentLang].messages.orderSent);
+        }
+
+        async function saveOrderToFirebase() {
+            // Chuyển orderedItems (object) thành array để lưu
+            const itemsArray = [];
+            let totalAmount = 0;
+
+            for (let id in orderedItems) {
+                itemsArray.push(orderedItems[id]);
+                totalAmount += orderedItems[id].qty * orderedItems[id].price;
+            }
+
+            try {
+                await db.collection("tables").doc(currentTableId).set({
+                    orders: itemsArray,
+                    total: totalAmount,
+                    status: "active", // Đảm bảo vẫn active
+                    last_updated: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                console.log("Đã lưu đơn hàng lên Firebase");
+            } catch (e) {
+                console.error("Lỗi lưu đơn hàng:", e);
+                alert("Không thể gửi đơn hàng! Kiểm tra mạng.");
+            }
         }
 
 
@@ -1158,7 +1217,10 @@
         });
 
         /* INIT */
-        renderMenu();
+        window.onload = function () {
+            renderMenu();
+            handleTableChange();
+        };
     </script>
 
 
