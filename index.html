@@ -234,6 +234,24 @@
             border: 1px solid rgba(90, 90, 90, 0.5);
         }
 
+        /* Chỉnh riêng cho nút Đã gọi để hiển thị 2 dòng */
+        #orderedBtn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.2;
+            padding: 4px 12px;
+            /* Giảm padding dọc chút vì button sẽ cao hơn */
+        }
+
+        #orderedBtnTotal {
+            font-size: 0.85em;
+            color: #4ade80;
+            /* Màu xanh lá nhẹ cho tiền */
+            margin-top: 2px;
+            font-weight: bold;
+        }
+
         /* Mobile Header */
         @media (max-width: 600px) {
             header {
@@ -520,9 +538,12 @@
                 (<span id="cartCount">0</span>)
             </button>
 
-            <button onclick="toggleOrdered()">🔔
-                <span id="orderedText">Đã gọi</span>
-                (<span id="orderedCount">0</span>)
+            <button id="orderedBtn" onclick="toggleOrdered()">
+                <div>
+                    🔔 <span id="orderedText">Đã gọi</span>
+                    (<span id="orderedCount">0</span>)
+                </div>
+                <div id="orderedBtnTotal">0 đ</div>
             </button>
 
         </div>
@@ -592,6 +613,10 @@
             }
 
             document.getElementById("orderedTotal").innerText = total.toLocaleString();
+
+            // Cập nhật tổng tiền trên nút Header
+            document.getElementById("orderedBtnTotal").innerText = total.toLocaleString() + " đ";
+
             document.getElementById("orderedCount").innerText =
                 Object.values(orderedItems).reduce((a, b) => a + b.qty, 0);
         }
