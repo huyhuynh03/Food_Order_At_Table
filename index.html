@@ -234,6 +234,22 @@
             border: 1px solid rgba(90, 90, 90, 0.5);
         }
 
+        /* Ordered button multi-line styling */
+        #orderedBtn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.3;
+            padding: 6px 10px;
+        }
+
+        #orderedBtnTotal {
+            font-size: 11px;
+            color: #ffa64d;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
         /* Mobile Header */
         @media (max-width: 600px) {
             header {
@@ -511,9 +527,12 @@
                 (<span id="cartCount">0</span>)
             </button>
 
-            <button onclick="toggleOrdered()">🔔
-                <span id="orderedText">Đã gọi</span>
-                (<span id="orderedCount">0</span>)
+            <button id="orderedBtn" onclick="toggleOrdered()">
+                <div>🔔
+                    <span id="orderedText">Đã gọi</span>
+                    (<span id="orderedCount">0</span>)
+                </div>
+                <div id="orderedBtnTotal">0 đ</div>
             </button>
 
         </div>
@@ -604,6 +623,9 @@
             document.getElementById("orderedTotal").innerText = total.toLocaleString();
             document.getElementById("orderedCount").innerText =
                 Object.values(orderedItems).reduce((a, b) => a + b.qty, 0);
+
+            // Update total in header button
+            document.getElementById("orderedBtnTotal").innerText = total.toLocaleString() + " đ";
         }
 
 
