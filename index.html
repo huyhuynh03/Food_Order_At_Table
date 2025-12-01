@@ -502,18 +502,9 @@
                 <option>한국어</option>
             </select>
 
-            <select id="tableSelect">
-                <option>Bàn 1</option>
-                <option>Bàn 2</option>
-                <option>Bàn 3</option>
-                <option>Bàn 4</option>
-                <option>Bàn 5</option>
-                <option>Bàn 6</option>
-                <option>Bàn 7</option>
-                <option>Bàn 8</option>
-                <option>Bàn 9</option>
-                <option>Bàn 10</option>
-            </select>
+            <span id="tableDisplay"
+                style="padding: 8px 12px; border-radius: 10px; background: rgba(40, 40, 40, 0.6); color: #fff; border: 1px solid rgba(90, 90, 90, 0.5);">Bàn
+                1</span>
 
             <button onclick="toggleCart()">🛒
                 <span id="cartBtnText">Giỏ</span>
@@ -872,6 +863,7 @@
         let currentTab = "nuong";
         let currentLang = "vi";
         let orderedItems = {}; // lưu các món đã đặt (icon chuông)
+        let currentTableId = 1; // lưu table ID từ URL
 
 
         /* ======================= RENDER MENU ======================= */
@@ -1088,11 +1080,8 @@
                 return;
             }
 
-            // Lấy bàn đang chọn
-            const tableSelect = document.getElementById("tableSelect");
-            // Giả sử value là "Bàn 1", "Bàn 2"... ta cần lấy số
-            // Cách đơn giản: lấy index + 1
-            const tableIndex = tableSelect.selectedIndex + 1;
+            // Lấy bàn từ URL parameter
+            const tableIndex = currentTableId;
             const tableId = `table_${tableIndex}`;
 
             // Gửi lên Firebase
@@ -1182,14 +1171,9 @@
             document.getElementById("orderedTitle").innerText = translations[currentLang].ordered.title;
             document.getElementById("orderedTotalLabel").innerText = translations[currentLang].ordered.total;
 
-            // Table names
-            const tableSelect = document.getElementById("tableSelect");
-            const saved = tableSelect.selectedIndex;
-            tableSelect.innerHTML = "";
-            for (let i = 1; i <= 10; i++) {
-                tableSelect.innerHTML += `<option>${translations[currentLang].table} ${i}</option>`;
-            }
-            tableSelect.selectedIndex = saved;
+            // Update table display text with current language
+            const tableDisplay = document.getElementById("tableDisplay");
+            tableDisplay.innerText = `${translations[currentLang].table} ${currentTableId}`;
 
             // ⬅️ FIX: Re-render menu + cart + ordered items theo ngôn ngữ mới
             renderMenu();
@@ -1197,7 +1181,28 @@
             renderOrderedItems();
         });
 
+        /* ======================= URL PARAMETER HANDLING ======================= */
+        // Lấy table ID từ URL parameter (ví dụ: ?table=3)
+        function getTableIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tableParam = urlParams.get('table');
+
+            if (tableParam) {
+                const tableNum = parseInt(tableParam);
+                // Validate table number (1-10)
+                if (tableNum >= 1 && tableNum <= 10) {
+                    return tableNum;
+                }
+            }
+
+            // Default to table 1 if no valid parameter
+            return 1;
+        }
+
         /* INIT */
+        // Lấy table ID từ URL và cập nhật hiển thị
+        currentTableId = getTableIdFromUrl();
+        document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
         renderMenu();
     </script>
 
