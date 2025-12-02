@@ -1161,8 +1161,6 @@
             });
         }
 
-
-
         /* ======================= LANGUAGE SWITCH ======================= */
         document.getElementById("langSelect").addEventListener("change", function () {
 
@@ -1187,16 +1185,6 @@
 
             // Cart text
             document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
-            document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
-
-            // Ordered panel text
-            document.getElementById("orderedTitle").innerText = translations[currentLang].ordered.title;
-            document.getElementById("orderedTotalLabel").innerText = translations[currentLang].ordered.total;
-
-            // Update table display text with current language
-            const tableDisplay = document.getElementById("tableDisplay");
-            tableDisplay.innerText = `${translations[currentLang].table} ${currentTableId}`;
-
             // ⬅️ FIX: Re-render menu + cart + ordered items theo ngôn ngữ mới
             renderMenu();
             updateCart();
@@ -1222,25 +1210,28 @@
 
         function getTableIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token'); // Đổi từ 'table' sang 'token'
+            const token = urlParams.get('token');
+
+            console.log("URL Search:", window.location.search);
+            console.log("Token from URL:", token);
+            console.log("Lookup result:", tableTokens[token]);
 
             if (token && tableTokens[token]) {
                 return tableTokens[token];
             }
 
             // Nếu không có token hoặc token sai -> Chặn truy cập hoặc báo lỗi
-            // Ở đây ta sẽ ẩn giao diện và hiện thông báo
             document.body.innerHTML = `
             <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#ff4d4d; flex-direction:column; text-align:center;">
                 <h1>⚠️ Truy cập bị từ chối</h1>
                 <p>Vui lòng quét mã QR trên bàn để gọi món.</p>
+                <p style="color:#666; font-size:12px; margin-top:10px;">Debug: ${token || 'No Token'}</p>
             </div>
         `;
-            throw new Error("Invalid Table Token"); // Dừng script
+            throw new Error("Invalid Table Token");
         }
 
         /* INIT */
-        // Lấy table ID từ URL và cập nhật hiển thị
         try {
             currentTableId = getTableIdFromUrl();
             document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
@@ -1268,7 +1259,204 @@
                 <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
             </div>
         </div>
-    </div>
+
+        /* ======================= CART PANEL ======================= */
+
+
+
+        function toggleCart() {
+        document.getElementById("cartPanel").classList.toggle("show");
+        }
+
+        function toggleOrdered() {
+        document.getElementById("orderedPanel").classList.toggle("show");
+        }
+
+
+        /* ======================= ORDER ======================= */
+        function placeOrder() {
+        let hasItems = false;
+        let itemsToOrder = [];
+
+        for (let id in cart) {
+        if (cart[id].qty > 0) {
+        hasItems = true;
+        itemsToOrder.push({
+        id: id,
+        name: cart[id].name, // Lưu cả object tên đa ngôn ngữ
+        price: cart[id].price,
+        qty: cart[id].qty
+        });
+        }
+        }
+
+        if (!hasItems) {
+        showAlert(translations[currentLang].messages.emptyCart);
+        return;
+        }
+
+        // Lấy bàn từ URL parameter
+        const tableIndex = currentTableId;
+        const tableId = `table_${tableIndex}`;
+
+        // Gửi lên Firebase
+        const tableRef = db.collection("tables").doc(tableId);
+
+        // Dùng arrayUnion để thêm món mới vào mảng orders hiện có
+        // Lưu ý: arrayUnion chỉ thêm nếu chưa tồn tại (unique), nhưng ở đây mỗi lần đặt là 1 đợt khác nhau?
+        // Nếu user đặt món giống hệt (id, qty) thì arrayUnion có thể lọc bỏ.
+        // Tuy nhiên, logic đơn giản nhất là cứ push vào.
+        // Nhưng Firestore arrayUnion so sánh deep equality.
+        // Để an toàn và đơn giản cho bài toán này, ta sẽ đọc về rồi update, hoặc dùng arrayUnion nếu chấp nhận rủi ro
+        trùng.
+        // Tốt nhất là đọc về rồi push thêm vào mảng.
+
+        // Tuy nhiên, để tối ưu UX (không chờ mạng quá lâu), ta có thể update optimistic UI trước.
+
+        // Cập nhật UI local (như cũ)
+        for (let id in cart) {
+        if (cart[id].qty > 0) {
+        if (!orderedItems[id]) {
+        orderedItems[id] = { ...cart[id] };
+        } else {
+        orderedItems[id].qty += cart[id].qty;
+        }
+        cart[id].qty = 0;
+        cart[id].tempQty = 0;
+        }
+        }
+
+        updateCart();
+        renderMenu();
+        renderOrderedItems();
+        showAlert(translations[currentLang].messages.orderSent);
+
+        // Gửi background lên Firebase
+        tableRef.get().then((doc) => {
+        let currentOrders = [];
+        if (doc.exists) {
+        currentOrders = doc.data().orders || [];
+        }
+
+        // Nối thêm món mới
+        const newOrders = currentOrders.concat(itemsToOrder);
+
+        // Update lại
+        // Cần set cả name cho bàn nếu chưa có?
+        // "Bàn X"
+        return tableRef.set({
+        name: `Bàn ${tableIndex}`,
+        orders: newOrders,
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        }).catch((error) => {
+        console.error("Error writing document: ", error);
+        showAlert("Lỗi kết nối Firebase!");
+        });
+        }
+
+
+
+        /* ======================= LANGUAGE SWITCH ======================= */
+        document.getElementById("langSelect").addEventListener("change", function () {
+
+        document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
+        document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
+
+
+        currentLang = {
+        "Tiếng Việt": "vi", "English": "en", "中文": "zh", "日本語": "ja", "한국어": "ko"
+        }[this.value];
+
+        // Update tab text
+        document.querySelectorAll(".tab").forEach(tab => {
+        const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
+        tab.innerText = translations[currentLang].tabs[key];
+        });
+
+        // Buttons
+        document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
+        document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
+        document.getElementById("orderedText").innerText = translations[currentLang].buttons.ordered;
+
+        // Cart text
+        document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+        // ⬅️ FIX: Re-render menu + cart + ordered items theo ngôn ngữ mới
+        renderMenu();
+        updateCart();
+        renderOrderedItems();
+        });
+
+        /* ======================= URL PARAMETER HANDLING ======================= */
+
+        // MAPPING: Token bí mật -> ID Bàn
+        // Đây là lớp bảo mật để khách không thể đoán được URL bàn khác
+        const tableTokens = {
+        "t1-x8s9": 1,
+        "t2-m4k2": 2,
+        "t3-p9l1": 3,
+        "t4-q2w3": 4,
+        "t5-v5n6": 5,
+        "t6-b7c8": 6,
+        "t7-j1h2": 7,
+        "t8-f4d5": 8,
+        "t9-g6k7": 9,
+        "t10-z0x9": 10
+        };
+
+        function getTableIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        console.log("URL Search:", window.location.search);
+        console.log("Token from URL:", token);
+        console.log("Lookup result:", tableTokens[token]);
+
+        if (token && tableTokens[token]) {
+        return tableTokens[token];
+        }
+
+        // Nếu không có token hoặc token sai -> Chặn truy cập hoặc báo lỗi
+        document.body.innerHTML = `
+        <div
+            style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#ff4d4d; flex-direction:column; text-align:center;">
+            <h1>⚠️ Truy cập bị từ chối</h1>
+            <p>Vui lòng quét mã QR trên bàn để gọi món.</p>
+            <p style="color:#666; font-size:12px; margin-top:10px;">Debug: ${token || 'No Token'}</p>
+        </div>
+        `;
+        throw new Error("Invalid Table Token");
+        }
+
+        /* INIT */
+        try {
+        currentTableId = getTableIdFromUrl();
+        document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
+        renderMenu();
+        } catch (e) {
+        console.error(e);
+        }
+        </script>
+
+
+        <div id="customAlertOverlay">
+            <div id="customAlertBox">
+                <div id="alertMessage">Thông báo</div>
+                <div id="alertOkBtn" onclick="closeAlert()">OK</div>
+            </div>
+        </div>
+
+
+        <div id="customConfirmOverlay">
+            <div id="customConfirmBox">
+                <div id="confirmMessage">Bạn có chắc?</div>
+
+                <div class="confirm-buttons">
+                    <div id="confirmCancelBtn" class="confirm-btn" onclick="closeConfirm(false)">Hủy</div>
+                    <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
+                </div>
+            </div>
+        </div>
 
 
 </body>
