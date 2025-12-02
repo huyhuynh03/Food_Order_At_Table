@@ -1204,28 +1204,50 @@
         });
 
         /* ======================= URL PARAMETER HANDLING ======================= */
-        // Lấy table ID từ URL parameter (ví dụ: ?table=3)
+
+        // MAPPING: Token bí mật -> ID Bàn
+        // Đây là lớp bảo mật để khách không thể đoán được URL bàn khác
+        const tableTokens = {
+            "t1-x8s9": 1,
+            "t2-m4k2": 2,
+            "t3-p9l1": 3,
+            "t4-q2w3": 4,
+            "t5-v5n6": 5,
+            "t6-b7c8": 6,
+            "t7-j1h2": 7,
+            "t8-f4d5": 8,
+            "t9-g6k7": 9,
+            "t10-z0x9": 10
+        };
+
         function getTableIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
-            const tableParam = urlParams.get('table');
+            const token = urlParams.get('token'); // Đổi từ 'table' sang 'token'
 
-            if (tableParam) {
-                const tableNum = parseInt(tableParam);
-                // Validate table number (1-10)
-                if (tableNum >= 1 && tableNum <= 10) {
-                    return tableNum;
-                }
+            if (token && tableTokens[token]) {
+                return tableTokens[token];
             }
 
-            // Default to table 1 if no valid parameter
-            return 1;
+            // Nếu không có token hoặc token sai -> Chặn truy cập hoặc báo lỗi
+            // Ở đây ta sẽ ẩn giao diện và hiện thông báo
+            document.body.innerHTML = `
+            <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#ff4d4d; flex-direction:column; text-align:center;">
+                <h1>⚠️ Truy cập bị từ chối</h1>
+                <p>Vui lòng quét mã QR trên bàn để gọi món.</p>
+            </div>
+        `;
+            throw new Error("Invalid Table Token"); // Dừng script
         }
 
         /* INIT */
         // Lấy table ID từ URL và cập nhật hiển thị
-        currentTableId = getTableIdFromUrl();
-        document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
-        renderMenu();
+        try {
+            currentTableId = getTableIdFromUrl();
+            document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
+            renderMenu();
+        } catch (e) {
+            console.error(e);
+        }
     </script>
 
 
