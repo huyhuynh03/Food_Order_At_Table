@@ -506,397 +506,397 @@
 
 <body>
 
-    <header>
-        <div class="logo">🔥 Yaki</div>
+<header>
+    <div class="logo">🔥 Yaki</div>
 
-        <div class="header-controls">
-            <select id="langSelect">
-                <option>Tiếng Việt</option>
-                <option>English</option>
-                <option>中文</option>
-                <option>日本語</option>
-                <option>한국어</option>
-            </select>
+    <div class="header-controls">
+        <select id="langSelect">
+            <option>Tiếng Việt</option>
+            <option>English</option>
+            <option>中文</option>
+            <option>日本語</option>
+            <option>한국어</option>
+        </select>
 
-            <span id="tableDisplay"
-                style="padding: 8px 12px; border-radius: 10px; background: rgba(40, 40, 40, 0.6); color: #fff; border: 1px solid rgba(90, 90, 90, 0.5);">Bàn
+        <span id="tableDisplay"
+              style="padding: 8px 12px; border-radius: 10px; background: rgba(40, 40, 40, 0.6); color: #fff; border: 1px solid rgba(90, 90, 90, 0.5);">Bàn
                 1</span>
 
-            <button onclick="toggleCart()">🛒
-                <span id="cartBtnText">Giỏ</span>
-                (<span id="cartCount">0</span>)
-            </button>
+        <button onclick="toggleCart()">🛒
+            <span id="cartBtnText">Giỏ</span>
+            (<span id="cartCount">0</span>)
+        </button>
 
-            <button id="orderedBtn" onclick="toggleOrdered()">
-                <div>🔔
-                    <span id="orderedText">Đã gọi</span>
-                    (<span id="orderedCount">0</span>)
-                </div>
-                <div id="orderedBtnTotal">0 đ</div>
-            </button>
-
-        </div>
-    </header>
-
-    <!-- TABS -->
-    <div class="tabs">
-
-        <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
-        <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
-        <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
-        <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
-
-
+        <button id="orderedBtn" onclick="toggleOrdered()">
+            <div>🔔
+                <span id="orderedText">Đã gọi</span>
+                (<span id="orderedCount">0</span>)
+            </div>
+            <div id="orderedBtnTotal">0 đ</div>
+        </button>
 
     </div>
+</header>
 
-    <!-- MENU -->
-    <div id="menuList" class="container"></div>
+<!-- TABS -->
+<div class="tabs">
 
-    <!-- CART -->
-    <div id="cartPanel">
-        <div style="display:flex; justify-content: space-between; align-items:center;">
-            <div class="cart-clear-btn" onclick="clearCart()">🗑️</div>
-            <div class="close-cart" onclick="toggleCart()">✖</div>
-        </div>
+    <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
+    <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
+    <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
+    <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
 
-        <h2 id="cartTitle">Giỏ hàng</h2>
-        <div id="cartItems"></div>
-        <h3 style="margin-top:20px">
-            <span id="totalLabel">Tổng</span>:
-            <span id="totalPrice">0</span> đ
-        </h3>
-        <div id="orderBtn" onclick="placeOrder()">Xác nhận đặt món</div>
+
+
+</div>
+
+<!-- MENU -->
+<div id="menuList" class="container"></div>
+
+<!-- CART -->
+<div id="cartPanel">
+    <div style="display:flex; justify-content: space-between; align-items:center;">
+        <div class="cart-clear-btn" onclick="clearCart()">🗑️</div>
+        <div class="close-cart" onclick="toggleCart()">✖</div>
     </div>
 
-    <div id="orderedPanel">
-        <div class="close-cart" onclick="toggleOrdered()">✖</div>
+    <h2 id="cartTitle">Giỏ hàng</h2>
+    <div id="cartItems"></div>
+    <h3 style="margin-top:20px">
+        <span id="totalLabel">Tổng</span>:
+        <span id="totalPrice">0</span> đ
+    </h3>
+    <div id="orderBtn" onclick="placeOrder()">Xác nhận đặt món</div>
+</div>
 
-        <h2 id="orderedTitle">Món đã gọi</h2>
-        <div id="orderedItems"></div>
+<div id="orderedPanel">
+    <div class="close-cart" onclick="toggleOrdered()">✖</div>
 
-        <h3 style="margin-top:20px">
-            <span id="orderedTotalLabel">Tổng</span>: <span id="orderedTotal">0</span> đ
-        </h3>
-    </div>
+    <h2 id="orderedTitle">Món đã gọi</h2>
+    <div id="orderedItems"></div>
+
+    <h3 style="margin-top:20px">
+        <span id="orderedTotalLabel">Tổng</span>: <span id="orderedTotal">0</span> đ
+    </h3>
+</div>
 
 
-    <script>
+<script>
 
-        /* ======================= FIREBASE SETUP ======================= */
-        // Firebase SDKs
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script>
+    /* ======================= FIREBASE SETUP ======================= */
+    // Firebase SDKs
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCTaXqidGM4DIyJnz1-zbg_6PdxmDpV30",
-            authDomain: "food-order-at-table-to-kitchen.firebaseapp.com",
-            projectId: "food-order-at-table-to-kitchen",
-            storageBucket: "food-order-at-table-to-kitchen.firebasestorage.app",
-            messagingSenderId: "179233667372",
-            appId: "1:179233667372:web:76170af27a89ff778a9489"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCCTaXqidGM4DIyJnz1-zbg_6PdxmDpV30",
+        authDomain: "food-order-at-table-to-kitchen.firebaseapp.com",
+        projectId: "food-order-at-table-to-kitchen",
+        storageBucket: "food-order-at-table-to-kitchen.firebasestorage.app",
+        messagingSenderId: "179233667372",
+        appId: "1:179233667372:web:76170af27a89ff778a9489"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-        function renderOrderedItems() {
-            const box = document.getElementById("orderedItems");
-            box.innerHTML = "";
+    function renderOrderedItems() {
+        const box = document.getElementById("orderedItems");
+        box.innerHTML = "";
 
-            let total = 0;
+        let total = 0;
 
-            for (let id in orderedItems) {
-                const item = orderedItems[id];
-                total += item.qty * item.price;
+        for (let id in orderedItems) {
+            const item = orderedItems[id];
+            total += item.qty * item.price;
 
-                box.innerHTML += `
+            box.innerHTML += `
             <div class="cart-item">
                 <b>${item.name[currentLang]}</b><br>
                 ${translations[currentLang].ordered.qty}: ${item.qty} × ${item.price.toLocaleString()} đ
             </div>
         `;
+        }
+
+        document.getElementById("orderedTotal").innerText = total.toLocaleString();
+        document.getElementById("orderedCount").innerText =
+            Object.values(orderedItems).reduce((a, b) => a + b.qty, 0);
+
+        // Update total in header button
+        document.getElementById("orderedBtnTotal").innerText = total.toLocaleString() + " đ";
+    }
+
+
+    /*=======================custom alert=========================*/
+    function showAlert(msg) {
+        const overlay = document.getElementById("customAlertOverlay");
+        const box = document.getElementById("customAlertBox");
+
+        document.getElementById("alertMessage").innerText = msg;
+
+        overlay.style.display = "flex";
+
+        // Reset animation để chạy lại mượt
+        box.style.animation = "none";
+        void box.offsetWidth; // trick restart animation
+        box.style.animation = "alertPop 0.35s ease forwards";
+    }
+
+    function closeAlert() {
+        const overlay = document.getElementById("customAlertOverlay");
+        overlay.style.display = "none";
+    }
+
+    /* ======================= CUSTOM CONFIRM ======================= */
+    let confirmCallback = null;
+
+    function showConfirm(msg, callback) {
+        confirmCallback = callback;
+
+        // Hiển thị nội dung confirm
+        document.getElementById("confirmMessage").innerText = msg;
+
+        // Cập nhật nút theo ngôn ngữ hiện tại
+        document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
+        document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
+
+        const overlay = document.getElementById("customConfirmOverlay");
+        const box = document.getElementById("customConfirmBox");
+
+        overlay.style.display = "flex";
+
+        // Reset animation để chạy lại mượt
+        box.style.animation = "none";
+        void box.offsetWidth; // trick restart animation
+        box.style.animation = "alertPop 0.35s ease forwards";
+    }
+
+    function closeConfirm(result) {
+        // Ẩn overlay
+        document.getElementById("customConfirmOverlay").style.display = "none";
+
+        // Chỉ gọi callback nếu có
+        if (confirmCallback) confirmCallback(result);
+    }
+
+    /* ======================= CLEAR CART ======================= */
+    function clearCart() {
+        // Hiển thị confirm trước khi xóa toàn bộ giỏ hàng
+        showConfirm(translations[currentLang].confirm.clearAll, function (ok) {
+
+            if (!ok) return; // Nhấn Cancel → giữ nguyên trạng thái
+
+            // Nếu nhấn OK → xóa toàn bộ
+            for (let id in cart) {
+                cart[id].qty = 0;
+                cart[id].tempQty = 0;
             }
-
-            document.getElementById("orderedTotal").innerText = total.toLocaleString();
-            document.getElementById("orderedCount").innerText =
-                Object.values(orderedItems).reduce((a, b) => a + b.qty, 0);
-
-            // Update total in header button
-            document.getElementById("orderedBtnTotal").innerText = total.toLocaleString() + " đ";
-        }
-
-
-        /*=======================custom alert=========================*/
-        function showAlert(msg) {
-            const overlay = document.getElementById("customAlertOverlay");
-            const box = document.getElementById("customAlertBox");
-
-            document.getElementById("alertMessage").innerText = msg;
-
-            overlay.style.display = "flex";
-
-            // Reset animation để chạy lại mượt
-            box.style.animation = "none";
-            void box.offsetWidth; // trick restart animation
-            box.style.animation = "alertPop 0.35s ease forwards";
-        }
-
-        function closeAlert() {
-            const overlay = document.getElementById("customAlertOverlay");
-            overlay.style.display = "none";
-        }
-
-        /* ======================= CUSTOM CONFIRM ======================= */
-        let confirmCallback = null;
-
-        function showConfirm(msg, callback) {
-            confirmCallback = callback;
-
-            // Hiển thị nội dung confirm
-            document.getElementById("confirmMessage").innerText = msg;
-
-            // Cập nhật nút theo ngôn ngữ hiện tại
-            document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
-            document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
-
-            const overlay = document.getElementById("customConfirmOverlay");
-            const box = document.getElementById("customConfirmBox");
-
-            overlay.style.display = "flex";
-
-            // Reset animation để chạy lại mượt
-            box.style.animation = "none";
-            void box.offsetWidth; // trick restart animation
-            box.style.animation = "alertPop 0.35s ease forwards";
-        }
-
-        function closeConfirm(result) {
-            // Ẩn overlay
-            document.getElementById("customConfirmOverlay").style.display = "none";
-
-            // Chỉ gọi callback nếu có
-            if (confirmCallback) confirmCallback(result);
-        }
-
-        /* ======================= CLEAR CART ======================= */
-        function clearCart() {
-            // Hiển thị confirm trước khi xóa toàn bộ giỏ hàng
-            showConfirm(translations[currentLang].confirm.clearAll, function (ok) {
-
-                if (!ok) return; // Nhấn Cancel → giữ nguyên trạng thái
-
-                // Nếu nhấn OK → xóa toàn bộ
-                for (let id in cart) {
-                    cart[id].qty = 0;
-                    cart[id].tempQty = 0;
-                }
-
-                updateCart();
-                renderMenu();
-            });
-        }
-
-
-        /*=======================xóa từng món=========================*/
-
-        function deleteItem(id) {
-            cart[id].qty = 0;
-            cart[id].tempQty = 0;
 
             updateCart();
             renderMenu();
-        }
+        });
+    }
 
 
-        /*=================xóa toàn bộ giỏ hàng=======================*/
+    /*=======================xóa từng món=========================*/
 
-        function clearCart() {
-            showConfirm(translations[currentLang].confirm.clearAll, function (ok) {
+    function deleteItem(id) {
+        cart[id].qty = 0;
+        cart[id].tempQty = 0;
 
-                if (!ok) return; // Nhấn Cancel → không làm gì
-
-                // Nhấn OK → xóa toàn bộ giỏ hàng
-                for (let id in cart) {
-                    cart[id].qty = 0;
-                    cart[id].tempQty = 0;
-                }
-
-                updateCart();
-                renderMenu();
-            });
-        }
+        updateCart();
+        renderMenu();
+    }
 
 
+    /*=================xóa toàn bộ giỏ hàng=======================*/
 
+    function clearCart() {
+        showConfirm(translations[currentLang].confirm.clearAll, function (ok) {
 
+            if (!ok) return; // Nhấn Cancel → không làm gì
 
-        /*==================Chức năng cho ô số lượng giỏ hàng========*/
-
-        function changeCartQty(input) {
-            const id = input.dataset.id;
-            const oldQty = cart[id].qty;
-            let newQty = input.value;
-
-            // Rỗng → không cập nhật gì (để user nhập tiếp)
-            if (newQty === "") return;
-
-            newQty = Number(newQty);
-            if (newQty < 0) newQty = 0;
-
-            input.value = newQty;
-
-            // Nếu = 0 → xóa khỏi giỏ
-            if (newQty === 0) {
+            // Nhấn OK → xóa toàn bộ giỏ hàng
+            for (let id in cart) {
                 cart[id].qty = 0;
-                cart[id].tempQty = 0; // đồng bộ với menu
-                updateCart();
-                renderMenu();         // cập nhật menu
-                return;
+                cart[id].tempQty = 0;
             }
 
-            // Nếu khác số lượng cũ → cập nhật
-            if (newQty !== oldQty) {
-                cart[id].qty = newQty;
-                cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
-                updateCart();
-                renderMenu();
-            }
+            updateCart();
+            renderMenu();
+        });
+    }
+
+
+
+
+
+    /*==================Chức năng cho ô số lượng giỏ hàng========*/
+
+    function changeCartQty(input) {
+        const id = input.dataset.id;
+        const oldQty = cart[id].qty;
+        let newQty = input.value;
+
+        // Rỗng → không cập nhật gì (để user nhập tiếp)
+        if (newQty === "") return;
+
+        newQty = Number(newQty);
+        if (newQty < 0) newQty = 0;
+
+        input.value = newQty;
+
+        // Nếu = 0 → xóa khỏi giỏ
+        if (newQty === 0) {
+            cart[id].qty = 0;
+            cart[id].tempQty = 0; // đồng bộ với menu
+            updateCart();
+            renderMenu();         // cập nhật menu
+            return;
         }
 
+        // Nếu khác số lượng cũ → cập nhật
+        if (newQty !== oldQty) {
+            cart[id].qty = newQty;
+            cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
+            updateCart();
+            renderMenu();
+        }
+    }
 
-        /* ======================= NGÔN NGỮ ======================= */
-        const translations = {
-            vi: {
-                tabs: { nuong: "Món Nướng", lau: "Lẩu", mon_phu: "Món Phụ", nuoc: "Đồ Uống" },
-                buttons: { add: "Thêm", order: "Xác nhận đặt món", cart: "Giỏ", ordered: "Đã gọi" },
-                messages: {
-                    orderSent: "Đơn đã gửi tới bếp!",
-                    emptyCart: "Giỏ hàng trống!"
-                },
-                cart: { title: "Giỏ hàng", total: "Tổng", qty: "SL" },
-                ordered: { title: "Món đã gọi", total: "Tổng", qty: "SL" },
-                table: "Bàn",
-                confirm: {
-                    clearAll: "Xóa toàn bộ giỏ hàng?",
-                    cancel: "Hủy",
-                    ok: "Xóa"
-                }
 
+    /* ======================= NGÔN NGỮ ======================= */
+    const translations = {
+        vi: {
+            tabs: { nuong: "Món Nướng", lau: "Lẩu", mon_phu: "Món Phụ", nuoc: "Đồ Uống" },
+            buttons: { add: "Thêm", order: "Xác nhận đặt món", cart: "Giỏ", ordered: "Đã gọi" },
+            messages: {
+                orderSent: "Đơn đã gửi tới bếp!",
+                emptyCart: "Giỏ hàng trống!"
             },
-            en: {
-                tabs: { nuong: "Grilled", lau: "Hotpot", mon_phu: "Side Dishes", nuoc: "Drinks" },
-                buttons: { add: "Add", order: "Confirm Order", cart: "Cart", ordered: "Ordered" },
-                messages: {
-                    orderSent: "Order sent to kitchen!",
-                    emptyCart: "Your cart is empty!"
-                },
-                cart: { title: "Cart", total: "Total", qty: "Qty" },
-                ordered: { title: "Ordered Items", total: "Total", qty: "Qty" },
-                table: "Table",
-                confirm: {
-                    clearAll: "Delete entire cart?",
-                    cancel: "Cancel",
-                    ok: "Delete",
-                }
-
-            },
-            zh: {
-                tabs: { nuong: "烤肉", lau: "火锅", mon_phu: "小菜", nuoc: "饮料" },
-                buttons: { add: "添加", order: "確認訂單", cart: "购物车", ordered: "已点菜" },
-                messages: {
-                    orderSent: "订单已发送到厨房！",
-                    emptyCart: "購物車是空的！"
-                },
-                cart: { title: "购物车", total: "总计", qty: "数量" },
-                ordered: { title: "已点菜品", total: "总计", qty: "数量" },
-                table: "桌",
-                confirm: {
-                    clearAll: "刪除整個購物車？",
-                    cancel: "取消",
-                    ok: "擦除"
-                }
-
-            },
-            ja: {
-                tabs: { nuong: "焼肉", lau: "鍋", mon_phu: "サイド", nuoc: "ドリンク" },
-                buttons: { add: "追加", order: "注文を確認する", cart: "カート", ordered: "注文済み" },
-                messages: {
-                    orderSent: "注文が送信されました！",
-                    emptyCart: "カートは空です!"
-                },
-                cart: { title: "カート", total: "合計", qty: "数量" },
-                ordered: { title: "注文済み料理", total: "合計", qty: "数量" },
-                table: "テーブル",
-                confirm: {
-                    clearAll: "カート全体を削除しますか?",
-                    cancel: "キャンセル",
-                    ok: "消去"
-                }
-
-            },
-            ko: {
-                tabs: { nuong: "구이", lau: "전골", mon_phu: "사이드", nuoc: "음료" },
-                buttons: { add: "추가", order: "주문확인", cart: "장바구니", ordered: "주문완료" },
-                messages: {
-                    orderSent: "주문이 전송되었습니다!",
-                    emptyCart: "장바구니가 비어있습니다!"
-                },
-                cart: { title: "장바구니", total: "총", qty: "수량" },
-                ordered: { title: "주문완료 메뉴", total: "총", qty: "수량" },
-                table: "테이블",
-                confirm: {
-                    clearAll: "장바구니 전체를 삭제하시겠습니까?",
-                    cancel: "취소",
-                    ok: "삭제"
-                }
-
+            cart: { title: "Giỏ hàng", total: "Tổng", qty: "SL" },
+            ordered: { title: "Món đã gọi", total: "Tổng", qty: "SL" },
+            table: "Bàn",
+            confirm: {
+                clearAll: "Xóa toàn bộ giỏ hàng?",
+                cancel: "Hủy",
+                ok: "Xóa"
             }
-        };
 
-        /* ======================= PRODUCT DATA ======================= */
-        const products = {
-            nuong: [
-                { id: 1, name: { vi: "Ba chỉ bò Mỹ", en: "US Beef Belly", zh: "美國牛腹肉", ja: "米国牛バラ", ko: "미국 소고기 배" }, price: 139000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true" },
-                { id: 2, name: { vi: "Dẻ sườn bò", en: "Beef Ribs", zh: "牛肋排", ja: "牛リブ", ko: "소갈비" }, price: 169000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true" },
-                { id: 3, name: { vi: "Sườn heo sốt mật ong", en: "Honey Pork Ribs", zh: "蜜汁豬肋排", ja: "ハニーポークリブ", ko: "허니 돼지갈비" }, price: 129000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true" },
-                { id: 4, name: { vi: "Gà nướng", en: "Grilled Chicken", zh: "烤雞", ja: "グリルチキン", ko: "구운 닭고기" }, price: 89000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true" }
-            ],
-            lau: [
-                { id: 5, name: { vi: "Lẩu kim chi", en: "Kimchi Hotpot", zh: "泡菜火锅", ja: "キムチ鍋", ko: "김치전골" }, price: 199000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true" },
-                { id: 6, name: { vi: "Lẩu bulgogi", en: "Bulgogi Hotpot", zh: "烤肉火锅", ja: "プルコギ鍋", ko: "불고기전골" }, price: 249000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true" }
-            ],
-            mon_phu: [
-                { id: 7, name: { vi: "Tokbokki phô mai", en: "Cheese Tokbokki", zh: "芝士炒年糕", ja: "チーズトッポッキ", ko: "치즈 떡볶이" }, price: 69000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true" },
-                { id: 8, name: { vi: "Cơm trộn Hàn Quốc", en: "Bibimbap", zh: "拌饭", ja: "ビビンバ", ko: "비빔밥" }, price: 59000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true" },
-                { id: 9, name: { vi: "Khoai tây chiên", en: "French Fries", zh: "薯条", ja: "ポテトフライ", ko: "감자튀김" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true" }
-            ],
-            nuoc: [
-                { id: 10, name: { vi: "Coca Cola", en: "Coca Cola", zh: "可口可乐", ja: "コカコーラ", ko: "코카콜라" }, price: 15000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true" },
-                { id: 11, name: { vi: "Trà đào", en: "Peach Tea", zh: "桃茶", ja: "ピーチティー", ko: "복숭아차" }, price: 29000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true" },
-                { id: 12, name: { vi: "Bia", en: "Beer", zh: "啤酒", ja: "ビール", ko: "맥주" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true" }
-            ]
-        };
+        },
+        en: {
+            tabs: { nuong: "Grilled", lau: "Hotpot", mon_phu: "Side Dishes", nuoc: "Drinks" },
+            buttons: { add: "Add", order: "Confirm Order", cart: "Cart", ordered: "Ordered" },
+            messages: {
+                orderSent: "Order sent to kitchen!",
+                emptyCart: "Your cart is empty!"
+            },
+            cart: { title: "Cart", total: "Total", qty: "Qty" },
+            ordered: { title: "Ordered Items", total: "Total", qty: "Qty" },
+            table: "Table",
+            confirm: {
+                clearAll: "Delete entire cart?",
+                cancel: "Cancel",
+                ok: "Delete",
+            }
 
-        /* ======================= STATE ======================= */
-        let cart = {};
-        let currentTab = "nuong";
-        let currentLang = "vi";
-        let orderedItems = {}; // lưu các món đã đặt (icon chuông)
-        let currentTableId = 1; // lưu table ID từ URL
+        },
+        zh: {
+            tabs: { nuong: "烤肉", lau: "火锅", mon_phu: "小菜", nuoc: "饮料" },
+            buttons: { add: "添加", order: "確認訂單", cart: "购物车", ordered: "已点菜" },
+            messages: {
+                orderSent: "订单已发送到厨房！",
+                emptyCart: "購物車是空的！"
+            },
+            cart: { title: "购物车", total: "总计", qty: "数量" },
+            ordered: { title: "已点菜品", total: "总计", qty: "数量" },
+            table: "桌",
+            confirm: {
+                clearAll: "刪除整個購物車？",
+                cancel: "取消",
+                ok: "擦除"
+            }
+
+        },
+        ja: {
+            tabs: { nuong: "焼肉", lau: "鍋", mon_phu: "サイド", nuoc: "ドリンク" },
+            buttons: { add: "追加", order: "注文を確認する", cart: "カート", ordered: "注文済み" },
+            messages: {
+                orderSent: "注文が送信されました！",
+                emptyCart: "カートは空です!"
+            },
+            cart: { title: "カート", total: "合計", qty: "数量" },
+            ordered: { title: "注文済み料理", total: "合計", qty: "数量" },
+            table: "テーブル",
+            confirm: {
+                clearAll: "カート全体を削除しますか?",
+                cancel: "キャンセル",
+                ok: "消去"
+            }
+
+        },
+        ko: {
+            tabs: { nuong: "구이", lau: "전골", mon_phu: "사이드", nuoc: "음료" },
+            buttons: { add: "추가", order: "주문확인", cart: "장바구니", ordered: "주문완료" },
+            messages: {
+                orderSent: "주문이 전송되었습니다!",
+                emptyCart: "장바구니가 비어있습니다!"
+            },
+            cart: { title: "장바구니", total: "총", qty: "수량" },
+            ordered: { title: "주문완료 메뉴", total: "총", qty: "수량" },
+            table: "테이블",
+            confirm: {
+                clearAll: "장바구니 전체를 삭제하시겠습니까?",
+                cancel: "취소",
+                ok: "삭제"
+            }
+
+        }
+    };
+
+    /* ======================= PRODUCT DATA ======================= */
+    const products = {
+        nuong: [
+            { id: 1, name: { vi: "Ba chỉ bò Mỹ", en: "US Beef Belly", zh: "美國牛腹肉", ja: "米国牛バラ", ko: "미국 소고기 배" }, price: 139000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true" },
+            { id: 2, name: { vi: "Dẻ sườn bò", en: "Beef Ribs", zh: "牛肋排", ja: "牛リブ", ko: "소갈비" }, price: 169000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true" },
+            { id: 3, name: { vi: "Sườn heo sốt mật ong", en: "Honey Pork Ribs", zh: "蜜汁豬肋排", ja: "ハニーポークリブ", ko: "허니 돼지갈비" }, price: 129000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true" },
+            { id: 4, name: { vi: "Gà nướng", en: "Grilled Chicken", zh: "烤雞", ja: "グリルチキン", ko: "구운 닭고기" }, price: 89000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true" }
+        ],
+        lau: [
+            { id: 5, name: { vi: "Lẩu kim chi", en: "Kimchi Hotpot", zh: "泡菜火锅", ja: "キムチ鍋", ko: "김치전골" }, price: 199000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true" },
+            { id: 6, name: { vi: "Lẩu bulgogi", en: "Bulgogi Hotpot", zh: "烤肉火锅", ja: "プルコギ鍋", ko: "불고기전골" }, price: 249000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true" }
+        ],
+        mon_phu: [
+            { id: 7, name: { vi: "Tokbokki phô mai", en: "Cheese Tokbokki", zh: "芝士炒年糕", ja: "チーズトッポッキ", ko: "치즈 떡볶이" }, price: 69000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true" },
+            { id: 8, name: { vi: "Cơm trộn Hàn Quốc", en: "Bibimbap", zh: "拌饭", ja: "ビビンバ", ko: "비빔밥" }, price: 59000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true" },
+            { id: 9, name: { vi: "Khoai tây chiên", en: "French Fries", zh: "薯条", ja: "ポテトフライ", ko: "감자튀김" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true" }
+        ],
+        nuoc: [
+            { id: 10, name: { vi: "Coca Cola", en: "Coca Cola", zh: "可口可乐", ja: "コカコーラ", ko: "코카콜라" }, price: 15000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true" },
+            { id: 11, name: { vi: "Trà đào", en: "Peach Tea", zh: "桃茶", ja: "ピーチティー", ko: "복숭아차" }, price: 29000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true" },
+            { id: 12, name: { vi: "Bia", en: "Beer", zh: "啤酒", ja: "ビール", ko: "맥주" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true" }
+        ]
+    };
+
+    /* ======================= STATE ======================= */
+    let cart = {};
+    let currentTab = "nuong";
+    let currentLang = "vi";
+    let orderedItems = {}; // lưu các món đã đặt (icon chuông)
+    let currentTableId = 1; // lưu table ID từ URL
 
 
-        /* ======================= RENDER MENU ======================= */
-        function renderMenu() {
-            const list = document.getElementById("menuList");
-            list.innerHTML = "";
+    /* ======================= RENDER MENU ======================= */
+    function renderMenu() {
+        const list = document.getElementById("menuList");
+        list.innerHTML = "";
 
-            products[currentTab].forEach(item => {
-                if (!cart[item.id]) cart[item.id] = { ...item, qty: 0 };
+        products[currentTab].forEach(item => {
+            if (!cart[item.id]) cart[item.id] = { ...item, qty: 0 };
 
-                list.innerHTML += `
+            list.innerHTML += `
             <div class="card
             ${cart[item.id].qty > 0 ? "selected" : ""}
             ${orderedItems[item.id] ? "ordered-flag" : ""}
@@ -925,126 +925,126 @@
                 </div>
             </div>
         </div>`;
-            });
-        }
-        /* ======================= TAB ======================= */
-        function changeTab(tab, event) {
-            currentTab = tab;
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            event.target.classList.add("active");
-            renderMenu();
-        }
+        });
+    }
+    /* ======================= TAB ======================= */
+    function changeTab(tab, event) {
+        currentTab = tab;
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        event.target.classList.add("active");
+        renderMenu();
+    }
 
-        /* ======================= QTY ======================= */
-        function changeQty(id, val) {
-            if (!cart[id].tempQty) cart[id].tempQty = 0;
+    /* ======================= QTY ======================= */
+    function changeQty(id, val) {
+        if (!cart[id].tempQty) cart[id].tempQty = 0;
 
-            cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
+        cart[id].tempQty = Math.max(0, Number(cart[id].tempQty) + val);
 
-            const num = cart[id].tempQty;
-            document.getElementById(`qtyInput_${id}`).value = num;
+        const num = cart[id].tempQty;
+        document.getElementById(`qtyInput_${id}`).value = num;
 
-            // 🔥 Nếu món đã trong giỏ → cập nhật giỏ ngay
-            if (cart[id].qty > 0) {
+        // 🔥 Nếu món đã trong giỏ → cập nhật giỏ ngay
+        if (cart[id].qty > 0) {
 
-                if (num === 0) {
-                    cart[id].qty = 0;
-                    updateCart();
-                    renderMenu();
-                    return;
-                }
-
-                cart[id].qty = num;
+            if (num === 0) {
+                cart[id].qty = 0;
                 updateCart();
-                renderCartItems();
-            }
-
-            renderMenu();
-        }
-
-
-        function updateTempQty(id, value) {
-            // Cho phép xoá hết để gõ lại mà không bị reset
-            if (value === "") {
-                cart[id].tempQty = 0;
+                renderMenu();
                 return;
             }
 
-            let num = Number(value);
-            if (isNaN(num)) return;
-
-            num = Math.max(0, num);
-            cart[id].tempQty = num;
-
-            // Nếu món này đã nằm trong giỏ thì cập nhật luôn SL thật + tổng tiền
-            if (cart[id].qty > 0) {
-                if (num === 0) {
-                    cart[id].qty = 0;
-                    updateCart();   // chỉ cập nhật giỏ, KHÔNG render lại menu
-                    renderMenu();   // 🔥 thêm dòng này để gỡ tick ngay lập tức
-                    return;
-                }
-
-                cart[id].qty = num;
-                updateCart();       // cập nhật tổng + danh sách trong giỏ
-            }
-        }
-
-
-
-
-        /* ======================= ADD TO CART ======================= */
-        function addToCart(id) {
-            const temp = Number(cart[id].tempQty || 0);
-
-            if (temp > 0) {
-                cart[id].qty = temp;  // CẬP NHẬT GIỎ
-                updateCart();
-                renderMenu();
-
-            }
-
-            // Animation rung
-            const el = document.getElementById("cartCount");
-            el.style.animation = "shake 0.4s";
-            setTimeout(() => el.style.animation = "", 400);
-        }
-
-        /* ======================= UPDATE CART ======================= */
-        function updateCart() {
-            let total = 0, count = 0;
-
-            for (let id in cart) {
-                if (cart[id].qty > 0) {
-                    total += cart[id].qty * cart[id].price;
-                    count += cart[id].qty;
-                }
-            }
-
-            // total ordered
-            let orderedTotal = 0;
-            for (let id in orderedItems) {
-                orderedTotal += orderedItems[id].qty * orderedItems[id].price;
-            }
-
-            // total final
-            document.getElementById("totalPrice").innerText =
-                (total + orderedTotal).toLocaleString();
-
-
-            document.getElementById("totalPrice").innerText = total.toLocaleString();
-            document.getElementById("cartCount").innerText = count;
+            cart[id].qty = num;
+            updateCart();
             renderCartItems();
         }
 
-        /* ======================= CART ITEMS ======================= */
-        function renderCartItems() {
-            const box = document.getElementById("cartItems");
-            box.innerHTML = "";
+        renderMenu();
+    }
 
-            for (let id in cart) {
-                if (cart[id].qty > 0) {
-                    box.innerHTML += `
+
+    function updateTempQty(id, value) {
+        // Cho phép xoá hết để gõ lại mà không bị reset
+        if (value === "") {
+            cart[id].tempQty = 0;
+            return;
+        }
+
+        let num = Number(value);
+        if (isNaN(num)) return;
+
+        num = Math.max(0, num);
+        cart[id].tempQty = num;
+
+        // Nếu món này đã nằm trong giỏ thì cập nhật luôn SL thật + tổng tiền
+        if (cart[id].qty > 0) {
+            if (num === 0) {
+                cart[id].qty = 0;
+                updateCart();   // chỉ cập nhật giỏ, KHÔNG render lại menu
+                renderMenu();   // 🔥 thêm dòng này để gỡ tick ngay lập tức
+                return;
+            }
+
+            cart[id].qty = num;
+            updateCart();       // cập nhật tổng + danh sách trong giỏ
+        }
+    }
+
+
+
+
+    /* ======================= ADD TO CART ======================= */
+    function addToCart(id) {
+        const temp = Number(cart[id].tempQty || 0);
+
+        if (temp > 0) {
+            cart[id].qty = temp;  // CẬP NHẬT GIỎ
+            updateCart();
+            renderMenu();
+
+        }
+
+        // Animation rung
+        const el = document.getElementById("cartCount");
+        el.style.animation = "shake 0.4s";
+        setTimeout(() => el.style.animation = "", 400);
+    }
+
+    /* ======================= UPDATE CART ======================= */
+    function updateCart() {
+        let total = 0, count = 0;
+
+        for (let id in cart) {
+            if (cart[id].qty > 0) {
+                total += cart[id].qty * cart[id].price;
+                count += cart[id].qty;
+            }
+        }
+
+        // total ordered
+        let orderedTotal = 0;
+        for (let id in orderedItems) {
+            orderedTotal += orderedItems[id].qty * orderedItems[id].price;
+        }
+
+        // total final
+        document.getElementById("totalPrice").innerText =
+            (total + orderedTotal).toLocaleString();
+
+
+        document.getElementById("totalPrice").innerText = total.toLocaleString();
+        document.getElementById("cartCount").innerText = count;
+        renderCartItems();
+    }
+
+    /* ======================= CART ITEMS ======================= */
+    function renderCartItems() {
+        const box = document.getElementById("cartItems");
+        box.innerHTML = "";
+
+        for (let id in cart) {
+            if (cart[id].qty > 0) {
+                box.innerHTML += `
 <div class="cart-item">
     <b>${cart[id].name[currentLang]}</b><br>
 
@@ -1063,236 +1063,43 @@
 </div>`;
 
 
-                }
             }
         }
+    }
 
-        /* ======================= CART PANEL ======================= */
-
-
-
-        function toggleCart() {
-            document.getElementById("cartPanel").classList.toggle("show");
-        }
-
-        function toggleOrdered() {
-            document.getElementById("orderedPanel").classList.toggle("show");
-        }
-
-
-        /* ======================= ORDER ======================= */
-        function placeOrder() {
-            let hasItems = false;
-            let itemsToOrder = [];
-
-            for (let id in cart) {
-                if (cart[id].qty > 0) {
-                    hasItems = true;
-                    itemsToOrder.push({
-                        id: id,
-                        name: cart[id].name, // Lưu cả object tên đa ngôn ngữ
-                        price: cart[id].price,
-                        qty: cart[id].qty
-                    });
-                }
-            }
-
-            if (!hasItems) {
-                showAlert(translations[currentLang].messages.emptyCart);
-                return;
-            }
-
-            // Lấy bàn từ URL parameter
-            const tableIndex = currentTableId;
-            const tableId = `table_${tableIndex}`;
-
-            // Gửi lên Firebase
-            const tableRef = db.collection("tables").doc(tableId);
-
-            // Dùng arrayUnion để thêm món mới vào mảng orders hiện có
-            // Lưu ý: arrayUnion chỉ thêm nếu chưa tồn tại (unique), nhưng ở đây mỗi lần đặt là 1 đợt khác nhau?
-            // Nếu user đặt món giống hệt (id, qty) thì arrayUnion có thể lọc bỏ.
-            // Tuy nhiên, logic đơn giản nhất là cứ push vào.
-            // Nhưng Firestore arrayUnion so sánh deep equality.
-            // Để an toàn và đơn giản cho bài toán này, ta sẽ đọc về rồi update, hoặc dùng arrayUnion nếu chấp nhận rủi ro trùng.
-            // Tốt nhất là đọc về rồi push thêm vào mảng.
-
-            // Tuy nhiên, để tối ưu UX (không chờ mạng quá lâu), ta có thể update optimistic UI trước.
-
-            // Cập nhật UI local (như cũ)
-            for (let id in cart) {
-                if (cart[id].qty > 0) {
-                    if (!orderedItems[id]) {
-                        orderedItems[id] = { ...cart[id] };
-                    } else {
-                        orderedItems[id].qty += cart[id].qty;
-                    }
-                    cart[id].qty = 0;
-                    cart[id].tempQty = 0;
-                }
-            }
-
-            updateCart();
-            renderMenu();
-            renderOrderedItems();
-            showAlert(translations[currentLang].messages.orderSent);
-
-            // Gửi background lên Firebase
-            tableRef.get().then((doc) => {
-                let currentOrders = [];
-                if (doc.exists) {
-                    currentOrders = doc.data().orders || [];
-                }
-
-                // Nối thêm món mới
-                const newOrders = currentOrders.concat(itemsToOrder);
-
-                // Update lại
-                // Cần set cả name cho bàn nếu chưa có?
-                // "Bàn X"
-                return tableRef.set({
-                    name: `Bàn ${tableIndex}`,
-                    orders: newOrders,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-            }).catch((error) => {
-                console.error("Error writing document: ", error);
-                showAlert("Lỗi kết nối Firebase!");
-            });
-        }
-
-        /* ======================= LANGUAGE SWITCH ======================= */
-        document.getElementById("langSelect").addEventListener("change", function () {
-
-            document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
-            document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
-
-
-            currentLang = {
-                "Tiếng Việt": "vi", "English": "en", "中文": "zh", "日本語": "ja", "한국어": "ko"
-            }[this.value];
-
-            // Update tab text
-            document.querySelectorAll(".tab").forEach(tab => {
-                const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
-                tab.innerText = translations[currentLang].tabs[key];
-            });
-
-            // Buttons
-            document.getElementById("orderBtn").innerText = translations[currentLang].buttons.order;
-            document.getElementById("cartBtnText").innerText = translations[currentLang].buttons.cart;
-            document.getElementById("orderedText").innerText = translations[currentLang].buttons.ordered;
-
-            // Cart text
-            document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
-            // ⬅️ FIX: Re-render menu + cart + ordered items theo ngôn ngữ mới
-            renderMenu();
-            updateCart();
-            renderOrderedItems();
-        });
-
-        /* ======================= URL PARAMETER HANDLING ======================= */
-
-        // MAPPING: Token bí mật -> ID Bàn
-        // Đây là lớp bảo mật để khách không thể đoán được URL bàn khác
-        const tableTokens = {
-            "t1-x8s9": 1,
-            "t2-m4k2": 2,
-            "t3-p9l1": 3,
-            "t4-q2w3": 4,
-            "t5-v5n6": 5,
-            "t6-b7c8": 6,
-            "t7-j1h2": 7,
-            "t8-f4d5": 8,
-            "t9-g6k7": 9,
-            "t10-z0x9": 10
-        };
-
-        function getTableIdFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('token');
-
-            console.log("URL Search:", window.location.search);
-            console.log("Token from URL:", token);
-            console.log("Lookup result:", tableTokens[token]);
-
-            if (token && tableTokens[token]) {
-                return tableTokens[token];
-            }
-
-            // Nếu không có token hoặc token sai -> Chặn truy cập hoặc báo lỗi
-            document.body.innerHTML = `
-            <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#ff4d4d; flex-direction:column; text-align:center;">
-                <h1>⚠️ Truy cập bị từ chối</h1>
-                <p>Vui lòng quét mã QR trên bàn để gọi món.</p>
-                <p style="color:#666; font-size:12px; margin-top:10px;">Debug: ${token || 'No Token'}</p>
-            </div>
-        `;
-            throw new Error("Invalid Table Token");
-        }
-
-        /* INIT */
-        try {
-            currentTableId = getTableIdFromUrl();
-            document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
-            renderMenu();
-        } catch (e) {
-            console.error(e);
-        }
-    </script>
-
-
-    <div id="customAlertOverlay">
-        <div id="customAlertBox">
-            <div id="alertMessage">Thông báo</div>
-            <div id="alertOkBtn" onclick="closeAlert()">OK</div>
-        </div>
-    </div>
-
-
-    <div id="customConfirmOverlay">
-        <div id="customConfirmBox">
-            <div id="confirmMessage">Bạn có chắc?</div>
-
-            <div class="confirm-buttons">
-                <div id="confirmCancelBtn" class="confirm-btn" onclick="closeConfirm(false)">Hủy</div>
-                <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
-            </div>
-        </div>
-
-        /* ======================= CART PANEL ======================= */
+    /* ======================= CART PANEL ======================= */
 
 
 
-        function toggleCart() {
+    function toggleCart() {
         document.getElementById("cartPanel").classList.toggle("show");
-        }
+    }
 
-        function toggleOrdered() {
+    function toggleOrdered() {
         document.getElementById("orderedPanel").classList.toggle("show");
-        }
+    }
 
 
-        /* ======================= ORDER ======================= */
-        function placeOrder() {
+    /* ======================= ORDER ======================= */
+    function placeOrder() {
         let hasItems = false;
         let itemsToOrder = [];
 
         for (let id in cart) {
-        if (cart[id].qty > 0) {
-        hasItems = true;
-        itemsToOrder.push({
-        id: id,
-        name: cart[id].name, // Lưu cả object tên đa ngôn ngữ
-        price: cart[id].price,
-        qty: cart[id].qty
-        });
-        }
+            if (cart[id].qty > 0) {
+                hasItems = true;
+                itemsToOrder.push({
+                    id: id,
+                    name: cart[id].name, // Lưu cả object tên đa ngôn ngữ
+                    price: cart[id].price,
+                    qty: cart[id].qty
+                });
+            }
         }
 
         if (!hasItems) {
-        showAlert(translations[currentLang].messages.emptyCart);
-        return;
+            showAlert(translations[currentLang].messages.emptyCart);
+            return;
         }
 
         // Lấy bàn từ URL parameter
@@ -1307,23 +1114,22 @@
         // Nếu user đặt món giống hệt (id, qty) thì arrayUnion có thể lọc bỏ.
         // Tuy nhiên, logic đơn giản nhất là cứ push vào.
         // Nhưng Firestore arrayUnion so sánh deep equality.
-        // Để an toàn và đơn giản cho bài toán này, ta sẽ đọc về rồi update, hoặc dùng arrayUnion nếu chấp nhận rủi ro
-        trùng.
+        // Để an toàn và đơn giản cho bài toán này, ta sẽ đọc về rồi update, hoặc dùng arrayUnion nếu chấp nhận rủi ro trùng.
         // Tốt nhất là đọc về rồi push thêm vào mảng.
 
         // Tuy nhiên, để tối ưu UX (không chờ mạng quá lâu), ta có thể update optimistic UI trước.
 
         // Cập nhật UI local (như cũ)
         for (let id in cart) {
-        if (cart[id].qty > 0) {
-        if (!orderedItems[id]) {
-        orderedItems[id] = { ...cart[id] };
-        } else {
-        orderedItems[id].qty += cart[id].qty;
-        }
-        cart[id].qty = 0;
-        cart[id].tempQty = 0;
-        }
+            if (cart[id].qty > 0) {
+                if (!orderedItems[id]) {
+                    orderedItems[id] = { ...cart[id] };
+                } else {
+                    orderedItems[id].qty += cart[id].qty;
+                }
+                cart[id].qty = 0;
+                cart[id].tempQty = 0;
+            }
         }
 
         updateCart();
@@ -1333,45 +1139,45 @@
 
         // Gửi background lên Firebase
         tableRef.get().then((doc) => {
-        let currentOrders = [];
-        if (doc.exists) {
-        currentOrders = doc.data().orders || [];
-        }
+            let currentOrders = [];
+            if (doc.exists) {
+                currentOrders = doc.data().orders || [];
+            }
 
-        // Nối thêm món mới
-        const newOrders = currentOrders.concat(itemsToOrder);
+            // Nối thêm món mới
+            const newOrders = currentOrders.concat(itemsToOrder);
 
-        // Update lại
-        // Cần set cả name cho bàn nếu chưa có?
-        // "Bàn X"
-        return tableRef.set({
-        name: `Bàn ${tableIndex}`,
-        orders: newOrders,
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
+            // Update lại
+            // Cần set cả name cho bàn nếu chưa có?
+            // "Bàn X"
+            return tableRef.set({
+                name: `Bàn ${tableIndex}`,
+                orders: newOrders,
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
         }).catch((error) => {
-        console.error("Error writing document: ", error);
-        showAlert("Lỗi kết nối Firebase!");
+            console.error("Error writing document: ", error);
+            showAlert("Lỗi kết nối Firebase!");
         });
-        }
+    }
 
 
 
-        /* ======================= LANGUAGE SWITCH ======================= */
-        document.getElementById("langSelect").addEventListener("change", function () {
+    /* ======================= LANGUAGE SWITCH ======================= */
+    document.getElementById("langSelect").addEventListener("change", function () {
 
         document.getElementById("confirmCancelBtn").innerText = translations[currentLang].confirm.cancel;
         document.getElementById("confirmOkBtn").innerText = translations[currentLang].confirm.ok;
 
 
         currentLang = {
-        "Tiếng Việt": "vi", "English": "en", "中文": "zh", "日本語": "ja", "한국어": "ko"
+            "Tiếng Việt": "vi", "English": "en", "中文": "zh", "日本語": "ja", "한국어": "ko"
         }[this.value];
 
         // Update tab text
         document.querySelectorAll(".tab").forEach(tab => {
-        const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
-        tab.innerText = translations[currentLang].tabs[key];
+            const key = tab.getAttribute("onclick").match(/'(\w+)'/)[1];
+            tab.innerText = translations[currentLang].tabs[key];
         });
 
         // Buttons
@@ -1381,84 +1187,69 @@
 
         // Cart text
         document.getElementById("cartTitle").innerText = translations[currentLang].cart.title;
+        document.getElementById("totalLabel").innerText = translations[currentLang].cart.total;
+
+        // Ordered panel text
+        document.getElementById("orderedTitle").innerText = translations[currentLang].ordered.title;
+        document.getElementById("orderedTotalLabel").innerText = translations[currentLang].ordered.total;
+
+        // Update table display text with current language
+        const tableDisplay = document.getElementById("tableDisplay");
+        tableDisplay.innerText = `${translations[currentLang].table} ${currentTableId}`;
+
         // ⬅️ FIX: Re-render menu + cart + ordered items theo ngôn ngữ mới
         renderMenu();
         updateCart();
         renderOrderedItems();
-        });
+    });
 
-        /* ======================= URL PARAMETER HANDLING ======================= */
-
-        // MAPPING: Token bí mật -> ID Bàn
-        // Đây là lớp bảo mật để khách không thể đoán được URL bàn khác
-        const tableTokens = {
-        "t1-x8s9": 1,
-        "t2-m4k2": 2,
-        "t3-p9l1": 3,
-        "t4-q2w3": 4,
-        "t5-v5n6": 5,
-        "t6-b7c8": 6,
-        "t7-j1h2": 7,
-        "t8-f4d5": 8,
-        "t9-g6k7": 9,
-        "t10-z0x9": 10
-        };
-
-        function getTableIdFromUrl() {
+    /* ======================= URL PARAMETER HANDLING ======================= */
+    // Lấy table ID từ URL parameter (ví dụ: ?table=3)
+    function getTableIdFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const tableParam = urlParams.get('table');
 
-        console.log("URL Search:", window.location.search);
-        console.log("Token from URL:", token);
-        console.log("Lookup result:", tableTokens[token]);
-
-        if (token && tableTokens[token]) {
-        return tableTokens[token];
+        if (tableParam) {
+            const tableNum = parseInt(tableParam);
+            // Validate table number (1-10)
+            if (tableNum >= 1 && tableNum <= 10) {
+                return tableNum;
+            }
         }
 
-        // Nếu không có token hoặc token sai -> Chặn truy cập hoặc báo lỗi
-        document.body.innerHTML = `
-        <div
-            style="display:flex; justify-content:center; align-items:center; height:100vh; background:#111; color:#ff4d4d; flex-direction:column; text-align:center;">
-            <h1>⚠️ Truy cập bị từ chối</h1>
-            <p>Vui lòng quét mã QR trên bàn để gọi món.</p>
-            <p style="color:#666; font-size:12px; margin-top:10px;">Debug: ${token || 'No Token'}</p>
+        // Default to table 1 if no valid parameter
+        return 1;
+    }
+
+    /* INIT */
+    // Lấy table ID từ URL và cập nhật hiển thị
+    currentTableId = getTableIdFromUrl();
+    document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
+    renderMenu();
+</script>
+
+
+<div id="customAlertOverlay">
+    <div id="customAlertBox">
+        <div id="alertMessage">Thông báo</div>
+        <div id="alertOkBtn" onclick="closeAlert()">OK</div>
+    </div>
+</div>
+
+
+<div id="customConfirmOverlay">
+    <div id="customConfirmBox">
+        <div id="confirmMessage">Bạn có chắc?</div>
+
+        <div class="confirm-buttons">
+            <div id="confirmCancelBtn" class="confirm-btn" onclick="closeConfirm(false)">Hủy</div>
+            <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
         </div>
-        `;
-        throw new Error("Invalid Table Token");
-        }
-
-        /* INIT */
-        try {
-        currentTableId = getTableIdFromUrl();
-        document.getElementById("tableDisplay").innerText = `${translations[currentLang].table} ${currentTableId}`;
-        renderMenu();
-        } catch (e) {
-        console.error(e);
-        }
-        </script>
-
-
-        <div id="customAlertOverlay">
-            <div id="customAlertBox">
-                <div id="alertMessage">Thông báo</div>
-                <div id="alertOkBtn" onclick="closeAlert()">OK</div>
-            </div>
-        </div>
-
-
-        <div id="customConfirmOverlay">
-            <div id="customConfirmBox">
-                <div id="confirmMessage">Bạn có chắc?</div>
-
-                <div class="confirm-buttons">
-                    <div id="confirmCancelBtn" class="confirm-btn" onclick="closeConfirm(false)">Hủy</div>
-                    <div id="confirmOkBtn" class="confirm-btn" onclick="closeConfirm(true)">Xóa</div>
-                </div>
-            </div>
-        </div>
+    </div>
+</div>
 
 
 </body>
 
 </html>
+
