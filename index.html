@@ -541,10 +541,14 @@
 <!-- TABS -->
 <div class="tabs">
 
-    <div class="tab active" onclick="changeTab('nuong', event)">Món Nướng</div>
+    <div class="tab active" onclick="changeTab('nuong', event)">Món nướng</div>
     <div class="tab" onclick="changeTab('lau', event)">Lẩu</div>
-    <div class="tab" onclick="changeTab('mon_phu', event)">Món Phụ</div>
-    <div class="tab" onclick="changeTab('nuoc', event)">Đồ Uống</div>
+    <div class="tab" onclick="changeTab('mon_phu', event)">Món phụ</div>
+    <div class="tab" onclick="changeTab('nuoc', event)">Đồ uống</div>
+    <div class="tab" onclick="changeTab('khai_vi', event)">Khai vị</div>
+    <div class="tab" onclick="changeTab('trang_mieng', event)">Tráng miệng</div>
+
+
 
 
 
@@ -770,7 +774,7 @@
     /* ======================= NGÔN NGỮ ======================= */
     const translations = {
         vi: {
-            tabs: { nuong: "Món Nướng", lau: "Lẩu", mon_phu: "Món Phụ", nuoc: "Đồ Uống" },
+            tabs: { nuong: "Món nướng", lau: "Lẩu", mon_phu: "Món phụ", nuoc: "Đồ uống", khai_vi: "Khai vị", trang_mieng: "Tráng miệng" },
             buttons: { add: "Thêm", order: "Xác nhận đặt món", cart: "Giỏ", ordered: "Đã gọi" },
             messages: {
                 orderSent: "Đơn đã gửi tới bếp!",
@@ -787,7 +791,7 @@
 
         },
         en: {
-            tabs: { nuong: "Grilled", lau: "Hotpot", mon_phu: "Side Dishes", nuoc: "Drinks" },
+            tabs: { nuong: "Grilled", lau: "Hotpot", mon_phu: "Side Dishes", nuoc: "Drinks", khai_vi: "Appetizer", trang_mieng: "Dessert" },
             buttons: { add: "Add", order: "Confirm Order", cart: "Cart", ordered: "Ordered" },
             messages: {
                 orderSent: "Order sent to kitchen!",
@@ -804,7 +808,7 @@
 
         },
         zh: {
-            tabs: { nuong: "烤肉", lau: "火锅", mon_phu: "小菜", nuoc: "饮料" },
+            tabs: { nuong: "烤肉", lau: "火锅", mon_phu: "小菜", nuoc: "饮料", khai_vi: "開胃菜", trang_mieng: "甜點" },
             buttons: { add: "添加", order: "確認訂單", cart: "购物车", ordered: "已点菜" },
             messages: {
                 orderSent: "订单已发送到厨房！",
@@ -821,7 +825,7 @@
 
         },
         ja: {
-            tabs: { nuong: "焼肉", lau: "鍋", mon_phu: "サイド", nuoc: "ドリンク" },
+            tabs: { nuong: "焼肉", lau: "鍋", mon_phu: "サイド", nuoc: "ドリンク", khai_vi: "前菜", trang_mieng: "デザート" },
             buttons: { add: "追加", order: "注文を確認する", cart: "カート", ordered: "注文済み" },
             messages: {
                 orderSent: "注文が送信されました！",
@@ -838,7 +842,7 @@
 
         },
         ko: {
-            tabs: { nuong: "구이", lau: "전골", mon_phu: "사이드", nuoc: "음료" },
+            tabs: { nuong: "구이", lau: "전골", mon_phu: "사이드", nuoc: "음료", khai_vi: "간식", trang_mieng: "디저트" },
             buttons: { add: "추가", order: "주문확인", cart: "장바구니", ordered: "주문완료" },
             messages: {
                 orderSent: "주문이 전송되었습니다!",
@@ -859,24 +863,51 @@
     /* ======================= PRODUCT DATA ======================= */
     const products = {
         nuong: [
-            { id: 1, name: { vi: "Ba chỉ bò Mỹ", en: "US Beef Belly", zh: "美國牛腹肉", ja: "米国牛バラ", ko: "미국 소고기 배" }, price: 139000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true" },
-            { id: 2, name: { vi: "Dẻ sườn bò", en: "Beef Ribs", zh: "牛肋排", ja: "牛リブ", ko: "소갈비" }, price: 169000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true" },
-            { id: 3, name: { vi: "Sườn heo sốt mật ong", en: "Honey Pork Ribs", zh: "蜜汁豬肋排", ja: "ハニーポークリブ", ko: "허니 돼지갈비" }, price: 129000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true" },
-            { id: 4, name: { vi: "Gà nướng", en: "Grilled Chicken", zh: "烤雞", ja: "グリルチキン", ko: "구운 닭고기" }, price: 89000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true" }
+            { id: 1, name: { vi: "Ba chỉ bò Mỹ", en: "US beef belly", zh: "美國牛腹肉", ja: "米国牛バラ", ko: "미국 소고기 배" }, price: 139000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ba-chi-bo-my.jpg?raw=true" },
+            { id: 2, name: { vi: "Dẻ sườn bò", en: "Beef bibs", zh: "牛肋排", ja: "牛リブ", ko: "소갈비" }, price: 169000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/de-suon-bo-nuong.jpg?raw=true" },
+            { id: 3, name: { vi: "Sườn heo sốt mật ong", en: "Honey pork ribs", zh: "蜜汁豬肋排", ja: "ハニーポークリブ", ko: "허니 돼지갈비" }, price: 129000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/suon-nuong-mat-ong.jpg?raw=true" },
+            { id: 4, name: { vi: "Gà nướng", en: "Grilled chicken", zh: "烤雞", ja: "グリルチキン", ko: "구운 닭고기" }, price: 89000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ga-nuong.jpg?raw=true" },
+            { id: 13, name: { vi: "Cá hồi nướng", en: "Grilled salmon ", zh: "烤鮭魚", ja: "グリルサーモン", ko: "구운 연어" }, price: 99000 , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/ca_hoi_nuong.png?raw=true" },
+            { id: 14, name: { vi: "Mực nướng", en: "Grilled squid", zh: "烤魷魚", ja: "焼きイカ", ko: "구운 오징어" }, price: 119000 , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/muc_nuong.jpg?raw=true" },
+            { id: 15, name: { vi: "Tôm nướng", en: "Grilled shrimp", zh: "烤蝦", ja: "焼きエビ", ko: "구운 새우烤蝦" }, price: 109000  , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/tom_nuong.jpg?raw=true" },
+            { id: 16, name: { vi: "Bò bít tết", en: "Beef steak", zh: "牛排", ja: "ビーフステーキ", ko: "소고기 스테이크" }, price: 159000 , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/n%C6%B0%E1%BB%9Bng/bo_beef_steak.jpg?raw=true" }
+
         ],
         lau: [
-            { id: 5, name: { vi: "Lẩu kim chi", en: "Kimchi Hotpot", zh: "泡菜火锅", ja: "キムチ鍋", ko: "김치전골" }, price: 199000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true" },
-            { id: 6, name: { vi: "Lẩu bulgogi", en: "Bulgogi Hotpot", zh: "烤肉火锅", ja: "プルコギ鍋", ko: "불고기전골" }, price: 249000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true" }
+            { id: 5, name: { vi: "Lẩu kim chi", en: "Kimchi hotpot", zh: "泡菜火锅", ja: "キムチ鍋", ko: "김치전골" }, price: 199000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/Lau-kim-chi.png?raw=true" },
+            { id: 6, name: { vi: "Lẩu bulgogi", en: "Bulgogi hotpot", zh: "烤肉火锅", ja: "プルコギ鍋", ko: "불고기전골" }, price: 249000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/l%E1%BA%A9u/lau-bulgogi.webp?raw=true" },
+            { id: 17, name: { vi: "Lẩu hải sản", en: "Seafood hotpot", zh: "海鮮火鍋", ja: "海鮮鍋", ko: "해산물 냄비" }, price: 209000 , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/l%E1%BA%A9u/lau_hai_san.jpg?raw=true" }
         ],
         mon_phu: [
-            { id: 7, name: { vi: "Tokbokki phô mai", en: "Cheese Tokbokki", zh: "芝士炒年糕", ja: "チーズトッポッキ", ko: "치즈 떡볶이" }, price: 69000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true" },
-            { id: 8, name: { vi: "Cơm trộn Hàn Quốc", en: "Bibimbap", zh: "拌饭", ja: "ビビンバ", ko: "비빔밥" }, price: 59000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true" },
-            { id: 9, name: { vi: "Khoai tây chiên", en: "French Fries", zh: "薯条", ja: "ポテトフライ", ko: "감자튀김" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true" }
+            { id: 7, name: { vi: "Tokbokki phô mai", en: "Cheese tokbokki", zh: "芝士炒年糕", ja: "チーズトッポッキ", ko: "치즈 떡볶이" }, price: 35000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tokbokki-pho-mai.jpg?raw=true" },
+            { id: 8, name: { vi: "Cơm trộn Hàn Quốc", en: "Bibimbap", zh: "拌饭", ja: "ビビンバ", ko: "비빔밥" }, price: 49000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/com-tron-han-quoc.jpg?raw=true" },
+            { id: 9, name: { vi: "Khoai tây chiên", en: "French fries", zh: "薯条", ja: "ポテトフライ", ko: "감자튀김" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/khoai-tay-chien.webp?raw=true" },
+            { id: 18, name: { vi: "Súp bào ngư", en: "Abalone soup", zh: "鮑魚湯", ja: "アワビのスープ", ko: "전복 수프" }, price:  99000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/sup_bao_ngu.jpg?raw=true" },
+            { id: 19, name: { vi: "Súp hải sản", en: "Seafood soup", zh: "海鮮湯", ja: "シーフードスープ", ko: "해산물 수프" }, price:  89000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/sup_hai_san.jpg?raw=true" },
+            { id: 20, name: { vi: "Súp miso", en: "Miso soup", zh: "味噌湯", ja: "味噌汁", ko: "된장국" }, price:  39000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/sup_miso.jpg?raw=true" },
+            { id: 21, name: { vi: "Tôm chiên xù", en: "Fried shrimp", zh: "炸蝦", ja: "エビフライ", ko: "새우튀김" }, price:  79000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/m%C3%B3n%20ph%E1%BB%A5/tom_chien_xu.jpg?raw=true" }
         ],
         nuoc: [
-            { id: 10, name: { vi: "Coca Cola", en: "Coca Cola", zh: "可口可乐", ja: "コカコーラ", ko: "코카콜라" }, price: 15000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true" },
-            { id: 11, name: { vi: "Trà đào", en: "Peach Tea", zh: "桃茶", ja: "ピーチティー", ko: "복숭아차" }, price: 29000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true" },
-            { id: 12, name: { vi: "Bia", en: "Beer", zh: "啤酒", ja: "ビール", ko: "맥주" }, price: 39000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true" }
+            { id: 10, name: { vi: "Coca Cola", en: "Coca cola", zh: "可口可乐", ja: "コカコーラ", ko: "코카콜라" }, price: 10000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/coca-cola.jpg?raw=true" },
+            { id: 11, name: { vi: "Trà đào", en: "Peach tea", zh: "桃茶", ja: "ピーチティー", ko: "복숭아차" }, price: 15000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/tra-dao.jpg?raw=true" },
+            { id: 12, name: { vi: "Bia", en: "Beer", zh: "啤酒", ja: "ビール", ko: "맥주" }, price: 29000, img: "https://github.com/huyhuynh03/Food_Order_At_Table/blob/main/images/drink/bia.png?raw=true" },
+            { id: 30, name: { vi: "Rượu vang", en: "Wine", zh: "葡萄酒", ja: "ワイン", ko: "와인" }, price:  59000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/drink/ruou-vang.png?raw=true" },
+            { id: 31, name: { vi: "Nước dưa hấu", en: "Watermelon juice", zh: "西瓜汁", ja: "スイカジュース", ko: "수박 주스" }, price: 20000 , img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/drink/nuoc_dua_hau.jpg?raw=true" },
+            { id: 32, name: { vi: "Nước cam", en: "Orange juice", zh: "柳橙汁", ja: "オレンジジュース", ko: "오렌지 주스" }, price: 15000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/drink/nuoc_cam.png?raw=true" },
+        ],
+
+        khai_vi: [
+            { id: 22, name: { vi: "Gỏi ngó sen", en: "Lotus root salad", zh: "蓮藕沙拉", ja: "レンコンサラダ", ko: "연근 샐러드" }, price:  49000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/khai%20v%E1%BB%8B/G%E1%BB%8Fi%20ng%C3%B3%20sen.jpg?raw=true" },
+            { id: 23, name: { vi: "Miến trộn", en: "Mixed noodles", zh: "什錦面", ja: "混ぜ麺", ko: "혼합면" }, price:  30000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/khai%20v%E1%BB%8B/Mi%E1%BA%BFn%20tr%E1%BB%99n.jpg?raw=true" },
+            { id: 24, name: { vi: "Salad trái cây", en: "Fruit salad", zh: "水果沙拉", ja: "フルーツサラダ", ko: "과일 샐러드" }, price:  45000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/khai%20v%E1%BB%8B/Salad%20tr%C3%A1i%20c%C3%A2y.jpg?raw=true" },
+
+        ],
+        trang_mieng: [
+            { id: 26, name: { vi: "Chè bưởi", en: "Grapefruit sweet soup", zh: "葡萄柚甜湯", ja: "グレープフルーツのスイートスープ", ko: "자몽 달콤한 수프" }, price:  10000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/tr%C3%A1ng%20mi%E1%BB%87ng/Ch%C3%A8%20b%C6%B0%E1%BB%9Fi.jpg?raw=true" },
+            { id: 27, name: { vi: "Mouse chanh dây", en: "Passion fruit mousse", zh: "百香果慕斯", ja: "パッションフルーツムース", ko: "패션프루트 무스" }, price:  25000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/tr%C3%A1ng%20mi%E1%BB%87ng/Mousse%20chanh%20d%C3%A2y.jpg?raw=true" },
+            { id: 28, name: { vi: "Bánh kem", en: "Cake", zh: "蛋糕", ja: "ケーキ", ko: "케이크" }, price:  20000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/tr%C3%A1ng%20mi%E1%BB%87ng/b%C3%A1nh_kem.jpg?raw=true" },
+            { id: 29, name: { vi: "Kem", en: "Ice cream", zh: "冰淇淋", ja: "アイスクリーム", ko: "아이스크림" }, price:  15000, img: "https://github.com/huyhuynh03/food-order-at-table/blob/main/images/food/tr%C3%A1ng%20mi%E1%BB%87ng/kem.jpg?raw=true" },
+
         ]
     };
 
@@ -1252,5 +1283,4 @@
 </body>
 
 </html>
-
 
