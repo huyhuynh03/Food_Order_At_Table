@@ -500,11 +500,296 @@
         .qty-input::-webkit-outer-spin-button {
             opacity: 1;
         }
+
+        /* ======================= AI CHATBOT ======================= */
+        #aiChatBtn {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #aiChatBtn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        #aiChatBtn .ai-icon {
+            font-size: 18px;
+        }
+
+        #aiChatPanel {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            width: 380px;
+            max-width: 95%;
+            height: 500px;
+            max-height: 70vh;
+            background: rgba(30, 30, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #aiChatPanel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .ai-chat-header {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-chat-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .ai-chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-message.bot {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .ai-message.user {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message.thinking {
+            background: rgba(102, 126, 234, 0.3);
+            color: #aaa;
+        }
+
+        .ai-message.thinking::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: '.';
+            }
+
+            40% {
+                content: '..';
+            }
+
+            60%,
+            100% {
+                content: '...';
+            }
+        }
+
+        .ai-quick-responses {
+            display: flex;
+            gap: 10px;
+            padding: 10px 15px;
+            justify-content: center;
+        }
+
+        .ai-quick-btn {
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-quick-btn.yes {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+        }
+
+        .ai-quick-btn.no {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: #fff;
+        }
+
+        .ai-quick-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .ai-chat-input {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .ai-chat-input input:focus {
+            border-color: #667eea;
+        }
+
+        .ai-chat-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .ai-chat-input button {
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .ai-chat-input button:hover {
+            transform: scale(1.05);
+        }
+
+        .ai-recommendations {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 8px;
+        }
+
+        .ai-rec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-rec-item:last-child {
+            border-bottom: none;
+        }
+
+        .ai-rec-total {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+            text-align: right;
+        }
     </style>
 </head>
 
 
 <body>
+
+    <!-- AI CHATBOT BUTTON -->
+    <button id="aiChatBtn" onclick="toggleAiChat()">
+        <span class="ai-icon">🤖</span>
+        <span id="aiChatBtnText">Trợ lý AI</span>
+    </button>
+
+    <!-- AI CHATBOT PANEL -->
+    <div id="aiChatPanel">
+        <div class="ai-chat-header">
+            <h3><span>🤖</span> <span id="aiChatTitle">Trợ lý gợi ý món</span></h3>
+            <button class="ai-chat-close" onclick="toggleAiChat()">✕</button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages"></div>
+        <div class="ai-quick-responses" id="aiQuickResponses" style="display: none;">
+            <button class="ai-quick-btn yes" onclick="handleQuickResponse(1)">1 - <span
+                    id="aiYesText">Có</span></button>
+            <button class="ai-quick-btn no" onclick="handleQuickResponse(0)">0 - <span
+                    id="aiNoText">Không</span></button>
+        </div>
+        <div class="ai-chat-input" id="aiChatInputArea">
+            <input type="text" id="aiChatInput" placeholder="Nhập tin nhắn..."
+                onkeypress="if(event.key==='Enter')sendAiMessage()">
+            <button onclick="sendAiMessage()" id="aiSendBtn">Gửi</button>
+        </div>
+    </div>
 
     <header>
         <div class="logo">🔥 Yaki</div>
@@ -818,8 +1103,26 @@
                     clearAll: "Xóa toàn bộ giỏ hàng?",
                     cancel: "Hủy",
                     ok: "Xóa"
+                },
+                chatbot: {
+                    btnText: "Trợ lý AI",
+                    title: "Trợ lý gợi ý món",
+                    greeting: "Xin chào! Tôi là trợ lý AI của Yaki. Tôi sẽ giúp bạn chọn món ăn phù hợp.",
+                    askGuests: "Bạn có bao nhiêu người ăn?",
+                    askBudget: "Ngân sách của bạn là bao nhiêu? (VND)",
+                    askAlcohol: "Bạn có muốn dùng đồ uống có cồn không?\n👉 Nhấn 1 = Có, Nhấn 0 = Không",
+                    thinking: "Đang suy nghĩ",
+                    recommendTitle: "Đây là gợi ý của tôi cho bạn:",
+                    confirmAdd: "Bạn có muốn thêm các món này vào giỏ hàng?\n👉 Nhấn 1 = Đồng ý, Nhấn 0 = Không",
+                    addedToCart: "Đã thêm tất cả món gợi ý vào giỏ hàng! 🎉",
+                    notAdded: "Không sao! Bạn có thể tự chọn món từ menu hoặc nhờ tôi gợi ý lại.",
+                    yes: "Có",
+                    no: "Không",
+                    total: "Tổng cộng",
+                    inputPlaceholder: "Nhập tin nhắn...",
+                    send: "Gửi",
+                    error: "Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại."
                 }
-
             },
             en: {
                 tabs: { nuong: "Grilled", lau: "Hotpot", mon_phu: "Side Dishes", nuoc: "Drinks", khai_vi: "Appetizer", trang_mieng: "Dessert" },
@@ -834,9 +1137,27 @@
                 confirm: {
                     clearAll: "Delete entire cart?",
                     cancel: "Cancel",
-                    ok: "Delete",
+                    ok: "Delete"
+                },
+                chatbot: {
+                    btnText: "AI Assistant",
+                    title: "Food Suggestion Assistant",
+                    greeting: "Hello! I'm Yaki's AI assistant. I'll help you choose the perfect dishes.",
+                    askGuests: "How many people will be dining?",
+                    askBudget: "What's your budget? (VND)",
+                    askAlcohol: "Would you like alcoholic beverages?\n👉 Press 1 = Yes, Press 0 = No",
+                    thinking: "Thinking",
+                    recommendTitle: "Here are my suggestions for you:",
+                    confirmAdd: "Would you like to add these items to your cart?\n👉 Press 1 = Yes, Press 0 = No",
+                    addedToCart: "All suggested items have been added to your cart! 🎉",
+                    notAdded: "No problem! You can browse the menu yourself or ask me for new suggestions.",
+                    yes: "Yes",
+                    no: "No",
+                    total: "Total",
+                    inputPlaceholder: "Type a message...",
+                    send: "Send",
+                    error: "Sorry, an error occurred. Please try again."
                 }
-
             },
             zh: {
                 tabs: { nuong: "烤肉", lau: "火锅", mon_phu: "小菜", nuoc: "饮料", khai_vi: "開胃菜", trang_mieng: "甜點" },
@@ -852,8 +1173,26 @@
                     clearAll: "刪除整個購物車？",
                     cancel: "取消",
                     ok: "擦除"
+                },
+                chatbot: {
+                    btnText: "AI助手",
+                    title: "点餐推荐助手",
+                    greeting: "您好！我是Yaki的AI助手。我将帮助您选择合适的菜品。",
+                    askGuests: "请问有多少位用餐？",
+                    askBudget: "您的预算是多少？(越南盾)",
+                    askAlcohol: "您需要含酒精的饮品吗？\n👉 按1 = 是，按0 = 否",
+                    thinking: "思考中",
+                    recommendTitle: "这是我为您推荐的菜品：",
+                    confirmAdd: "您要将这些菜品加入购物车吗？\n👉 按1 = 同意，按0 = 不要",
+                    addedToCart: "已将所有推荐菜品加入购物车！🎉",
+                    notAdded: "没关系！您可以自己浏览菜单或让我重新推荐。",
+                    yes: "是",
+                    no: "否",
+                    total: "总计",
+                    inputPlaceholder: "输入消息...",
+                    send: "发送",
+                    error: "抱歉，发生错误。请重试。"
                 }
-
             },
             ja: {
                 tabs: { nuong: "焼肉", lau: "鍋", mon_phu: "サイド", nuoc: "ドリンク", khai_vi: "前菜", trang_mieng: "デザート" },
@@ -869,8 +1208,26 @@
                     clearAll: "カート全体を削除しますか?",
                     cancel: "キャンセル",
                     ok: "消去"
+                },
+                chatbot: {
+                    btnText: "AIアシスタント",
+                    title: "お料理おすすめアシスタント",
+                    greeting: "こんにちは！私はYakiのAIアシスタントです。最適な料理選びをお手伝いします。",
+                    askGuests: "何名様でお食事されますか？",
+                    askBudget: "ご予算はおいくらですか？(VND)",
+                    askAlcohol: "アルコール飲料はいかがですか？\n👉 1を押す = はい、0を押す = いいえ",
+                    thinking: "考え中",
+                    recommendTitle: "おすすめ料理はこちらです：",
+                    confirmAdd: "これらの料理をカートに追加しますか？\n👉 1を押す = はい、0を押す = いいえ",
+                    addedToCart: "おすすめ料理をすべてカートに追加しました！🎉",
+                    notAdded: "大丈夫です！メニューから直接お選びいただくか、また私にお声がけください。",
+                    yes: "はい",
+                    no: "いいえ",
+                    total: "合計",
+                    inputPlaceholder: "メッセージを入力...",
+                    send: "送信",
+                    error: "申し訳ありません。エラーが発生しました。もう一度お試しください。"
                 }
-
             },
             ko: {
                 tabs: { nuong: "구이", lau: "전골", mon_phu: "사이드", nuoc: "음료", khai_vi: "간식", trang_mieng: "디저트" },
@@ -886,8 +1243,26 @@
                     clearAll: "장바구니 전체를 삭제하시겠습니까?",
                     cancel: "취소",
                     ok: "삭제"
+                },
+                chatbot: {
+                    btnText: "AI 도우미",
+                    title: "음식 추천 도우미",
+                    greeting: "안녕하세요! 저는 Yaki의 AI 도우미입니다. 완벽한 요리를 선택하는 데 도움을 드리겠습니다.",
+                    askGuests: "몇 분이 드실 예정인가요?",
+                    askBudget: "예산이 어떻게 되시나요? (VND)",
+                    askAlcohol: "주류를 원하시나요?\n👉 1 = 예, 0 = 아니오",
+                    thinking: "생각 중",
+                    recommendTitle: "추천 요리는 다음과 같습니다:",
+                    confirmAdd: "이 요리들을 장바구니에 추가하시겠어요?\n👉 1 = 예, 0 = 아니오",
+                    addedToCart: "모든 추천 요리가 장바구니에 추가되었습니다! 🎉",
+                    notAdded: "괜찮습니다! 메뉴에서 직접 선택하시거나 다시 추천해 드릴게요.",
+                    yes: "예",
+                    no: "아니오",
+                    total: "합계",
+                    inputPlaceholder: "메시지 입력...",
+                    send: "보내기",
+                    error: "죄송합니다. 오류가 발생했습니다. 다시 시도해 주세요."
                 }
-
             }
         };
 
@@ -1246,6 +1621,9 @@
             renderMenu();
             updateCart();
             renderOrderedItems();
+
+            // Update chatbot UI language
+            updateChatbotLanguage();
         });
 
         /* ======================= URL PARAMETER HANDLING ======================= */
@@ -1275,6 +1653,372 @@
         listenToTableOrders();
 
         renderMenu();
+
+        /* ======================= AI CHATBOT ======================= */
+        const GEMINI_API_KEY = "AIzaSyAZQWWGCO3t7hyd1F7WiqmzXHS9rGdZImM";
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+        // Chatbot state
+        let aiChatState = {
+            step: 0, // 0: greeting, 1: ask guests, 2: ask budget, 3: ask alcohol, 4: show recommendations, 5: confirm add
+            guests: 0,
+            budget: 0,
+            wantsAlcohol: false,
+            recommendations: [],
+            isOpen: false
+        };
+
+        // Toggle chatbot panel
+        function toggleAiChat() {
+            const panel = document.getElementById("aiChatPanel");
+            aiChatState.isOpen = !aiChatState.isOpen;
+            panel.classList.toggle("show");
+
+            // If opening for first time or reset, start conversation
+            if (aiChatState.isOpen && aiChatState.step === 0) {
+                startAiConversation();
+            }
+        }
+
+        // Start/restart conversation
+        function startAiConversation() {
+            const messagesDiv = document.getElementById("aiChatMessages");
+            messagesDiv.innerHTML = "";
+            aiChatState = {
+                step: 1,
+                guests: 0,
+                budget: 0,
+                wantsAlcohol: false,
+                recommendations: [],
+                isOpen: true
+            };
+
+            // Show greeting then ask guests
+            addBotMessage(translations[currentLang].chatbot.greeting);
+            setTimeout(() => {
+                addBotMessage(translations[currentLang].chatbot.askGuests);
+            }, 500);
+
+            showInputArea();
+            hideQuickResponses();
+        }
+
+        // Add bot message to chat
+        function addBotMessage(text) {
+            const messagesDiv = document.getElementById("aiChatMessages");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "ai-message bot";
+            msgDiv.innerHTML = text.replace(/\n/g, "<br>");
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Add user message to chat
+        function addUserMessage(text) {
+            const messagesDiv = document.getElementById("aiChatMessages");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "ai-message user";
+            msgDiv.textContent = text;
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Add thinking indicator
+        function addThinkingMessage() {
+            const messagesDiv = document.getElementById("aiChatMessages");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "ai-message bot thinking";
+            msgDiv.id = "thinkingMsg";
+            msgDiv.textContent = translations[currentLang].chatbot.thinking;
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Remove thinking indicator
+        function removeThinkingMessage() {
+            const thinkingMsg = document.getElementById("thinkingMsg");
+            if (thinkingMsg) thinkingMsg.remove();
+        }
+
+        // Show/hide UI elements
+        function showInputArea() {
+            document.getElementById("aiChatInputArea").style.display = "flex";
+        }
+
+        function hideInputArea() {
+            document.getElementById("aiChatInputArea").style.display = "none";
+        }
+
+        function showQuickResponses() {
+            document.getElementById("aiQuickResponses").style.display = "flex";
+        }
+
+        function hideQuickResponses() {
+            document.getElementById("aiQuickResponses").style.display = "none";
+        }
+
+        // Send user message from input
+        function sendAiMessage() {
+            const input = document.getElementById("aiChatInput");
+            const text = input.value.trim();
+            if (!text) return;
+
+            addUserMessage(text);
+            input.value = "";
+
+            processUserInput(text);
+        }
+
+        // Handle quick response buttons (0 or 1)
+        function handleQuickResponse(value) {
+            addUserMessage(value === 1 ? "1" : "0");
+            hideQuickResponses();
+
+            if (aiChatState.step === 3) {
+                // Alcohol preference answered
+                aiChatState.wantsAlcohol = value === 1;
+                aiChatState.step = 4;
+                getRecommendations();
+            } else if (aiChatState.step === 5) {
+                // Confirm add to cart
+                if (value === 1) {
+                    addRecommendationsToCart();
+                    addBotMessage(translations[currentLang].chatbot.addedToCart);
+                } else {
+                    addBotMessage(translations[currentLang].chatbot.notAdded);
+                }
+                // Reset for new conversation
+                setTimeout(() => {
+                    aiChatState.step = 0;
+                }, 1000);
+            }
+        }
+
+        // Process user text input based on current step
+        function processUserInput(text) {
+            switch (aiChatState.step) {
+                case 1: // Waiting for number of guests
+                    const guests = parseInt(text);
+                    if (isNaN(guests) || guests < 1) {
+                        addBotMessage(translations[currentLang].chatbot.askGuests);
+                        return;
+                    }
+                    aiChatState.guests = guests;
+                    aiChatState.step = 2;
+                    addBotMessage(translations[currentLang].chatbot.askBudget);
+                    break;
+
+                case 2: // Waiting for budget
+                    const budget = parseInt(text.replace(/[,.\s]/g, ""));
+                    if (isNaN(budget) || budget < 1000) {
+                        addBotMessage(translations[currentLang].chatbot.askBudget);
+                        return;
+                    }
+                    aiChatState.budget = budget;
+                    aiChatState.step = 3;
+                    addBotMessage(translations[currentLang].chatbot.askAlcohol);
+                    hideInputArea();
+                    showQuickResponses();
+                    break;
+            }
+        }
+
+        // Build menu context for AI
+        function buildMenuContext() {
+            let menuText = "MENU (prices in VND):\n\n";
+
+            for (const category in products) {
+                const categoryName = translations[currentLang].tabs[category] || category;
+                menuText += `=== ${categoryName} ===\n`;
+
+                products[category].forEach(item => {
+                    const name = item.name[currentLang] || item.name.vi;
+                    const isAlcohol = item.id === 12 || item.id === 30; // Beer and Wine
+                    menuText += `- ID:${item.id}, ${name}, ${item.price.toLocaleString()}đ${isAlcohol ? " (alcohol)" : ""}\n`;
+                });
+                menuText += "\n";
+            }
+
+            return menuText;
+        }
+
+        // Get recommendations from Gemini API
+        async function getRecommendations() {
+            addThinkingMessage();
+            hideInputArea();
+
+            const menuContext = buildMenuContext();
+            const langName = {
+                vi: "Vietnamese",
+                en: "English",
+                zh: "Chinese",
+                ja: "Japanese",
+                ko: "Korean"
+            }[currentLang];
+
+            const prompt = `You are a restaurant assistant at Yaki, a Korean BBQ restaurant.
+
+${menuContext}
+
+Customer information:
+- Number of guests: ${aiChatState.guests}
+- Budget: ${aiChatState.budget.toLocaleString()} VND
+- Wants alcoholic beverages: ${aiChatState.wantsAlcohol ? "Yes" : "No"}
+
+Please recommend dishes for this customer. Consider:
+1. The budget should cover all recommended items
+2. Recommend appropriate quantities based on number of guests
+3. Include a variety: main dishes, sides, drinks, and maybe dessert
+4. If they don't want alcohol, only recommend non-alcoholic drinks
+5. If they want alcohol, include beer or wine
+
+IMPORTANT: Respond in ${langName} language.
+
+Format your response EXACTLY like this (use this exact format):
+RECOMMENDATIONS:
+- [Item Name] x[quantity] - [price per item]đ
+- [Item Name] x[quantity] - [price per item]đ
+...
+TOTAL: [total price]đ
+
+Also include a brief friendly message explaining your recommendations.
+
+CRITICAL: You must include "RECOMMENDATIONS:" and list items with their IDs in parentheses like this:
+- (ID:1) Ba chỉ bò Mỹ x2 - 139,000đ`;
+
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 1024
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                removeThinkingMessage();
+
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    const aiResponse = data.candidates[0].content.parts[0].text;
+                    parseAndShowRecommendations(aiResponse);
+                } else {
+                    addBotMessage(translations[currentLang].chatbot.error);
+                    showInputArea();
+                    aiChatState.step = 1;
+                }
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                removeThinkingMessage();
+                addBotMessage(translations[currentLang].chatbot.error);
+                showInputArea();
+                aiChatState.step = 1;
+            }
+        }
+
+        // Parse AI response and show recommendations
+        function parseAndShowRecommendations(response) {
+            // Show the AI's response
+            addBotMessage(response.replace(/\n/g, "<br>"));
+
+            // Try to extract item IDs from the response
+            aiChatState.recommendations = [];
+            const idPattern = /\(ID:(\d+)\)[^x]*x(\d+)/gi;
+            let match;
+
+            while ((match = idPattern.exec(response)) !== null) {
+                const itemId = parseInt(match[1]);
+                const qty = parseInt(match[2]);
+
+                // Find the product
+                for (const category in products) {
+                    const product = products[category].find(p => p.id === itemId);
+                    if (product) {
+                        aiChatState.recommendations.push({
+                            ...product,
+                            qty: qty
+                        });
+                        break;
+                    }
+                }
+            }
+
+            // If no IDs found, try to match by name
+            if (aiChatState.recommendations.length === 0) {
+                for (const category in products) {
+                    products[category].forEach(product => {
+                        const nameVi = product.name.vi.toLowerCase();
+                        const nameEn = product.name.en.toLowerCase();
+                        const nameCurrent = product.name[currentLang]?.toLowerCase() || "";
+
+                        if (response.toLowerCase().includes(nameVi) ||
+                            response.toLowerCase().includes(nameEn) ||
+                            response.toLowerCase().includes(nameCurrent)) {
+
+                            // Try to find quantity
+                            const qtyMatch = response.match(new RegExp(`${product.name[currentLang]}[^x]*x\\s*(\\d+)`, "i")) ||
+                                response.match(new RegExp(`${product.name.vi}[^x]*x\\s*(\\d+)`, "i"));
+                            const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+
+                            if (!aiChatState.recommendations.find(r => r.id === product.id)) {
+                                aiChatState.recommendations.push({
+                                    ...product,
+                                    qty: qty
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Ask for confirmation
+            aiChatState.step = 5;
+            setTimeout(() => {
+                addBotMessage(translations[currentLang].chatbot.confirmAdd);
+                showQuickResponses();
+            }, 500);
+        }
+
+        // Add recommendations to cart
+        function addRecommendationsToCart() {
+            aiChatState.recommendations.forEach(item => {
+                if (!cart[item.id]) {
+                    cart[item.id] = { ...item, qty: 0, tempQty: 0 };
+                }
+                cart[item.id].qty += item.qty;
+                cart[item.id].tempQty = cart[item.id].qty;
+            });
+
+            updateCart();
+            renderMenu();
+
+            // Animation on cart button
+            const el = document.getElementById("cartCount");
+            el.style.animation = "shake 0.4s";
+            setTimeout(() => el.style.animation = "", 400);
+        }
+
+        // Update chatbot UI when language changes
+        function updateChatbotLanguage() {
+            document.getElementById("aiChatBtnText").innerText = translations[currentLang].chatbot.btnText;
+            document.getElementById("aiChatTitle").innerText = translations[currentLang].chatbot.title;
+            document.getElementById("aiYesText").innerText = translations[currentLang].chatbot.yes;
+            document.getElementById("aiNoText").innerText = translations[currentLang].chatbot.no;
+            document.getElementById("aiChatInput").placeholder = translations[currentLang].chatbot.inputPlaceholder;
+            document.getElementById("aiSendBtn").innerText = translations[currentLang].chatbot.send;
+        }
+
+        // Initialize chatbot language
+        updateChatbotLanguage();
     </script>
 
 
