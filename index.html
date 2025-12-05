@@ -779,10 +779,8 @@
         </div>
         <div class="ai-chat-messages" id="aiChatMessages"></div>
         <div class="ai-quick-responses" id="aiQuickResponses" style="display: none;">
-            <button class="ai-quick-btn yes" onclick="handleQuickResponse(1)">1 - <span
-                    id="aiYesText">Có</span></button>
-            <button class="ai-quick-btn no" onclick="handleQuickResponse(0)">0 - <span
-                    id="aiNoText">Không</span></button>
+            <button class="ai-quick-btn yes" onclick="handleQuickResponse(1)"><span id="aiYesText">Có</span></button>
+            <button class="ai-quick-btn no" onclick="handleQuickResponse(0)"><span id="aiNoText">Không</span></button>
         </div>
         <div class="ai-chat-input" id="aiChatInputArea">
             <input type="text" id="aiChatInput" placeholder="Nhập tin nhắn..."
@@ -1110,10 +1108,10 @@
                     greeting: "Xin chào! Tôi là trợ lý AI của Yaki. Tôi sẽ giúp bạn chọn món ăn phù hợp.",
                     askGuests: "Bạn có bao nhiêu người ăn?",
                     askBudget: "Ngân sách của bạn là bao nhiêu? (VND)",
-                    askAlcohol: "Bạn có muốn dùng đồ uống có cồn không?\n👉 Nhấn 1 = Có, Nhấn 0 = Không",
+                    askAlcohol: "Bạn có muốn dùng đồ uống có cồn không?\n👉 Nhấn Có = Đồng ý, nhấn Không = Không đồng ý",
                     thinking: "Đang suy nghĩ",
                     recommendTitle: "Đây là gợi ý của tôi cho bạn:",
-                    confirmAdd: "Bạn có muốn thêm các món này vào giỏ hàng?\n👉 Nhấn 1 = Đồng ý, Nhấn 0 = Không",
+                    confirmAdd: "Bạn có muốn thêm các món này vào giỏ hàng?\n👉 Nhấn Có = Đồng ý, nhấn Không = Không đồng ý",
                     addedToCart: "Đã thêm tất cả món gợi ý vào giỏ hàng! 🎉",
                     notAdded: "Không sao! Bạn có thể tự chọn món từ menu hoặc nhờ tôi gợi ý lại.",
                     yes: "Có",
@@ -1145,10 +1143,10 @@
                     greeting: "Hello! I'm Yaki's AI assistant. I'll help you choose the perfect dishes.",
                     askGuests: "How many people will be dining?",
                     askBudget: "What's your budget? (VND)",
-                    askAlcohol: "Would you like alcoholic beverages?\n👉 Press 1 = Yes, Press 0 = No",
+                    askAlcohol: "Would you like alcoholic beverages?\n👉 Press Yes = Agree, press No = Disagree",
                     thinking: "Thinking",
                     recommendTitle: "Here are my suggestions for you:",
-                    confirmAdd: "Would you like to add these items to your cart?\n👉 Press 1 = Yes, Press 0 = No",
+                    confirmAdd: "Would you like to add these items to your cart?\n👉 Press Yes = Agree, press No = Disagree",
                     addedToCart: "All suggested items have been added to your cart! 🎉",
                     notAdded: "No problem! You can browse the menu yourself or ask me for new suggestions.",
                     yes: "Yes",
@@ -1180,10 +1178,10 @@
                     greeting: "您好！我是Yaki的AI助手。我将帮助您选择合适的菜品。",
                     askGuests: "请问有多少位用餐？",
                     askBudget: "您的预算是多少？(越南盾)",
-                    askAlcohol: "您需要含酒精的饮品吗？\n👉 按1 = 是，按0 = 否",
+                    askAlcohol: "您需要含酒精的饮品吗？\n👉 按“是”表示同意，按“否”表示不同意",
                     thinking: "思考中",
                     recommendTitle: "这是我为您推荐的菜品：",
-                    confirmAdd: "您要将这些菜品加入购物车吗？\n👉 按1 = 同意，按0 = 不要",
+                    confirmAdd: "您要将这些菜品加入购物车吗？\n👉 按“是”表示同意，按“否”表示不同意",
                     addedToCart: "已将所有推荐菜品加入购物车！🎉",
                     notAdded: "没关系！您可以自己浏览菜单或让我重新推荐。",
                     yes: "是",
@@ -1215,10 +1213,10 @@
                     greeting: "こんにちは！私はYakiのAIアシスタントです。最適な料理選びをお手伝いします。",
                     askGuests: "何名様でお食事されますか？",
                     askBudget: "ご予算はおいくらですか？(VND)",
-                    askAlcohol: "アルコール飲料はいかがですか？\n👉 1を押す = はい、0を押す = いいえ",
+                    askAlcohol: "アルコール飲料はいかがですか？\n👉 はいを押す=同意、いいえを押す=同意しない",
                     thinking: "考え中",
                     recommendTitle: "おすすめ料理はこちらです：",
-                    confirmAdd: "これらの料理をカートに追加しますか？\n👉 1を押す = はい、0を押す = いいえ",
+                    confirmAdd: "これらの料理をカートに追加しますか？\n👉 はいを押す=同意、いいえを押す=同意しない",
                     addedToCart: "おすすめ料理をすべてカートに追加しました！🎉",
                     notAdded: "大丈夫です！メニューから直接お選びいただくか、また私にお声がけください。",
                     yes: "はい",
@@ -1250,10 +1248,10 @@
                     greeting: "안녕하세요! 저는 Yaki의 AI 도우미입니다. 완벽한 요리를 선택하는 데 도움을 드리겠습니다.",
                     askGuests: "몇 분이 드실 예정인가요?",
                     askBudget: "예산이 어떻게 되시나요? (VND)",
-                    askAlcohol: "주류를 원하시나요?\n👉 1 = 예, 0 = 아니오",
+                    askAlcohol: "주류를 원하시나요?\n👉 예를 누르면 동의하고, 아니요를 누르면 동의하지 않습니다.",
                     thinking: "생각 중",
                     recommendTitle: "추천 요리는 다음과 같습니다:",
-                    confirmAdd: "이 요리들을 장바구니에 추가하시겠어요?\n👉 1 = 예, 0 = 아니오",
+                    confirmAdd: "이 요리들을 장바구니에 추가하시겠어요?\n👉 예를 누르면 동의하고, 아니요를 누르면 동의하지 않습니다.",
                     addedToCart: "모든 추천 요리가 장바구니에 추가되었습니다! 🎉",
                     notAdded: "괜찮습니다! 메뉴에서 직접 선택하시거나 다시 추천해 드릴게요.",
                     yes: "예",
