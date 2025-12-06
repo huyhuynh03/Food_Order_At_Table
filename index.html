@@ -1652,9 +1652,8 @@
 
         renderMenu();
 
-        /* ======================= AI CHATBOT ======================= */
-        const GEMINI_API_KEY = "AIzaSyAZQWWGCO3t7hyd1F7WiqmzXHS9rGdZImM";
-        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+        // Using Cloudflare Worker proxy to secure API key
+        const GEMINI_API_URL = 'https://gemini-proxy.yaki-api.workers.dev';
 
         // Chatbot state
         let aiChatState = {
@@ -1891,25 +1890,18 @@ CRITICAL: You must include "RECOMMENDATIONS:" and list items with their IDs in p
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.7,
-                            maxOutputTokens: 1024
-                        }
+                        prompt: prompt
                     })
                 });
 
                 const data = await response.json();
                 removeThinkingMessage();
 
-                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                    const aiResponse = data.candidates[0].content.parts[0].text;
+                if (data.success && data.response) {
+                    const aiResponse = data.response;
                     parseAndShowRecommendations(aiResponse);
                 } else {
+                    console.error("Worker error:", data.error);
                     addBotMessage(translations[currentLang].chatbot.error);
                     showInputArea();
                     aiChatState.step = 1;
