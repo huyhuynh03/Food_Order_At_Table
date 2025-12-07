@@ -1862,26 +1862,14 @@ Customer information:
 - Budget: ${aiChatState.budget.toLocaleString()} VND
 - Wants alcoholic beverages: ${aiChatState.wantsAlcohol ? "Yes" : "No"}
 
-Please recommend dishes for this customer. Consider:
-1. The budget should cover all recommended items
-2. Recommend appropriate quantities based on number of guests
-3. Include a variety: main dishes, sides, drinks, and maybe dessert
-4. If they don't want alcohol, only recommend non-alcoholic drinks
-5. If they want alcohol, include beer or wine
+Recommend dishes for this customer. Stay within budget. Include variety: main dishes, sides, drinks.
+${aiChatState.wantsAlcohol ? "Include beer/wine." : "Only non-alcoholic drinks."}
 
-IMPORTANT: Respond in ${langName} language.
+IMPORTANT: Respond in ${langName} language. DO NOT explain or add any extra text.
 
-Format your response EXACTLY like this (use this exact format):
-RECOMMENDATIONS:
-- [Item Name] x[quantity] - [price per item]đ
-- [Item Name] x[quantity] - [price per item]đ
-...
-TOTAL: [total price]đ
-
-Also include a brief friendly message explaining your recommendations.
-
-CRITICAL: You must include "RECOMMENDATIONS:" and list items with their IDs in parentheses like this:
-- (ID:1) Ba chỉ bò Mỹ x2 - 139,000đ`;
+Format EXACTLY like this:
+- (ID:X) [Item Name] x[quantity] - [price]đ
+TOTAL: [total price]đ`;
 
             try {
                 const response = await fetch(GEMINI_API_URL, {
