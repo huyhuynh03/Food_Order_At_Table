@@ -507,7 +507,7 @@
             top: 18px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #a855f7 35%, #ec4899 70%, #f97316 100%);
             border: none;
             border-radius: 50px;
             padding: 10px 20px;
@@ -515,7 +515,7 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -524,7 +524,7 @@
 
         #aiChatBtn:hover {
             transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
         }
 
         #aiChatBtn .ai-icon {
@@ -543,7 +543,7 @@
             background: rgba(30, 30, 40, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             z-index: 1001;
             display: flex;
@@ -561,7 +561,7 @@
 
         .ai-chat-header {
             padding: 15px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #a855f7 35%, #ec4899 70%, #f97316 100%);
             border-radius: 20px 20px 0 0;
             display: flex;
             justify-content: space-between;
@@ -623,7 +623,7 @@
         }
 
         .ai-message.bot {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #a855f7 50%, #ec4899 100%);
             color: #fff;
             align-self: flex-start;
             border-bottom-left-radius: 4px;
@@ -637,7 +637,7 @@
         }
 
         .ai-message.thinking {
-            background: rgba(102, 126, 234, 0.3);
+            background: rgba(168, 85, 247, 0.3);
             color: #aaa;
         }
 
@@ -713,7 +713,7 @@
         }
 
         .ai-chat-input input:focus {
-            border-color: #667eea;
+            border-color: #a855f7;
         }
 
         .ai-chat-input input::placeholder {
@@ -724,7 +724,7 @@
             padding: 12px 20px;
             border-radius: 25px;
             border: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
             color: #fff;
             cursor: pointer;
             transition: transform 0.3s;
@@ -1868,7 +1868,7 @@ ${aiChatState.wantsAlcohol ? "Include beer/wine." : "Only non-alcoholic drinks."
 IMPORTANT: Respond in ${langName} language. DO NOT explain or add any extra text.
 
 Format EXACTLY like this:
-- (ID:X) [Item Name] x[quantity] - [price]đ
+- [Item Name] x[quantity] - [price]đ [ID:X]
 TOTAL: [total price]đ`;
 
             try {
@@ -1905,17 +1905,19 @@ TOTAL: [total price]đ`;
 
         // Parse AI response and show recommendations
         function parseAndShowRecommendations(response) {
-            // Show the AI's response
-            addBotMessage(response.replace(/\n/g, "<br>"));
+            // Remove [ID:X] from display but keep for parsing
+            const displayResponse = response.replace(/\s*\[ID:\d+\]/g, '');
+            // Show the AI's response without IDs
+            addBotMessage(displayResponse.replace(/\n/g, "<br>"));
 
             // Try to extract item IDs from the response
             aiChatState.recommendations = [];
-            const idPattern = /\(ID:(\d+)\)[^x]*x(\d+)/gi;
+            const idPattern = /x(\d+)[^\[]*\[ID:(\d+)\]/gi;
             let match;
 
             while ((match = idPattern.exec(response)) !== null) {
-                const itemId = parseInt(match[1]);
-                const qty = parseInt(match[2]);
+                const qty = parseInt(match[1]);
+                const itemId = parseInt(match[2]);
 
                 // Find the product
                 for (const category in products) {
