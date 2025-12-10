@@ -21,11 +21,43 @@
             background: rgba(25, 25, 25, 0.7);
             backdrop-filter: blur(30px);
             padding: 22px;
-            border-left: 2px solid rgba(255, 200, 100, 0.5);
+            border-left: none;
             overflow-y: auto;
             z-index: 998;
             transform: translateX(100%);
             transition: 0.35s ease;
+        }
+
+        /* Nửa trên - chạy từ giữa lên */
+        #orderedPanel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 50%;
+            background: linear-gradient(0deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 100% 300%;
+            animation: rgbWaveUp 2s linear infinite;
+        }
+
+        /* Nửa dưới - chạy từ giữa xuống */
+        #orderedPanel::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 3px;
+            height: 50%;
+            background: linear-gradient(180deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 100% 300%;
+            animation: rgbWaveDown 2s linear infinite;
         }
 
         #orderedPanel.show {
@@ -203,13 +235,46 @@
 
         /* ======================= HEADER ======================= */
         header {
+            position: relative;
             padding: 18px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(20, 20, 20, 0.7);
             backdrop-filter: blur(20px);
-            border-bottom: 1.5px solid rgba(255, 77, 77, 0.4);
+            border-bottom: none;
+        }
+
+        /* Nửa trái - chạy từ giữa sang trái */
+        header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(270deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 300% 100%;
+            animation: rgbWaveLeft 2s linear infinite;
+        }
+
+        /* Nửa phải - chạy từ giữa sang phải */
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 300% 100%;
+            animation: rgbWaveRight 2s linear infinite;
         }
 
         .logo {
@@ -425,11 +490,43 @@
             background: rgba(25, 25, 25, 0.7);
             backdrop-filter: blur(30px);
             padding: 22px;
-            border-left: 2px solid rgba(255, 120, 120, 0.5);
+            border-left: none;
             overflow-y: auto;
             z-index: 999;
             transform: translateX(100%);
             transition: transform 0.35s ease;
+        }
+
+        /* Nửa trên - chạy từ giữa lên */
+        #cartPanel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 50%;
+            background: linear-gradient(0deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 100% 300%;
+            animation: rgbWaveUp 2s linear infinite;
+        }
+
+        /* Nửa dưới - chạy từ giữa xuống */
+        #cartPanel::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 3px;
+            height: 50%;
+            background: linear-gradient(180deg,
+                    #ff0000, #ff7f00, #ffff00, #00ff00,
+                    #00ffff, #0000ff, #8b00ff, #ff00ff,
+                    #ff0000, #ff7f00, #ffff00, #00ff00);
+            background-size: 100% 300%;
+            animation: rgbWaveDown 2s linear infinite;
         }
 
         #cartPanel.show {
@@ -458,6 +555,66 @@
             text-align: center;
             cursor: pointer;
         }
+
+        /* ======================= RGB WAVE EFFECT ======================= */
+        @keyframes rgbWave {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* RGB Wave chạy sang trái (từ giữa ra) */
+        @keyframes rgbWaveLeft {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* RGB Wave chạy sang phải (từ giữa ra) */
+        @keyframes rgbWaveRight {
+            0% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* RGB Wave chạy lên trên (từ giữa ra) */
+        @keyframes rgbWaveUp {
+            0% {
+                background-position: 50% 0%;
+            }
+
+            100% {
+                background-position: 50% 100%;
+            }
+        }
+
+        /* RGB Wave chạy xuống dưới (từ giữa ra) */
+        @keyframes rgbWaveDown {
+            0% {
+                background-position: 50% 100%;
+            }
+
+            100% {
+                background-position: 50% 0%;
+            }
+        }
+
 
         /* ======================= SHAKE ======================= */
         @keyframes shake {
@@ -529,6 +686,40 @@
 
         #aiChatBtn .ai-icon {
             font-size: 18px;
+            display: inline-block;
+            animation: robotBounce 1s ease-in-out infinite, robotWiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes robotBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes robotWiggle {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-2px) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-3px) rotate(0deg);
+            }
+
+            75% {
+                transform: translateY(-2px) rotate(5deg);
+            }
         }
 
         #aiChatPanel {
