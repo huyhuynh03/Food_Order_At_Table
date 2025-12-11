@@ -8,6 +8,8 @@ const CACHE_NAME = 'yaki-image-cache-v1';
 
 // Các domain ảnh được phép cache (thêm domain của ảnh sản phẩm vào đây)
 const ALLOWED_IMAGE_DOMAINS = [
+    'github.com',
+    'raw.githubusercontent.com',
     'images.unsplash.com',
     'cdn.pixabay.com',
     'i.imgur.com',
