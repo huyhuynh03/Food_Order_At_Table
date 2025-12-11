@@ -2218,7 +2218,7 @@ TOTAL: [total price]đ`;
         // Đăng ký Service Worker để cache ảnh
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then((registration) => {
                         console.log('✅ Service Worker registered - Images will be cached!');
 
@@ -2226,9 +2226,14 @@ TOTAL: [total price]đ`;
                         if (registration.active) {
                             registration.active.postMessage({ action: 'getCacheStats' });
                         }
+
+                        // Preload tất cả ảnh ngay khi SW sẵn sàng
+                        preloadAllImages();
                     })
                     .catch((error) => {
                         console.log('⚠️ Service Worker registration failed:', error);
+                        // Vẫn preload ảnh dù SW fail
+                        preloadAllImages();
                     });
 
                 // Lắng nghe message từ Service Worker
@@ -2236,7 +2241,65 @@ TOTAL: [total price]đ`;
                     if (event.data.action === 'cacheStats') {
                         console.log(`📦 Cached images: ${event.data.count}`);
                     }
+                    if (event.data.action === 'preloadComplete') {
+                        console.log(`🎉 All images preloaded and cached!`);
+                    }
                 });
+            });
+        } else {
+            // Nếu không hỗ trợ SW, vẫn preload ảnh để browser tự cache
+            window.addEventListener('load', preloadAllImages);
+        }
+
+        /**
+         * Preload TẤT CẢ ảnh sản phẩm ngay khi trang mở
+         * Ảnh sẽ được tải và cache ngay lập tức
+         */
+        function preloadAllImages() {
+            // Thu thập tất cả URL ảnh từ products object
+            const allImageUrls = [];
+
+            for (const category in products) {
+                products[category].forEach(item => {
+                    if (item.img) {
+                        allImageUrls.push(item.img);
+                    }
+                });
+            }
+
+            console.log(`🚀 Preloading ${allImageUrls.length} images...`);
+
+            let loadedCount = 0;
+            let errorCount = 0;
+
+            // Tạo Image objects để preload
+            allImageUrls.forEach((url, index) => {
+                const img = new Image();
+
+                img.onload = () => {
+                    loadedCount++;
+                    // Log tiến trình mỗi 5 ảnh
+                    if (loadedCount % 5 === 0 || loadedCount === allImageUrls.length) {
+                        console.log(`📷 Preloaded: ${loadedCount}/${allImageUrls.length} images`);
+                    }
+
+                    // Khi tất cả ảnh đã load xong
+                    if (loadedCount + errorCount === allImageUrls.length) {
+                        console.log(`✅ Preload complete! ${loadedCount} loaded, ${errorCount} failed`);
+                    }
+                };
+
+                img.onerror = () => {
+                    errorCount++;
+                    console.warn(`⚠️ Failed to preload: ${url.substring(0, 50)}...`);
+
+                    if (loadedCount + errorCount === allImageUrls.length) {
+                        console.log(`✅ Preload complete! ${loadedCount} loaded, ${errorCount} failed`);
+                    }
+                };
+
+                // Bắt đầu tải ảnh
+                img.src = url;
             });
         }
 
