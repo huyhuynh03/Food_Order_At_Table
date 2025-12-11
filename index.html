@@ -950,11 +950,427 @@
             font-weight: bold;
             text-align: right;
         }
+
+        /* ======================= KAHOOT-STYLE ANIMATED FOOD ICONS BACKGROUND ======================= */
+        .food-icons-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .food-icon {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.18;
+            animation: floatIcon 15s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+        }
+
+        /* Randomized positions and delays for each icon */
+        .food-icon:nth-child(1) {
+            left: 5%;
+            top: 10%;
+            animation-delay: 0s;
+            animation-duration: 18s;
+            font-size: 3.8rem;
+        }
+
+        .food-icon:nth-child(2) {
+            left: 15%;
+            top: 30%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+            font-size: 2.8rem;
+        }
+
+        .food-icon:nth-child(3) {
+            left: 25%;
+            top: 60%;
+            animation-delay: 4s;
+            animation-duration: 16s;
+            font-size: 3.3rem;
+        }
+
+        .food-icon:nth-child(4) {
+            left: 35%;
+            top: 20%;
+            animation-delay: 1s;
+            animation-duration: 22s;
+            font-size: 3rem;
+        }
+
+        .food-icon:nth-child(5) {
+            left: 45%;
+            top: 80%;
+            animation-delay: 3s;
+            animation-duration: 17s;
+            font-size: 3.5rem;
+        }
+
+        .food-icon:nth-child(6) {
+            left: 55%;
+            top: 45%;
+            animation-delay: 5s;
+            animation-duration: 19s;
+            font-size: 2.9rem;
+        }
+
+        .food-icon:nth-child(7) {
+            left: 65%;
+            top: 15%;
+            animation-delay: 0.5s;
+            animation-duration: 21s;
+            font-size: 3.6rem;
+        }
+
+        .food-icon:nth-child(8) {
+            left: 75%;
+            top: 70%;
+            animation-delay: 2.5s;
+            animation-duration: 18s;
+            font-size: 3.2rem;
+        }
+
+        .food-icon:nth-child(9) {
+            left: 85%;
+            top: 35%;
+            animation-delay: 4.5s;
+            animation-duration: 20s;
+            font-size: 2.7rem;
+        }
+
+        .food-icon:nth-child(10) {
+            left: 92%;
+            top: 55%;
+            animation-delay: 1.5s;
+            animation-duration: 16s;
+            font-size: 3.3rem;
+        }
+
+        .food-icon:nth-child(11) {
+            left: 8%;
+            top: 75%;
+            animation-delay: 3.5s;
+            animation-duration: 23s;
+            font-size: 3rem;
+        }
+
+        .food-icon:nth-child(12) {
+            left: 20%;
+            top: 5%;
+            animation-delay: 6s;
+            animation-duration: 19s;
+            font-size: 2.8rem;
+        }
+
+        .food-icon:nth-child(13) {
+            left: 40%;
+            top: 50%;
+            animation-delay: 0.8s;
+            animation-duration: 17s;
+            font-size: 3.5rem;
+        }
+
+        .food-icon:nth-child(14) {
+            left: 60%;
+            top: 85%;
+            animation-delay: 2.8s;
+            animation-duration: 21s;
+            font-size: 3rem;
+        }
+
+        .food-icon:nth-child(15) {
+            left: 80%;
+            top: 8%;
+            animation-delay: 5.5s;
+            animation-duration: 18s;
+            font-size: 3.8rem;
+        }
+
+        .food-icon:nth-child(16) {
+            left: 3%;
+            top: 45%;
+            animation-delay: 1.2s;
+            animation-duration: 22s;
+            font-size: 2.9rem;
+        }
+
+        .food-icon:nth-child(17) {
+            left: 30%;
+            top: 90%;
+            animation-delay: 4.2s;
+            animation-duration: 16s;
+            font-size: 3.2rem;
+        }
+
+        .food-icon:nth-child(18) {
+            left: 50%;
+            top: 25%;
+            animation-delay: 0.3s;
+            animation-duration: 20s;
+            font-size: 3.6rem;
+        }
+
+        .food-icon:nth-child(19) {
+            left: 70%;
+            top: 40%;
+            animation-delay: 3.2s;
+            animation-duration: 19s;
+            font-size: 2.8rem;
+        }
+
+        .food-icon:nth-child(20) {
+            left: 88%;
+            top: 75%;
+            animation-delay: 5.8s;
+            animation-duration: 17s;
+            font-size: 3.3rem;
+        }
+
+        /* Additional icons 21-35 */
+        .food-icon:nth-child(21) {
+            left: 12%;
+            top: 55%;
+            animation-delay: 1.8s;
+            animation-duration: 19s;
+            font-size: 3.4rem;
+        }
+
+        .food-icon:nth-child(22) {
+            left: 28%;
+            top: 15%;
+            animation-delay: 4.8s;
+            animation-duration: 21s;
+            font-size: 2.9rem;
+        }
+
+        .food-icon:nth-child(23) {
+            left: 38%;
+            top: 72%;
+            animation-delay: 0.6s;
+            animation-duration: 17s;
+            font-size: 3.7rem;
+        }
+
+        .food-icon:nth-child(24) {
+            left: 52%;
+            top: 8%;
+            animation-delay: 3.8s;
+            animation-duration: 20s;
+            font-size: 3.1rem;
+        }
+
+        .food-icon:nth-child(25) {
+            left: 68%;
+            top: 62%;
+            animation-delay: 2.2s;
+            animation-duration: 18s;
+            font-size: 3.5rem;
+        }
+
+        .food-icon:nth-child(26) {
+            left: 78%;
+            top: 28%;
+            animation-delay: 5.2s;
+            animation-duration: 22s;
+            font-size: 2.8rem;
+        }
+
+        .food-icon:nth-child(27) {
+            left: 95%;
+            top: 18%;
+            animation-delay: 1.4s;
+            animation-duration: 16s;
+            font-size: 3.2rem;
+        }
+
+        .food-icon:nth-child(28) {
+            left: 2%;
+            top: 88%;
+            animation-delay: 4.4s;
+            animation-duration: 19s;
+            font-size: 3.6rem;
+        }
+
+        .food-icon:nth-child(29) {
+            left: 22%;
+            top: 42%;
+            animation-delay: 0.9s;
+            animation-duration: 21s;
+            font-size: 3rem;
+        }
+
+        .food-icon:nth-child(30) {
+            left: 48%;
+            top: 68%;
+            animation-delay: 3.4s;
+            animation-duration: 17s;
+            font-size: 3.4rem;
+        }
+
+        .food-icon:nth-child(31) {
+            left: 58%;
+            top: 12%;
+            animation-delay: 6.2s;
+            animation-duration: 20s;
+            font-size: 2.9rem;
+        }
+
+        .food-icon:nth-child(32) {
+            left: 72%;
+            top: 88%;
+            animation-delay: 2.6s;
+            animation-duration: 18s;
+            font-size: 3.7rem;
+        }
+
+        .food-icon:nth-child(33) {
+            left: 82%;
+            top: 48%;
+            animation-delay: 5s;
+            animation-duration: 22s;
+            font-size: 3.1rem;
+        }
+
+        .food-icon:nth-child(34) {
+            left: 18%;
+            top: 68%;
+            animation-delay: 1.6s;
+            animation-duration: 16s;
+            font-size: 3.5rem;
+        }
+
+        .food-icon:nth-child(35) {
+            left: 42%;
+            top: 38%;
+            animation-delay: 4s;
+            animation-duration: 19s;
+            font-size: 3.3rem;
+        }
+
+        @keyframes floatIcon {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: translateY(-20px) rotate(10deg) scale(1.1);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-5deg) scale(1.05);
+            }
+
+            75% {
+                transform: translateY(-25px) rotate(-10deg) scale(0.95);
+            }
+        }
+
+        /* Additional subtle animations for odd icons */
+        .food-icon:nth-child(odd) {
+            animation-name: floatIconAlt;
+        }
+
+        @keyframes floatIconAlt {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: translateY(-15px) rotate(-8deg) scale(0.95);
+            }
+
+            50% {
+                transform: translateY(-25px) rotate(5deg) scale(1.08);
+            }
+
+            75% {
+                transform: translateY(-12px) rotate(12deg) scale(1);
+            }
+        }
+
+        /* Pulse effect for every 3rd icon */
+        .food-icon:nth-child(3n) {
+            animation: floatIconPulse 18s ease-in-out infinite;
+        }
+
+        @keyframes floatIconPulse {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.12;
+            }
+
+            25% {
+                transform: translateY(-18px) rotate(8deg) scale(1.15);
+                opacity: 0.22;
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(-6deg) scale(1);
+                opacity: 0.15;
+            }
+
+            75% {
+                transform: translateY(-22px) rotate(-12deg) scale(1.1);
+                opacity: 0.2;
+            }
+        }
     </style>
 </head>
 
 
 <body>
+
+    <!-- KAHOOT-STYLE ANIMATED FOOD ICONS BACKGROUND -->
+    <div class="food-icons-bg">
+        <span class="food-icon">🍕</span>
+        <span class="food-icon">🍔</span>
+        <span class="food-icon">🍜</span>
+        <span class="food-icon">🍣</span>
+        <span class="food-icon">🍩</span>
+        <span class="food-icon">🍺</span>
+        <span class="food-icon">🍱</span>
+        <span class="food-icon">🌮</span>
+        <span class="food-icon">🍦</span>
+        <span class="food-icon">☕</span>
+        <span class="food-icon">🍷</span>
+        <span class="food-icon">🥗</span>
+        <span class="food-icon">🍗</span>
+        <span class="food-icon">🧁</span>
+        <span class="food-icon">🥟</span>
+        <span class="food-icon">🍿</span>
+        <span class="food-icon">🥤</span>
+        <span class="food-icon">🍲</span>
+        <span class="food-icon">🍰</span>
+        <span class="food-icon">🥩</span>
+        <!-- Additional icons 21-35 -->
+        <span class="food-icon">🍝</span>
+        <span class="food-icon">🥘</span>
+        <span class="food-icon">🍛</span>
+        <span class="food-icon">🍤</span>
+        <span class="food-icon">🥧</span>
+        <span class="food-icon">🍪</span>
+        <span class="food-icon">🍡</span>
+        <span class="food-icon">🧇</span>
+        <span class="food-icon">🍞</span>
+        <span class="food-icon">🥐</span>
+        <span class="food-icon">🍳</span>
+        <span class="food-icon">🥓</span>
+        <span class="food-icon">🍟</span>
+        <span class="food-icon">🌯</span>
+        <span class="food-icon">🥪</span>
+    </div>
 
     <!-- AI CHATBOT BUTTON -->
     <button id="aiChatBtn" onclick="toggleAiChat()">
