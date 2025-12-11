@@ -2213,6 +2213,41 @@ TOTAL: [total price]đ`;
     </div>
 
 
+    <!-- Service Worker Registration for Image Caching -->
+    <script>
+        // Đăng ký Service Worker để cache ảnh
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered - Images will be cached!');
+
+                        // Kiểm tra số lượng ảnh đã cache (optional)
+                        if (registration.active) {
+                            registration.active.postMessage({ action: 'getCacheStats' });
+                        }
+                    })
+                    .catch((error) => {
+                        console.log('⚠️ Service Worker registration failed:', error);
+                    });
+
+                // Lắng nghe message từ Service Worker
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data.action === 'cacheStats') {
+                        console.log(`📦 Cached images: ${event.data.count}`);
+                    }
+                });
+            });
+        }
+
+        // Hàm xóa cache ảnh (gọi khi cần)
+        function clearImageCache() {
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ action: 'clearImageCache' });
+            }
+        }
+    </script>
+
 </body>
 
 </html>
