@@ -221,6 +221,45 @@
             border-radius: 6px;
             color: #fff;
             text-align: center;
+            /* Ẩn mũi tên lên/xuống */
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .cartQtyInput::-webkit-inner-spin-button,
+        .cartQtyInput::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .cart-qty-row {
+            display: flex;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .cart-qty-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(80, 80, 80, 0.6);
+            border: 1px solid #666;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .cart-qty-btn:hover {
+            background: rgba(255, 100, 100, 0.4);
+        }
+
+        .cart-qty-btn:active {
+            transform: scale(0.95);
         }
 
 
@@ -1688,9 +1727,10 @@
 
         /*==================Chức năng cho ô số lượng giỏ hàng========*/
 
+        let cartQtyTimeout = null; // Debounce timer
+
         function changeCartQty(input) {
             const id = input.dataset.id;
-            const oldQty = cart[id].qty;
             let newQty = input.value;
 
             // Rỗng → không cập nhật gì (để user nhập tiếp)
@@ -1699,21 +1739,55 @@
             newQty = Number(newQty);
             if (newQty < 0) newQty = 0;
 
-            input.value = newQty;
+            // Cập nhật data ngay nhưng KHÔNG render lại cart
+            cart[id].qty = newQty;
+            cart[id].tempQty = newQty;
 
-            // Nếu = 0 → xóa khỏi giỏ
-            if (newQty === 0) {
-                cart[id].qty = 0;
-                cart[id].tempQty = 0; // đồng bộ với menu
-                updateCart();
-                renderMenu();         // cập nhật menu
-                return;
+            // Clear timeout cũ
+            if (cartQtyTimeout) clearTimeout(cartQtyTimeout);
+
+            // Debounce: Chờ 400ms sau khi ngừng gõ mới render
+            cartQtyTimeout = setTimeout(() => {
+                if (newQty === 0) {
+                    // Xóa khỏi giỏ
+                    updateCart();
+                    renderMenu();
+                } else {
+                    // Cập nhật tổng tiền và số lượng hiển thị
+                    updateCartTotals();
+                    renderMenu();
+                }
+            }, 400);
+        }
+
+        // Hàm chỉ cập nhật tổng tiền mà KHÔNG render lại cart items
+        function updateCartTotals() {
+            let total = 0, count = 0;
+
+            for (let id in cart) {
+                if (cart[id].qty > 0) {
+                    total += cart[id].qty * cart[id].price;
+                    count += cart[id].qty;
+                }
             }
 
-            // Nếu khác số lượng cũ → cập nhật
-            if (newQty !== oldQty) {
-                cart[id].qty = newQty;
-                cart[id].tempQty = newQty;  // bắt buộc đồng bộ menu
+            document.getElementById("totalPrice").innerText = total.toLocaleString();
+            document.getElementById("cartCount").innerText = count;
+        }
+
+        // Hàm xử lý khi nhấn nút +/- trong giỏ hàng
+        function changeCartQtyBtn(id, delta) {
+            let newQty = Math.max(0, (cart[id].qty || 0) + delta);
+
+            cart[id].qty = newQty;
+            cart[id].tempQty = newQty;
+
+            if (newQty === 0) {
+                // Xóa khỏi giỏ
+                updateCart();
+                renderMenu();
+            } else {
+                // Cập nhật giỏ hàng và menu
                 updateCart();
                 renderMenu();
             }
@@ -2118,18 +2192,19 @@
 <div class="cart-item">
     <b>${cart[id].name[currentLang]}</b><br>
 
-    ${translations[currentLang].cart.qty}:
-      <input class="cartQtyInput"
-        type="number"
-        value="${cart[id].qty}"
-        min="0"
-        data-id="${id}"
-        onkeydown="if (event.key === 'Enter') changeCartQty(this)">
-
-
-    × ${cart[id].price.toLocaleString()} đ
-
-    <span class="cart-item-delete" onclick="deleteItem(${id})">🗑️</span>
+    <div class="cart-qty-row">
+        ${translations[currentLang].cart.qty}:
+        <span class="cart-qty-btn" onclick="changeCartQtyBtn(${id}, -1)">−</span>
+        <input class="cartQtyInput"
+            type="number"
+            value="${cart[id].qty}"
+            min="0"
+            data-id="${id}"
+            oninput="changeCartQty(this)">
+        <span class="cart-qty-btn" onclick="changeCartQtyBtn(${id}, 1)">+</span>
+        × ${cart[id].price.toLocaleString()} đ
+        <span class="cart-item-delete" onclick="deleteItem(${id})">🗑️</span>
+    </div>
 </div>`;
 
 
